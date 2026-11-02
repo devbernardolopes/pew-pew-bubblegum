@@ -1,6 +1,8 @@
 @tool
 class_name Entity
 extends Area2D
+
+const EffectsScript = preload("res://scripts/effects/effects.gd")
 ## Visuals is a north-facing Polygon2D filled with a color.
 ## Collision shape is a CollisionPolygon2D matching visual.
 
@@ -96,6 +98,13 @@ func take_damage(amount: int) -> void:
 	if is_dead:
 		return
 	health -= amount
+	# Non-lethal hit: white flash for ~0.08 s
+	if health > 0:
+		if visual != null:
+			visual.color = Color.WHITE
+			var flash_tween: Tween = create_tween()
+			flash_tween.tween_interval(0.08)
+			flash_tween.tween_property(visual, ^"color", color, 0.0)
 	if health <= 0:
 		die()
 
@@ -106,6 +115,17 @@ func die() -> void:
 	if is_dead:
 		return
 	is_dead = true
+	# Explosion and score popup before freeing
+	var explosion_scale: float = 1.0
+	if data != null:
+		explosion_scale = data.explosion_scale
+	EffectsScript.explode(data.visual, scale_aux, global_position, color, explosion_scale)
+	# Score popup handled by projectile on kill; add here for non-projectile kills (e.g. ramming)
+	if data != null and data.score_value > 0:
+		EffectsScript.score_popup(global_position, data.score_value * score_multiplier, score_multiplier > 1)
+	# Screen shake only when hero dies
+	if data != null and data.team == Helpers.TEAM.FRIEND:
+		EffectsScript.screen_shake(1.0, 0.3)
 	set_deferred(&"monitorable", false)
 	set_deferred(&"monitoring", false)
 	died.emit(self)

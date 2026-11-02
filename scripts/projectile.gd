@@ -1,5 +1,8 @@
 class_name Projectile
 extends Area2D
+
+const EffectsScript = preload("res://scripts/effects/effects.gd")
+
 ## A bullet that damages the opposing team's Entities on contact.
 ## Built entirely in code: [Weapon] creates it, adds it to the projectiles
 ## container and then calls [method launch].
@@ -48,11 +51,15 @@ func _on_area_entered(area: Area2D) -> void:
 	if target == null or target.is_dead:
 		return
 	_spent = true
+	# Spark streak at impact point
+	EffectsScript.hit_spark(global_position, _direction, 0.2)
 	target.take_damage(_data.base_damage)
 	if is_instance_valid(_shooter):
 		_shooter.shots_hit += 1
 	if target.is_dead and team == Helpers.TEAM.FRIEND and target.data != null and target.data.team == Helpers.TEAM.FOE:
-		GameManager.add_score(target.get_score_value())
+		var score_value: int = target.get_score_value()
+		GameManager.add_score(score_value)
+		EffectsScript.score_popup(global_position, score_value, target.score_multiplier > 1)
 	queue_free()
 
 

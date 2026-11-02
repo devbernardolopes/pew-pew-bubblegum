@@ -48,6 +48,12 @@ stage_data = ExtResource("12_stage")
 [node name="HeroSpawn" type="Marker2D" parent="." unique_id=258270815]
 position = Vector2(576, 624)
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=9999999999]
+anchor_mode = 3
+position = Vector2(0, 0)
+
+[node name="Effects" type="Node2D" parent="." unique_id=9999999998 groups=["effects"]]
+
 [node name="Projectiles" type="Node2D" parent="." unique_id=1480221933 groups=["projectiles"]]
 
 [node name="Hud" type="CanvasLayer" parent="." unique_id=1439519253]

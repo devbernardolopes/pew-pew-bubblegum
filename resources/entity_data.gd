@@ -10,3 +10,5 @@ extends Resource
 @export var contact_damage: int = 1
 ## Points awarded when this Entity is destroyed by a hero bullet.
 @export var score_value: int = 0
+## Scale factor for this entity's explosion shards and duration.
+@export var explosion_scale: float = 1.0
