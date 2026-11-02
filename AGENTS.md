@@ -25,6 +25,9 @@ The testing device is:
 - Godot generates `.gd.uid` sidecars; keep them tracked so scenes and references stay stable.
 - `Entity` origin sits at the **center** of its shape (both axes), and the shapes are built in `_refresh_shape()`. Hand-placed entity positions assume that: changing the shape offset means shifting `y` by `Helpers.ENTITY_HALF_WIDTH * scale_aux` in the scenes, or the visual moves.
 - Physics layers live in `PhysicsLayers` and are assigned by `Entity._apply_layers()` from `data.team`, not in scenes. For each pair of interacting things, exactly one side lists the other in its mask (otherwise every hit fires twice): foes mask `FRIEND` for ramming, projectiles are the monitoring side.
+- A foe's `global_position` and `rotation` belong to its `FoeBrain` child, never to an `EntityController`; `Entity` leaves uncontrolled entities alone, so do not give a foe a controller.
+- Entry paths are shared `Curve2D` resources under `resources/curves/`, wrapped in a `Path2D` in the level so they can be reshaped in the editor; gameplay reads the curve, never the `Path2D`.
+- Gameplay logic can be checked headlessly without opening the game: run a throwaway `extends SceneTree` script with `godot --headless --path . --script res://tools/name.gd`, instantiate the level there, then delete the script.
 
 ## Commit Convention
 

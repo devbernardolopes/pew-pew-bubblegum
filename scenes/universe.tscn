@@ -5,8 +5,12 @@
 [ext_resource type="Script" uid="uid://c5nax51s2alh" path="res://scripts/editor/entities_editor_helper.gd" id="1_uc3kj"]
 [ext_resource type="Resource" uid="uid://c7jxc7x1acuns" path="res://resources/entities/hero_data.tres" id="2_yftk6"]
 [ext_resource type="Script" uid="uid://bxu46k5dlad5m" path="res://scripts/player_controller.gd" id="4_jegdv"]
+[ext_resource type="Script" uid="uid://s1v84be4gvx6" path="res://scripts/universe.gd" id="5_univ"]
+[ext_resource type="Script" uid="uid://d1dsjjt3psx88" path="res://scripts/formation.gd" id="6_form"]
+[ext_resource type="Resource" uid="uid://l3vxgx3vhu5j" path="res://resources/curves/entry_left.tres" id="7_curve"]
 
 [node name="Universe" type="Node2D" unique_id=2088113174]
+script = ExtResource("5_univ")
 
 [node name="Backgrounds" type="Node2D" parent="." unique_id=1548604871]
 
@@ -20,12 +24,21 @@ visible = false
 points = PackedVector2Array(576, 0, 576, 648)
 width = 1.0
 
+[node name="EntryPath" type="Path2D" parent="." unique_id=501823377]
+curve = ExtResource("7_curve")
+
+[node name="Formation" type="Node2D" parent="." unique_id=1337452019]
+position = Vector2(576, 80)
+script = ExtResource("6_form")
+
 [node name="Entities" type="Node2D" parent="." unique_id=1188340120]
 script = ExtResource("1_uc3kj")
 metadata/_edit_lock_ = true
 
 [node name="Hero" parent="Entities" unique_id=257360264 instance=ExtResource("1_pol6k")]
 position = Vector2(576, 624)
+collision_layer = 2
+collision_mask = 0
 data = ExtResource("2_yftk6")
 color = Color(0.3019608, 1, 1, 1)
 

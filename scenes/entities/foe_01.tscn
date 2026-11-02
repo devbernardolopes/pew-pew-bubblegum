@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://4veql8t8duff"]
+
+[ext_resource type="PackedScene" uid="uid://c1vb7q75v7fvt" path="res://scenes/entity.tscn" id="1_entity"]
+[ext_resource type="Resource" uid="uid://banxaywbfr7vv" path="res://resources/entities/foe_01.tres" id="2_data"]
+[ext_resource type="Script" uid="uid://cxx0a7y036em" path="res://scripts/foe_brain.gd" id="3_brain"]
+
+[node name="Foe" instance=ExtResource("1_entity")]
+data = ExtResource("2_data")
+color = Color(1, 0.35, 0.55, 1)
+scale_aux = 0.25
+
+[node name="FoeBrain" type="Node" parent="."]
+script = ExtResource("3_brain")
