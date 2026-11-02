@@ -1,8 +1,8 @@
 class_name ScorePopup
 extends Node2D
 
-func setup(position: Vector2, value: int, bonus: bool = false) -> void:
-	global_position = position
+func setup(_position: Vector2, value: int, bonus: bool = false) -> void:
+	global_position = _position
 	var label: Label = Label.new()
 	label.text = "+%d" % value
 	label.add_theme_font_size_override("font_size", 16)

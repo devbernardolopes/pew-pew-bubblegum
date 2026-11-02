@@ -1,8 +1,8 @@
 class_name Explosion
 extends Node2D
 
-func setup(visual: Helpers.VISUAL, entity_scale: float, position: Vector2, color: Color, scale: float = 1.0) -> void:
-	global_position = position
+func setup(visual: Helpers.VISUAL, entity_scale: float, _position: Vector2, color: Color, _scale: float = 1.0) -> void:
+	global_position = _position
 	var polygon_points: PackedVector2Array = Helpers.get_polygon(visual)
 	# Scale points to match the entity's shape size and center at origin
 	var offset: Vector2 = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * entity_scale
@@ -37,17 +37,17 @@ func setup(visual: Helpers.VISUAL, entity_scale: float, position: Vector2, color
 		shard_points_list = new_list
 
 	# Spawn shards
-	var base_duration: float = 0.6 * scale
+	var base_duration: float = 0.6 * _scale
 	for shard in shard_points_list:
 		var shard_node: Polygon2D = Polygon2D.new()
 		shard_node.polygon = shard
 		shard_node.color = color
-		shard_node.scale = Vector2.ONE * scale
+		shard_node.scale = Vector2.ONE * _scale
 		add_child(shard_node)
 
 		# Random outward direction and rotation
 		var dir: Vector2 = Vector2.from_angle(randf_range(0.0, TAU))
-		var distance: float = randf_range(40.0, 120.0) * scale
+		var distance: float = randf_range(40.0, 120.0) * _scale
 		var rot: float = randf_range(-TAU, TAU)
 		var rot_speed: float = randf_range(-6.0, 6.0)
 
@@ -63,17 +63,17 @@ func setup(visual: Helpers.VISUAL, entity_scale: float, position: Vector2, color
 	var flash_points: PackedVector2Array = []
 	for i in 20:
 		var ang: float = (i / 20.0) * TAU
-		var r: float = randf_range(20.0, 60.0) * scale
+		var r: float = randf_range(20.0, 60.0) * _scale
 		flash_points.append(Vector2(cos(ang) * r, sin(ang) * r))
 	var flash: Polygon2D = Polygon2D.new()
 	flash.polygon = flash_points
 	flash.color = Color.WHITE
 	flash.modulate.a = 0.8
-	flash.scale = Vector2.ONE * scale
+	flash.scale = Vector2.ONE * _scale
 	add_child(flash)
 
 	var flash_tween: Tween = create_tween()
-	flash_tween.tween_property(flash, ^"scale", Vector2.ONE * 2.5 * scale, 0.15)
+	flash_tween.tween_property(flash, ^"scale", Vector2.ONE * 2.5 * _scale, 0.15)
 	flash_tween.tween_property(flash, ^"modulate:a", 0.0, 0.3)
 	flash_tween.tween_callback(func(): flash.queue_free())
 
