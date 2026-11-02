@@ -14,5 +14,10 @@ func get_direction_h() -> float:
 	return 0.0
 
 
+## Returns true on the frame the controller asks the shooter to fire.
+func wants_fire() -> bool:
+	return false
+
+
 func get_move_intent() -> Vector2:
 	return get_move_vector()

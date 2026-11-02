@@ -3,6 +3,7 @@ class_name Helpers
 enum VISUAL {
 	TRIANGLE,
 	DOUBLE_SQUARE,
+	BULLET,
 }
 
 enum TEAM {
@@ -31,6 +32,13 @@ const DOUBLE_SQUARE_POLYGON: PackedVector2Array = [
 const ENTITY_WIDTH: float = 128.0
 const ENTITY_HALF_WIDTH: float = ENTITY_WIDTH / 2.0
 
+const BULLET_POLYGON: PackedVector2Array = [
+	Vector2(52, 0),
+	Vector2(76, 0),
+	Vector2(76, 128),
+	Vector2(52, 128),
+	]
+
 
 static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array:
 	var result: PackedVector2Array = [Vector2.ZERO]
@@ -39,4 +47,6 @@ static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array
 			return TRIANGLE_POLYGON
 		VISUAL.DOUBLE_SQUARE:
 			return DOUBLE_SQUARE_POLYGON
+		VISUAL.BULLET:
+			return BULLET_POLYGON
 	return result

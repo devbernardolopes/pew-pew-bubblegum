@@ -29,6 +29,8 @@ extends Area2D
 var collision: CollisionPolygon2D = null
 var visual: Polygon2D = null
 var controller: EntityController = null
+var weapon: Weapon = null
+var health: int = 0
 var shots_fired: int = 0
 var shots_hit: int = 0
 var is_dead: bool = false
@@ -40,9 +42,12 @@ func _ready() -> void:
 	add_child(collision)
 	add_child(visual)
 	_refresh_shape()
+	reset_health()
 	if not Engine.is_editor_hint():
 		if controller == null:
 			controller = _find_controller()
+		if weapon == null:
+			weapon = _find_weapon()
 
 
 func _physics_process(delta: float) -> void:
@@ -59,6 +64,35 @@ func _physics_process(delta: float) -> void:
 	position.x = clampf(position.x, 
 			Helpers.ENTITY_HALF_WIDTH * scale_aux, 
 			get_viewport_rect().size.x - (Helpers.ENTITY_HALF_WIDTH * scale_aux))
+	if weapon != null and controller.wants_fire():
+		weapon.fire()
+
+
+## Sets [member health] back to the maximum of [member data]. Use it when
+## [member data] is assigned after the Entity entered the tree.
+func reset_health() -> void:
+	if data == null:
+		return
+	health = data.max_health
+
+
+## Subtracts [param amount] from [member health], killing the Entity when it
+## runs out.
+func take_damage(amount: int) -> void:
+	if is_dead:
+		return
+	health -= amount
+	if health <= 0:
+		die()
+
+
+## Marks the Entity dead and removes it from the tree, so nothing else can hit
+## it on the way out.
+func die() -> void:
+	is_dead = true
+	set_deferred(&"monitorable", false)
+	set_deferred(&"monitoring", false)
+	queue_free()
 
 
 func _center_entity() -> void:
@@ -103,4 +137,11 @@ func _find_controller() -> EntityController:
 	for child: Node in get_children():
 		if child is EntityController:
 			return child as EntityController
+	return null
+
+
+func _find_weapon() -> Weapon:
+	for child: Node in get_children():
+		if child is Weapon:
+			return child as Weapon
 	return null
