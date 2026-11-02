@@ -119,6 +119,8 @@ func end_game() -> void:
 	is_game_over = true
 	_game_over_msec = Time.get_ticks_msec()
 	game_over.emit()
+	if MusicPlayer != null and MusicPlayer.game_over_music != null:
+		MusicPlayer.play_music(MusicPlayer.game_over_music)
 	_save_high_score()
 
 

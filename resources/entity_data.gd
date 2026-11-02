@@ -12,3 +12,4 @@ extends Resource
 @export var score_value: int = 0
 ## Scale factor for this entity's explosion shards and duration.
 @export var explosion_scale: float = 0.50
+@export var sound_profile: SoundProfile = null

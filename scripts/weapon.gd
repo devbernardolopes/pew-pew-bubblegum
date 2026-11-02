@@ -45,6 +45,14 @@ func fire(direction: Vector2 = Vector2.ZERO) -> bool:
 	_in_flight += 1
 	projectile.tree_exited.connect(_on_projectile_gone)
 	_entity.shots_fired += 1
+	# Play fire sound from entity's sound profile
+	if _entity.data != null and _entity.data.sound_profile != null and _entity.data.sound_profile.fire != null:
+		var player: AudioStreamPlayer = AudioStreamPlayer.new()
+		player.stream = _entity.data.sound_profile.fire
+		player.bus = &"SFX"
+		get_tree().current_scene.add_child(player)
+		player.play()
+		player.finished.connect(func() -> void: player.queue_free())
 	return true
 
 

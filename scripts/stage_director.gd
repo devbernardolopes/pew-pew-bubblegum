@@ -99,6 +99,10 @@ func _begin_stage() -> void:
 	_wave_index = 0
 	_timer = INTRO_DURATION
 	_state = 0
+	# Play stage music
+	var current: StageData = _current_stage()
+	if current != null and current.music_stream != null:
+		MusicPlayer.play_music(current.music_stream)
 
 
 func _spawn_current_wave() -> void:

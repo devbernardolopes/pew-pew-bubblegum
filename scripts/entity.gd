@@ -107,6 +107,8 @@ func take_damage(amount: int) -> void:
 			flash_tween.tween_property(visual, ^"color", color, 0.0)
 	if health <= 0:
 		die()
+	else:
+		_play_profile_stream("hit")
 
 
 ## Marks the Entity dead and removes it from the tree, so nothing else can hit
@@ -115,6 +117,8 @@ func die() -> void:
 	if is_dead:
 		return
 	is_dead = true
+	# Sound effect before visuals/freeing
+	_play_profile_stream("explosion")
 	# Explosion and score popup before freeing
 	var explosion_scale: float = 1.0
 	if data != null:
@@ -206,3 +210,24 @@ func _find_weapon() -> Weapon:
 		if child is Weapon:
 			return child as Weapon
 	return null
+
+
+func _play_profile_stream(key: String) -> void:
+	if data == null or data.sound_profile == null:
+		return
+	var stream: AudioStream = null
+	if key == "explosion":
+		stream = data.sound_profile.explosion
+	elif key == "fire":
+		stream = data.sound_profile.fire
+	elif key == "hit":
+		stream = data.sound_profile.hit
+	if stream == null:
+		return
+	var player: AudioStreamPlayer = AudioStreamPlayer.new()
+	player.stream = stream
+	player.bus = &"SFX"
+	player.autoplay = false
+	get_tree().current_scene.add_child(player)
+	player.play()
+	player.finished.connect(func() -> void: player.queue_free())
