@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://ckghe3v1u0xwg"]
+
+[ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_wlns0"]
+
+[node name="Decagon" type="Polygon2D" unique_id=1335754002]
+color = Color(0.17254902, 1, 0.24705882, 1)
+polygon = PackedVector2Array(8, 24, 40, 0, 88, 0, 120, 24, 128, 64, 120, 104, 88, 128, 40, 128, 8, 104, 0, 64)
+uv = PackedVector2Array(8, 24, 40, 0, 88, 0, 120, 24, 128, 64, 120, 104, 88, 128, 40, 128, 8, 104, 0, 64)
+script = ExtResource("1_wlns0")

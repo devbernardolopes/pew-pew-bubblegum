@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cenl65vkdikgc"]
+
+[ext_resource type="PackedScene" uid="uid://c1vb7q75v7fvt" path="res://scenes/entity.tscn" id="1_y37ia"]
+[ext_resource type="Resource" uid="uid://co3ny3q1hdr3i" path="res://resources/entities/foe_02.tres" id="2_y37ia"]
+[ext_resource type="Script" uid="uid://cxx0a7y036em" path="res://scripts/foe_brain.gd" id="3_75ap1"]
+
+[node name="Foe" unique_id=1141829394 instance=ExtResource("1_y37ia")]
+collision_layer = 4
+collision_mask = 2
+data = ExtResource("2_y37ia")
+color = Color(0.54901963, 0.92156863, 0.22745098, 1)
+
+[node name="FoeBrain" type="Node" parent="." index="0" unique_id=455686306]
+script = ExtResource("3_75ap1")

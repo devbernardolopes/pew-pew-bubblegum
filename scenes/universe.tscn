@@ -7,9 +7,15 @@
 [ext_resource type="Script" uid="uid://bxu46k5dlad5m" path="res://scripts/player_controller.gd" id="4_jegdv"]
 [ext_resource type="Script" uid="uid://s1v84be4gvx6" path="res://scripts/universe.gd" id="5_univ"]
 [ext_resource type="Script" uid="uid://d1dsjjt3psx88" path="res://scripts/formation.gd" id="6_form"]
-[ext_resource type="Resource" uid="uid://l3vxgx3vhu5j" path="res://resources/curves/entry_left.tres" id="7_curve"]
+[ext_resource type="Curve2D" uid="uid://l3vxgx3vhu5j" path="res://resources/curves/entry_left.tres" id="7_curve"]
 [ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="8_weapon"]
 [ext_resource type="Resource" uid="uid://chjbpqj05soja" path="res://resources/projectiles/hero_bullet.tres" id="9_bullet"]
+
+[sub_resource type="Curve2D" id="Curve2D_yb76g"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -96, 344, 0, 0, 0, 0, -40, 264, -61.226006, -25.289001, 61.226006, 25.289001, 96, 176, 35.937004, -65.219, -35.937004, 65.219, 160, 312, -22.627, -47.916004, 22.627, 47.916004, 56, 472, -63.888004, -9.317, 63.888004, 9.317, 192, 544, -24.628323, 52.800137, 24.628323, -52.800137, 328, 480, -51.909004, 21.296001, 51.909004, -21.296001, 344, 328, -54.114845, -29.856466, 54.114845, 29.856466, 512, 336, -9.317, -54.571003, 9.317, 54.571003, 576, 424, 50.233746, -6.6406565, -50.233746, 6.6406565, 504, 544, 0, 0, 0, 0, 192, 456, 0, 0, 0, 0, 416, 120)
+}
+point_count = 13
 
 [node name="Universe" type="Node2D" unique_id=2088113174]
 script = ExtResource("5_univ")
@@ -26,7 +32,10 @@ visible = false
 points = PackedVector2Array(576, 0, 576, 648)
 width = 1.0
 
-[node name="EntryPath" type="Path2D" parent="." unique_id=501823377]
+[node name="EntryPath" type="Path2D" parent="." unique_id=257252879]
+curve = SubResource("Curve2D_yb76g")
+
+[node name="EntryPath2" type="Path2D" parent="." unique_id=501823377]
 curve = ExtResource("7_curve")
 
 [node name="Formation" type="Node2D" parent="." unique_id=1337452019]
