@@ -61,6 +61,9 @@ script = ExtResource("5_univ")
 
 [node name="Backgrounds" type="Node2D" parent="." unique_id=1548604871]
 
+[node name="Starfield" type="Parallax2D" parent="Backgrounds" unique_id=1548604872]
+scroll_scale = Vector2(0.1, 0.1)
+
 [node name="Polygon2D" type="Polygon2D" parent="Backgrounds" unique_id=599172924]
 color = Color(0.009674036, 9.0004505e-06, 0.058172427, 1)
 polygon = PackedVector2Array(0, 0, 0, 648, 1152, 648, 1152, 0)
@@ -91,7 +94,7 @@ script = ExtResource("13_stage_dir")
 stages = Array[ExtResource("7_5fwve")]([ExtResource("12_stage"), ExtResource("9_yb76g")])
 
 [node name="HeroSpawn" type="Marker2D" parent="." unique_id=258270815]
-position = Vector2(576, 624)
+position = Vector2(576, 576)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1410065407]
 anchor_mode = 3

@@ -41,6 +41,7 @@ var shots_hit: int = 0
 var is_dead: bool = false
 ## Score multiplier (e.g. 2 while a foe is diving). Set by the brain.
 var score_multiplier: int = 1
+var _trail_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -73,8 +74,21 @@ func _physics_process(delta: float) -> void:
 	position.x = clampf(position.x, 
 			Helpers.ENTITY_HALF_WIDTH * scale_aux, 
 			get_viewport_rect().size.x - (Helpers.ENTITY_HALF_WIDTH * scale_aux))
+	# Update tilt shader uniform based on horizontal direction
+	if data != null and data.tilt_enabled and visual != null and visual.material != null:
+		var mat: ShaderMaterial = visual.material as ShaderMaterial
+		if mat != null:
+			mat.set_shader_parameter("tilt_amount", dir)
+			mat.set_shader_parameter("glow_amount", clampf(abs(dir) * 2.0, 0.0, 1.0))
+	if data != null and data.trail_enabled:
+		_trail_timer -= delta
+		if dir != 0.0 and _trail_timer <= 0.0:
+			_trail_timer = 0.06
+			_spawn_trail()
 	if weapon != null and controller.wants_fire():
-		weapon.fire()
+		if weapon.fire():
+			if data != null and data.fire_pulse_enabled:
+				_pulse_fire()
 
 
 ## Sets [member health] back to the maximum of [member data]. Use it when
@@ -155,6 +169,14 @@ func _refresh_shape() -> void:
 	collision.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0
 	visual.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0
 	visual.color = color
+	if data.tilt_enabled:
+		if visual.material == null or visual.material.get_shader() == null:
+			var shader_mat: ShaderMaterial = ShaderMaterial.new()
+			shader_mat.shader = preload("res://resources/tilt_shader.gdshader")
+			visual.material = shader_mat
+	else:
+		if visual.material != null and visual.material.get_shader() != null:
+			visual.material = null
 	_apply_layers()
 
 
@@ -231,3 +253,26 @@ func _play_profile_stream(key: String) -> void:
 	get_tree().current_scene.add_child(player)
 	player.play()
 	player.finished.connect(func() -> void: player.queue_free())
+
+
+func _spawn_trail() -> void:
+	if not is_instance_valid(self) or is_queued_for_deletion():
+		return
+	var ghost: Polygon2D = Polygon2D.new()
+	if visual != null:
+		ghost.polygon = visual.polygon
+		ghost.color = color
+		ghost.scale = visual.scale
+		ghost.position = global_position + Vector2(20, 0) * -sign(controller.get_direction_h())
+	get_tree().current_scene.add_child(ghost)
+	var tween: Tween = ghost.create_tween()
+	tween.tween_property(ghost, ^"modulate:a", 0.0, 0.3)
+	tween.tween_callback(Callable(ghost.queue_free))
+
+
+func _pulse_fire() -> void:
+	if visual == null:
+		return
+	var pulse_tween: Tween = create_tween()
+	pulse_tween.tween_property(visual, ^"modulate", Color(2.0, 2.0, 2.0), 0.05)
+	pulse_tween.tween_property(visual, ^"modulate", color, 0.15)

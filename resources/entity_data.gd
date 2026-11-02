@@ -13,3 +13,6 @@ extends Resource
 ## Scale factor for this entity's explosion shards and duration.
 @export var explosion_scale: float = 0.50
 @export var sound_profile: SoundProfile = null
+@export var tilt_enabled: bool = false
+@export var trail_enabled: bool = false
+@export var fire_pulse_enabled: bool = false

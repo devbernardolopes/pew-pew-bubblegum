@@ -4,3 +4,4 @@
 
 [node name="EntryLeft01" type="Path2D" unique_id=2003802095]
 curve = ExtResource("1_8jbdy")
+metadata/_edit_lock_ = true

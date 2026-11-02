@@ -1,5 +1,6 @@
 class_name Weapon
 extends Node
+const EffectsScript = preload("res://scripts/effects/effects.gd")
 ## Spawns [Projectile]s from its parent [Entity].
 ## The Weapon is team-agnostic: the projectile takes the shooter's team, so a
 ## foe with a Weapon fires towards its own nose without any extra code.
@@ -42,6 +43,8 @@ func fire(direction: Vector2 = Vector2.ZERO) -> bool:
 		shot_direction = direction.normalized()
 	projectile.launch(projectile_data, _entity.data.team, _entity, nose, shot_direction)
 	projectile.set_color(_entity.color)
+	# Small screen shake on projectile spawn
+	EffectsScript.screen_shake(0.2, 0.05)
 	_in_flight += 1
 	projectile.tree_exited.connect(_on_projectile_gone)
 	_entity.shots_fired += 1

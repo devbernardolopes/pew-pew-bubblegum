@@ -10,4 +10,5 @@ team = 1
 base_speed = 284.0
 explosion_scale = 0.75
 sound_profile = ExtResource("2_o44k2")
+fire_pulse_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"
