@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://bxp1y8m9kf4vs"]
+
+[ext_resource type="PackedScene" uid="uid://c1vb7q75v7fvt" path="res://scenes/entity.tscn" id="1_entity"]
+[ext_resource type="Resource" uid="uid://c7jxc7x1acuns" path="res://resources/entities/hero_data.tres" id="2_data"]
+[ext_resource type="Script" uid="uid://bxu46k5dlad5m" path="res://scripts/player_controller.gd" id="3_ctrl"]
+[ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="4_weapon"]
+[ext_resource type="Resource" uid="uid://chjbpqj05soja" path="res://resources/projectiles/hero_bullet.tres" id="5_bullet"]
+
+[node name="Hero" instance=ExtResource("1_entity")]
+data = ExtResource("2_data")
+color = Color(0.3019608, 1, 1, 1)
+scale_aux = 0.25
+
+[node name="PlayerController" type="Node" parent="."]
+script = ExtResource("3_ctrl")
+
+[node name="Weapon" type="Node" parent="."]
+script = ExtResource("4_weapon")
+projectile_data = ExtResource("5_bullet")

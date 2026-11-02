@@ -1,15 +1,10 @@
 [gd_scene format=3 uid="uid://c4lo3tmmigpnv"]
 
 [ext_resource type="Script" uid="uid://102dmsidqlv6" path="res://scripts/hud.gd" id="1_h4s8v"]
-[ext_resource type="PackedScene" uid="uid://c1vb7q75v7fvt" path="res://scenes/entity.tscn" id="1_pol6k"]
 [ext_resource type="Script" uid="uid://c5nax51s2alh" path="res://scripts/editor/entities_editor_helper.gd" id="1_uc3kj"]
-[ext_resource type="Resource" uid="uid://c7jxc7x1acuns" path="res://resources/entities/hero_data.tres" id="2_yftk6"]
-[ext_resource type="Script" uid="uid://bxu46k5dlad5m" path="res://scripts/player_controller.gd" id="4_jegdv"]
 [ext_resource type="Script" uid="uid://s1v84be4gvx6" path="res://scripts/universe.gd" id="5_univ"]
 [ext_resource type="Script" uid="uid://d1dsjjt3psx88" path="res://scripts/formation.gd" id="6_form"]
 [ext_resource type="Curve2D" uid="uid://l3vxgx3vhu5j" path="res://resources/curves/entry_left.tres" id="7_curve"]
-[ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="8_weapon"]
-[ext_resource type="Resource" uid="uid://chjbpqj05soja" path="res://resources/projectiles/hero_bullet.tres" id="9_bullet"]
 [ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dive_left.tres" id="10_dive"]
 [ext_resource type="Script" uid="uid://b81te8tub8bg" path="res://scripts/dive_director.gd" id="11_director"]
 
@@ -47,20 +42,8 @@ script = ExtResource("6_form")
 script = ExtResource("1_uc3kj")
 metadata/_edit_lock_ = true
 
-[node name="Hero" parent="Entities" unique_id=257360264 instance=ExtResource("1_pol6k")]
+[node name="HeroSpawn" type="Marker2D" parent="." unique_id=258270815]
 position = Vector2(576, 624)
-collision_layer = 2
-collision_mask = 0
-data = ExtResource("2_yftk6")
-color = Color(0.3019608, 1, 1, 1)
-
-[node name="PlayerController" type="Node" parent="Entities/Hero" unique_id=857634023]
-script = ExtResource("4_jegdv")
-metadata/_custom_type_script = "uid://bxu46k5dlad5m"
-
-[node name="Weapon" type="Node" parent="Entities/Hero" unique_id=396211774]
-script = ExtResource("8_weapon")
-projectile_data = ExtResource("9_bullet")
 
 [node name="Projectiles" type="Node2D" parent="." unique_id=1480221933 groups=["projectiles"]]
 

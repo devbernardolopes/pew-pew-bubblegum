@@ -11,6 +11,8 @@ var _data: ProjectileData = null
 var _direction: Vector2 = Vector2.UP
 var _shooter: Entity = null
 var _spent: bool = false
+## The shooter's team, set when [method launch] is called.
+var team: Helpers.TEAM = Helpers.TEAM.NEUTRAL
 
 
 func _physics_process(delta: float) -> void:
@@ -26,14 +28,15 @@ func _physics_process(delta: float) -> void:
 
 ## Starts the projectile moving. Call it after adding the projectile to the tree.
 ## [param team] is the shooter's team; it decides the collision layers.
-func launch(data: ProjectileData, team: Helpers.TEAM, shooter: Entity, spawn_position: Vector2, direction: Vector2) -> void:
+func launch(data: ProjectileData, _team: Helpers.TEAM, shooter: Entity, spawn_position: Vector2, direction: Vector2) -> void:
 	_data = data
 	_shooter = shooter
+	self.team = _team
 	_direction = direction.normalized()
 	_build_shapes()
 	global_position = spawn_position
 	rotation = _direction.angle() + PI / 2.0
-	_apply_layers(team)
+	_apply_layers(_team)
 	monitorable = false
 	area_entered.connect(_on_area_entered)
 
@@ -54,8 +57,8 @@ func _on_area_entered(area: Area2D) -> void:
 ## Assigns the physics layers of this Projectile according to the shooter's team.
 ## Only one side of an interaction lists the other in its mask, otherwise
 ## every hit fires twice.
-func _apply_layers(team: Helpers.TEAM) -> void:
-	match team:
+func _apply_layers(_team: Helpers.TEAM) -> void:
+	match _team:
 		Helpers.TEAM.FRIEND:
 			collision_layer = PhysicsLayers.FRIEND_PROJECTILE
 			collision_mask = PhysicsLayers.FOE
