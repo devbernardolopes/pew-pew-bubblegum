@@ -16,3 +16,4 @@ extends Resource
 @export var tilt_enabled: bool = false
 @export var trail_enabled: bool = false
 @export var fire_pulse_enabled: bool = false
+@export var god_mode: bool = false

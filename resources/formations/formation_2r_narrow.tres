@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://blu3qcfulnqd3"]
+
+[ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="1_lb7p0"]
+
+[resource]
+script = ExtResource("1_lb7p0")
+metadata/_custom_type_script = "uid://cspnel4tvson"

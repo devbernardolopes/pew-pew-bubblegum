@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://ce6bj0vutf3ii"]
 
 [ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_7ya3l"]
+[ext_resource type="Resource" uid="uid://c3ypljvwdkrlv" path="res://resources/sound_profiles/sound_profile_002.tres" id="2_urp5c"]
 
 [resource]
 script = ExtResource("1_7ya3l")
@@ -8,4 +9,7 @@ id = &"foe_trapezoid"
 visual = 5
 base_speed = 300.0
 score_value = 200
+sound_profile = ExtResource("2_urp5c")
+tilt_enabled = true
+fire_pulse_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

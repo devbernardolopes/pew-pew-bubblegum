@@ -112,6 +112,8 @@ func get_score_value() -> int:
 ## Subtracts [param amount] from [member health], killing the Entity when it
 ## runs out.
 func take_damage(amount: int) -> void:
+	if data.god_mode:
+		return
 	if is_dead:
 		return
 	health -= amount

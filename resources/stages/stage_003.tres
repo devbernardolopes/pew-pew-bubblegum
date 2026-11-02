@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://doyg4wjpqbbh2"]
+
+[ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="1_s1plp"]
+[ext_resource type="AudioStream" uid="uid://bs5ys7j42nn1" path="res://assets/musics/endless_cyber_runner.ogg" id="1_wn4bw"]
+[ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="2_3kesv"]
+[ext_resource type="Curve2D" uid="uid://dgywtmoou6akn" path="res://resources/curves/entry_left_03.tres" id="4_0t3b3"]
+[ext_resource type="PackedScene" uid="uid://c2op66fmfonco" path="res://scenes/entities/foe_trapezoid.tscn" id="5_g3ivw"]
+[ext_resource type="Resource" uid="uid://bo0njo0yj4wio" path="res://resources/formations/formation_6r_wide.tres" id="6_84doo"]
+[ext_resource type="Curve2D" uid="uid://rhy0fy3n10j3" path="res://resources/curves/entry_left_02.tres" id="7_a0iew"]
+[ext_resource type="PackedScene" uid="uid://s7pipqm2lc1g" path="res://scenes/entities/foe_star.tscn" id="8_sqfdi"]
+[ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entry_left_01.tres" id="9_fe31u"]
+
+[sub_resource type="Resource" id="Resource_6btpn"]
+script = ExtResource("2_3kesv")
+foe_scene = ExtResource("5_g3ivw")
+entry_curve = ExtResource("4_0t3b3")
+spacing = 0.35
+formation = ExtResource("6_84doo")
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_u1ol7"]
+script = ExtResource("2_3kesv")
+foe_scene = ExtResource("8_sqfdi")
+entry_curve = ExtResource("7_a0iew")
+row = 2
+spacing = 0.15
+formation = ExtResource("6_84doo")
+delay = 1.0
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_585a5"]
+script = ExtResource("2_3kesv")
+foe_scene = ExtResource("5_g3ivw")
+entry_curve = ExtResource("9_fe31u")
+row = 1
+spacing = 0.1
+formation = ExtResource("6_84doo")
+delay = 1.75
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[resource]
+script = ExtResource("1_s1plp")
+waves = Array[ExtResource("2_3kesv")]([SubResource("Resource_6btpn"), SubResource("Resource_u1ol7"), SubResource("Resource_585a5")])
+music_stream = ExtResource("1_wn4bw")
+metadata/_custom_type_script = "uid://cfqxmshih2ed7"
