@@ -6,6 +6,7 @@ uniform float glow_amount : hint_range(0.0, 2.0) = 0.0;
 void fragment() {
 	vec2 skewed_uv = UV;
 	skewed_uv.x += tilt_amount * (UV.y - 0.5);
-	COLOR = texture(TEXTURE, skewed_uv);
+	vec4 base_color = texture(TEXTURE, skewed_uv) * COLOR;
+	COLOR = base_color;
 	COLOR.rgb = mix(COLOR.rgb, vec3(1.0), glow_amount * 0.6);
 }

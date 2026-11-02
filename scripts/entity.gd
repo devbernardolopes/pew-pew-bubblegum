@@ -65,29 +65,32 @@ func _physics_process(delta: float) -> void:
 		return
 	if not data:
 		return
-	if controller == null:
-		return
 	if is_dead:
 		return
-	var dir: float = controller.get_direction_h()
-	position.x += dir * data.base_speed * speed_multiplier * delta
-	position.x = clampf(position.x, 
+	var dir: float = 0.0
+	if controller != null:
+		dir = controller.get_direction_h()
+		position.x += dir * data.base_speed * speed_multiplier * delta
+		position.x = clampf(position.x, 
 			Helpers.ENTITY_HALF_WIDTH * scale_aux, 
 			get_viewport_rect().size.x - (Helpers.ENTITY_HALF_WIDTH * scale_aux))
+	else:
+		# Foes and other entities without a controller derive tilt direction from rotation
+		dir = cos(rotation - PI / 2.0)
 	# Update tilt shader uniform based on horizontal direction
-	if data != null and data.tilt_enabled and visual != null and visual.material != null:
+	if data.tilt_enabled and visual != null and visual.material != null:
 		var mat: ShaderMaterial = visual.material as ShaderMaterial
 		if mat != null:
 			mat.set_shader_parameter("tilt_amount", dir)
 			mat.set_shader_parameter("glow_amount", clampf(abs(dir) * 2.0, 0.0, 1.0))
-	if data != null and data.trail_enabled:
+	if data.trail_enabled:
 		_trail_timer -= delta
-		if dir != 0.0 and _trail_timer <= 0.0:
+		if abs(dir) > 0.01 and _trail_timer <= 0.0:
 			_trail_timer = 0.06
 			_spawn_trail()
-	if weapon != null and controller.wants_fire():
+	if weapon != null and controller != null and controller.wants_fire():
 		if weapon.fire():
-			if data != null and data.fire_pulse_enabled:
+			if data.fire_pulse_enabled:
 				_pulse_fire()
 
 
@@ -263,7 +266,8 @@ func _spawn_trail() -> void:
 		ghost.polygon = visual.polygon
 		ghost.color = color
 		ghost.scale = visual.scale
-		ghost.position = global_position + Vector2(20, 0) * -sign(controller.get_direction_h())
+		var trail_dir: float = controller.get_direction_h() if controller != null else cos(rotation - PI / 2.0)
+		ghost.position = global_position + Vector2(20, 0) * -sign(trail_dir)
 	get_tree().current_scene.add_child(ghost)
 	var tween: Tween = ghost.create_tween()
 	tween.tween_property(ghost, ^"modulate:a", 0.0, 0.3)
