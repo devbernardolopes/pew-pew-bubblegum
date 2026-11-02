@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://0iaoy1yyx2im"]
+
+[ext_resource type="FontFile" uid="uid://na01n8l6rclm" path="res://assets/fonts/Kenney Pixel.ttf" id="1_4ignj"]
+
+[node name="Title" type="Control" unique_id=1793984490]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="." unique_id=830141466]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("1_4ignj")
+theme_override_font_sizes/font_size = 48
+text = "Pew Pew Bubblegum"

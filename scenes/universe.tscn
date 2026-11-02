@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://102dmsidqlv6" path="res://scripts/hud.gd" id="1_h4s8v"]
 [ext_resource type="Script" uid="uid://c5nax51s2alh" path="res://scripts/editor/entities_editor_helper.gd" id="1_uc3kj"]
-[ext_resource type="Curve2D" uid="uid://rhy0fy3n10j3" path="res://resources/curves/entry_left_02.tres" id="3_yb76g"]
 [ext_resource type="Script" uid="uid://s1v84be4gvx6" path="res://scripts/universe.gd" id="5_univ"]
 [ext_resource type="Script" uid="uid://d1dsjjt3psx88" path="res://scripts/formation.gd" id="6_form"]
 [ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dive_left.tres" id="10_dive"]
@@ -22,19 +21,7 @@ metadata/_edit_lock_ = true
 
 [node name="CenterLine" type="Line2D" parent="Backgrounds" unique_id=925390992]
 points = PackedVector2Array(576, 0, 576, 648)
-width = 1.0
-
-[node name="EntryLeft02" type="Path2D" parent="." unique_id=1046445913]
-curve = ExtResource("3_yb76g")
-
-[node name="EntryLeft03" type="Path2D" parent="." unique_id=305048660]
-visible = false
-curve = ExtResource("3_yb76g")
-
-[node name="DivePath" type="Path2D" parent="." unique_id=1203745611]
-visible = false
-position = Vector2(24, 64)
-curve = ExtResource("10_dive")
+width = 4.0
 
 [node name="DiveDirector" type="Node" parent="." unique_id=1705528934]
 script = ExtResource("11_director")
@@ -45,7 +32,7 @@ interval_max = 3.5
 [node name="Formation" type="Node2D" parent="." unique_id=1337452019]
 position = Vector2(576, 80)
 script = ExtResource("6_form")
-rows = 5
+rows = 3
 spacing = Vector2(64, 48)
 sway_amplitude = 52.0
 sway_speed = 1.4

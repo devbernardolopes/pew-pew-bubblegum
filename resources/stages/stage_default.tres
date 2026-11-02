@@ -17,13 +17,13 @@ script = ExtResource("5_wave")
 foe_scene = ExtResource("2_foe02")
 entry_curve = ExtResource("6_pnxxg")
 row = 2
-delay = 3.0
+delay = 2.5
 
 [sub_resource type="Resource" id="Resource_5fwve"]
 script = ExtResource("5_wave")
 foe_scene = ExtResource("6_da535")
 entry_curve = ExtResource("6_pnxxg")
-row = 3
+row = 1
 delay = 4.0
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 
