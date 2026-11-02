@@ -4,7 +4,6 @@ extends Node2D
 func setup(_position: Vector2, direction: Vector2 = Vector2.UP, _scale: float = 0.2) -> void:
 	global_position = _position
 	var points: PackedVector2Array = Helpers.get_polygon(Helpers.VISUAL.BULLET)
-	var offset: Vector2 = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * _scale
 	var scaled_points: PackedVector2Array = []
 	for p in points:
 		scaled_points.append((p - Vector2(Helpers.ENTITY_WIDTH / 2.0, Helpers.ENTITY_WIDTH / 2.0)) * _scale)

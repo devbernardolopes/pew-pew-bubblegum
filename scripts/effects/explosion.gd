@@ -49,7 +49,6 @@ func setup(visual: Helpers.VISUAL, entity_scale: float, _position: Vector2, colo
 		var dir: Vector2 = Vector2.from_angle(randf_range(0.0, TAU))
 		var distance: float = randf_range(40.0, 120.0) * _scale
 		var rot: float = randf_range(-TAU, TAU)
-		var rot_speed: float = randf_range(-6.0, 6.0)
 
 		var tween: Tween = create_tween()
 		tween.set_parallel(true)
