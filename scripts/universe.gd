@@ -10,9 +10,12 @@ const COLUMNS_PER_SIDE: int = 4
 
 @onready var formation: Formation = $Formation
 @onready var entry_path: Path2D = $EntryPath
+@onready var dive_director: DiveDirector = $DiveDirector
+@onready var hero: Entity = $Entities/Hero
 
 
 func _ready() -> void:
+	hero.died.connect(_on_hero_died)
 	var left_slots: Array[Marker2D] = []
 	var right_slots: Array[Marker2D] = []
 	for col: int in COLUMNS_PER_SIDE:
@@ -20,6 +23,11 @@ func _ready() -> void:
 		right_slots.append(formation.get_slot(0, col + COLUMNS_PER_SIDE))
 	spawn_wave(FOE_SCENE, entry_path.curve, false, left_slots, ENTRY_SPACING)
 	spawn_wave(FOE_SCENE, entry_path.curve, true, right_slots, ENTRY_SPACING)
+
+
+## When the hero dies, dives stop (phase 6 will replace this with lives/respawn).
+func _on_hero_died(entity: Entity) -> void:
+	dive_director.enabled = false
 
 
 ## Instantiates one foe per slot and starts it along [param curve].

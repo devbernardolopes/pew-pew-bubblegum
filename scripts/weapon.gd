@@ -22,8 +22,10 @@ func _ready() -> void:
 
 
 ## Fires one projectile from the nose of the shooter.
+## A zero [param direction] fires along the nose; a non-zero one is normalized
+## and used instead.
 ## Returns false when the weapon is out of bullets or misconfigured.
-func fire() -> bool:
+func fire(direction: Vector2 = Vector2.ZERO) -> bool:
 	if projectile_data == null or _in_flight >= max_in_flight:
 		return false
 	if _entity == null or _entity.data == null:
@@ -35,8 +37,10 @@ func fire() -> bool:
 	var projectile: Projectile = Projectile.new()
 	container.add_child(projectile)
 	var nose: Vector2 = _entity.to_global(Vector2.UP * Helpers.ENTITY_HALF_WIDTH * _entity.scale_aux + muzzle_offset)
-	var direction: Vector2 = Vector2.UP.rotated(_entity.global_rotation)
-	projectile.launch(projectile_data, _entity.data.team, _entity, nose, direction)
+	var shot_direction: Vector2 = Vector2.UP.rotated(_entity.global_rotation)
+	if direction != Vector2.ZERO:
+		shot_direction = direction.normalized()
+	projectile.launch(projectile_data, _entity.data.team, _entity, nose, shot_direction)
 	_in_flight += 1
 	projectile.tree_exited.connect(_on_projectile_gone)
 	_entity.shots_fired += 1

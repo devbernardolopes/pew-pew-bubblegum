@@ -6,3 +6,5 @@ extends Resource
 @export var team: Helpers.TEAM = Helpers.TEAM.FOE
 @export var max_health: int = 1
 @export var base_speed: float = 256.0
+## Damage dealt to an opposing Entity on contact.
+@export var contact_damage: int = 1

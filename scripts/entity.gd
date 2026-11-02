@@ -4,6 +4,9 @@ extends Area2D
 ## Visuals is a north-facing Polygon2D filled with a color.
 ## Collision shape is a CollisionPolygon2D matching visual.
 
+## Emitted when the Entity dies, right before it leaves the tree.
+signal died(entity: Entity)
+
 @export var data: EntityData = null:
 	set(v):
 		data = v
@@ -48,6 +51,8 @@ func _ready() -> void:
 			controller = _find_controller()
 		if weapon == null:
 			weapon = _find_weapon()
+		_join_team_group()
+		area_entered.connect(_on_area_entered)
 
 
 func _physics_process(delta: float) -> void:
@@ -89,9 +94,12 @@ func take_damage(amount: int) -> void:
 ## Marks the Entity dead and removes it from the tree, so nothing else can hit
 ## it on the way out.
 func die() -> void:
+	if is_dead:
+		return
 	is_dead = true
 	set_deferred(&"monitorable", false)
 	set_deferred(&"monitoring", false)
+	died.emit(self)
 	queue_free()
 
 
@@ -131,6 +139,30 @@ func _apply_layers() -> void:
 		Helpers.TEAM.NEUTRAL:
 			collision_layer = 0
 			collision_mask = 0
+
+
+## Adds the Entity to its team group so that other nodes can look it up at
+## runtime. Groups are runtime-only, so the editor scene tree stays clean.
+func _join_team_group() -> void:
+	if data == null:
+		return
+	match data.team:
+		Helpers.TEAM.FRIEND:
+			add_to_group(&"friend")
+		Helpers.TEAM.FOE:
+			add_to_group(&"foe")
+		Helpers.TEAM.NEUTRAL:
+			pass
+
+
+## Handles ramming. Only the monitoring side of an interaction ever receives
+## this (the foe, whose mask lists FRIEND), so each contact is handled once.
+func _on_area_entered(area: Area2D) -> void:
+	var other: Entity = area as Entity
+	if other == null or is_dead or other.is_dead:
+		return
+	other.take_damage(data.contact_damage)
+	die()
 
 
 func _find_controller() -> EntityController:
