@@ -6,4 +6,6 @@
 script = ExtResource("1_7ya3l")
 id = &"foe_trapezoid"
 visual = 5
+base_speed = 300.0
+score_value = 200
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

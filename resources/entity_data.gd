@@ -11,4 +11,4 @@ extends Resource
 ## Points awarded when this Entity is destroyed by a hero bullet.
 @export var score_value: int = 0
 ## Scale factor for this entity's explosion shards and duration.
-@export var explosion_scale: float = 1.0
+@export var explosion_scale: float = 0.50

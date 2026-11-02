@@ -6,5 +6,6 @@
 script = ExtResource("1_4ij4g")
 id = &"foe_double_square"
 visual = 2
+base_speed = 272.0
 score_value = 150
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

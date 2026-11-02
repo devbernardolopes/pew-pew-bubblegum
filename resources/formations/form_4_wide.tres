@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="FormationData" load_steps=1 format=3]
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://b885pd8hkhgrt"]
 
-[ext_resource type="Script" path="res://resources/formation_data.gd" id="1_fd"]
+[ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="1_fd"]
 
 [resource]
 script = ExtResource("1_fd")
 rows = 4
 spacing = Vector2(64, 48)
-sway_amplitude = 60.0
+sway_amplitude = 80.0
 sway_speed = 0.8

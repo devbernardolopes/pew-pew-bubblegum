@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c2op66fmfonco" path="res://scenes/entities/foe_trapezoid.tscn" id="6_da535"]
 [ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entry_left_01.tres" id="6_l17ag"]
 [ext_resource type="Curve2D" uid="uid://rhy0fy3n10j3" path="res://resources/curves/entry_left_02.tres" id="6_pnxxg"]
-[ext_resource type="Resource" path="res://resources/formations/form_4_wide.tres" id="7_o3bh2"]
+[ext_resource type="Resource" uid="uid://b885pd8hkhgrt" path="res://resources/formations/form_4_wide.tres" id="7_o3bh2"]
 
 [sub_resource type="Resource" id="1_wave01"]
 script = ExtResource("5_wave")
