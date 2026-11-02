@@ -50,11 +50,11 @@ func _physics_process(delta: float) -> void:
 		return
 	if not data:
 		return
+	if controller == null:
+		return
 	if is_dead:
 		return
-	var dir: float = 0.0
-	if controller:
-		dir = controller.get_direction_h()
+	var dir: float = controller.get_direction_h()
 	position.x += dir * data.base_speed * speed_multiplier * delta
 	position.x = clampf(position.x, 
 			Helpers.ENTITY_HALF_WIDTH * scale_aux, 
@@ -62,7 +62,9 @@ func _physics_process(delta: float) -> void:
 
 
 func _center_entity() -> void:
-	position.x = (get_viewport_rect().size.x / 2.0) - (Helpers.ENTITY_HALF_WIDTH * scale_aux)
+	# The editor viewport is not the game viewport, so read the project setting.
+	var viewport_width: float = float(ProjectSettings.get_setting(&"display/window/size/viewport_width"))
+	position.x = viewport_width / 2.0
 
 
 func _refresh_shape() -> void:
@@ -73,10 +75,28 @@ func _refresh_shape() -> void:
 	visual.polygon = points
 	collision.scale = Vector2.ONE * scale_aux
 	visual.scale = Vector2.ONE * scale_aux
-	# Center the collision and the polygon horizontally in the Area2D
-	collision.position = Vector2(Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0, 0)
-	visual.position = Vector2(Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0, 0)
+	# Center the collision and the polygon in the Area2D on both axes, so that
+	# the Entity pivots around the center of its shape.
+	collision.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0
+	visual.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0
 	visual.color = color
+	_apply_layers()
+
+
+## Assigns the physics layers of this Entity according to its team.
+## Only one side of an interaction lists the other in its mask, otherwise
+## every hit fires twice.
+func _apply_layers() -> void:
+	match data.team:
+		Helpers.TEAM.FRIEND:
+			collision_layer = PhysicsLayers.FRIEND
+			collision_mask = 0
+		Helpers.TEAM.FOE:
+			collision_layer = PhysicsLayers.FOE
+			collision_mask = PhysicsLayers.FRIEND
+		Helpers.TEAM.NEUTRAL:
+			collision_layer = 0
+			collision_mask = 0
 
 
 func _find_controller() -> EntityController:

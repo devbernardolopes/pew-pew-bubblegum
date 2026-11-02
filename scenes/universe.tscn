@@ -25,7 +25,7 @@ script = ExtResource("1_uc3kj")
 metadata/_edit_lock_ = true
 
 [node name="Hero" parent="Entities" unique_id=257360264 instance=ExtResource("1_pol6k")]
-position = Vector2(576, 608)
+position = Vector2(576, 624)
 data = ExtResource("2_yftk6")
 color = Color(0.3019608, 1, 1, 1)
 

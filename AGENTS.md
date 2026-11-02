@@ -23,6 +23,8 @@ The testing device is:
 - Editor-log ghosts: the log buffer re-emits stale diagnostics on scans — confirm errors against current file contents (grep) before treating them as live.
 - Never reference `EditorInterface` directly from a script that is shipped in a game: editor classes are stripped from export templates and the script then fails to load. Access it only under `Engine.is_editor_hint()` through `Engine.get_singleton(&"EditorInterface")`.
 - Godot generates `.gd.uid` sidecars; keep them tracked so scenes and references stay stable.
+- `Entity` origin sits at the **center** of its shape (both axes), and the shapes are built in `_refresh_shape()`. Hand-placed entity positions assume that: changing the shape offset means shifting `y` by `Helpers.ENTITY_HALF_WIDTH * scale_aux` in the scenes, or the visual moves.
+- Physics layers live in `PhysicsLayers` and are assigned by `Entity._apply_layers()` from `data.team`, not in scenes. For each pair of interacting things, exactly one side lists the other in its mask (otherwise every hit fires twice): foes mask `FRIEND` for ramming, projectiles are the monitoring side.
 
 ## Commit Convention
 
