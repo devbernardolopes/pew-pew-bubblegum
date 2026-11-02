@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://5cdas5uid1vy"]
+
+[ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_7elws"]
+
+[node name="Star" type="Polygon2D" unique_id=1813412747]
+color = Color(0.8784314, 0.9843137, 0.09019608, 1)
+polygon = PackedVector2Array(0, 64, 40, 40, 64, 0, 88, 40, 128, 64, 88, 88, 64, 128, 40, 88)
+script = ExtResource("1_7elws")

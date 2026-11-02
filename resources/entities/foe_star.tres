@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://fr1rekdbshqx"]
+
+[ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_sq257"]
+
+[resource]
+script = ExtResource("1_sq257")
+id = &"foe_star"
+visual = 6
+base_speed = 378.0
+score_value = 600
+explosion_scale = 0.75
+metadata/_custom_type_script = "uid://cnpcyvxb0l32y"
