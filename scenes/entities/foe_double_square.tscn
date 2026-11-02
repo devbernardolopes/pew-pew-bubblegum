@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cenl65vkdikgc"]
+
+[ext_resource type="PackedScene" uid="uid://c1vb7q75v7fvt" path="res://scenes/entity.tscn" id="1_ie6ej"]
+[ext_resource type="Resource" uid="uid://co3ny3q1hdr3i" path="res://resources/entities/foe_double_square.tres" id="2_nr8vs"]
+[ext_resource type="Script" uid="uid://cxx0a7y036em" path="res://scripts/foe_brain.gd" id="3_ota3q"]
+[ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="4_uxxhq"]
+[ext_resource type="Resource" uid="uid://ddpgespltt4n3" path="res://resources/projectiles/foe_bullet.tres" id="5_lvisb"]
+[ext_resource type="Script" uid="uid://br3iivlmoyasu" path="res://scripts/foe_shooter.gd" id="6_1qtvk"]
+
+[node name="Foe" unique_id=427489892 instance=ExtResource("1_ie6ej")]
+collision_layer = 4
+collision_mask = 2
+data = ExtResource("2_nr8vs")
+color = Color(0.54901963, 0.92156863, 0.22745098, 1)
+
+[node name="FoeBrain" type="Node" parent="." index="0" unique_id=1225320927]
+script = ExtResource("3_ota3q")
+turn_rate = 11.0
+dive_speed_multiplier = 1.25
+
+[node name="Weapon" type="Node" parent="." index="1" unique_id=404022440]
+script = ExtResource("4_uxxhq")
+projectile_data = ExtResource("5_lvisb")
+
+[node name="FoeShooter" type="Node" parent="." index="2" unique_id=1625966579]
+script = ExtResource("6_1qtvk")

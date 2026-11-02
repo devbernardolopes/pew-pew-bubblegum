@@ -107,7 +107,7 @@ func _spawn_current_wave() -> void:
 	# Spawn one foe per column in the wave's row, mirrored from the right.
 	var row: int = wave.row
 	var col_count: int = formation.columns
-	var left_n: int = col_count / 2
+	var left_n: int = int(float(col_count) / 2.0)
 	var slot_index: int = 0
 	for col: int in col_count:
 		var mirror: bool = col >= left_n

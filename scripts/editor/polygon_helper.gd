@@ -15,7 +15,8 @@ func _print_points() -> void:
 		return
 	if _polygon_2d.polygon.is_empty():
 		return
-	print("const DECAGON_POLYGON: PackedVector2Array = [")
+	var _name: String = name.to_upper()
+	print("const ", _name, "_POLYGON: PackedVector2Array = [")
 	for i in _polygon_2d.polygon.size():
 		var _point: Vector2 = _polygon_2d.polygon[i]
 		print("\tVector2", _point, ",")

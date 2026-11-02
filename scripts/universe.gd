@@ -6,8 +6,8 @@ const HERO_SCENE: PackedScene = preload("res://scenes/entities/hero.tscn")
 ## Time after hero death before a respawn is allowed, in seconds.
 const RESPAWN_DELAY: float = 1.5
 
+@onready var center_line: Line2D = $Backgrounds/CenterLine
 @onready var formation: Formation = $Formation
-@onready var entry_path: Path2D = $EntryPath
 @onready var dive_director: DiveDirector = $DiveDirector
 @onready var hero_spawn: Marker2D = $HeroSpawn
 @onready var entities: Node2D = $Entities
@@ -19,6 +19,8 @@ var _is_waiting_to_respawn: bool = false
 
 
 func _ready() -> void:
+	if center_line:
+		center_line.visible = false
 	spawn_hero()
 
 

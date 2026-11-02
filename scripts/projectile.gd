@@ -86,3 +86,15 @@ func _build_shapes() -> void:
 	visual.position = offset
 	visual.color = _data.color
 	add_child(visual)
+
+
+func _find_visual() -> Polygon2D:
+	for child: Node in get_children():
+		if child is Polygon2D:
+			return child as Polygon2D
+	return null
+
+func set_color(_color: Color = Color.FUCHSIA) -> void:
+	var _visual: Polygon2D = _find_visual()
+	if _visual:
+		_visual.color = _color

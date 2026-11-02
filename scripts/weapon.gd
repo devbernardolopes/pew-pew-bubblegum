@@ -7,7 +7,7 @@ extends Node
 ## The projectile to fire; a null value disables firing.
 @export var projectile_data: ProjectileData = null
 ## Maximum number of bullets alive at the same time.
-@export var max_in_flight: int = 2
+@export var max_in_flight: int = 4
 ## Extra tweak in the Entity's local space, added to the nose position.
 @export var muzzle_offset: Vector2 = Vector2.ZERO
 
@@ -41,6 +41,7 @@ func fire(direction: Vector2 = Vector2.ZERO) -> bool:
 	if direction != Vector2.ZERO:
 		shot_direction = direction.normalized()
 	projectile.launch(projectile_data, _entity.data.team, _entity, nose, shot_direction)
+	projectile.set_color(_entity.color)
 	_in_flight += 1
 	projectile.tree_exited.connect(_on_projectile_gone)
 	_entity.shots_fired += 1

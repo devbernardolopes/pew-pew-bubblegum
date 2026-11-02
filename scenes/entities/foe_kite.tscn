@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dgm4lav3x0tdv"]
+
+[ext_resource type="PackedScene" uid="uid://c1vb7q75v7fvt" path="res://scenes/entity.tscn" id="1_y0wag"]
+[ext_resource type="Resource" uid="uid://361bqdlbjp2c" path="res://resources/entities/foe_kite.tres" id="2_y0wag"]
+[ext_resource type="Script" uid="uid://cxx0a7y036em" path="res://scripts/foe_brain.gd" id="3_nsyu8"]
+[ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="4_oxoh8"]
+[ext_resource type="Resource" uid="uid://ddpgespltt4n3" path="res://resources/projectiles/foe_bullet.tres" id="5_xj27d"]
+[ext_resource type="Script" uid="uid://br3iivlmoyasu" path="res://scripts/foe_shooter.gd" id="6_1nuvx"]
+
+[node name="Foe" unique_id=2135809465 instance=ExtResource("1_y0wag")]
+collision_layer = 4
+collision_mask = 2
+data = ExtResource("2_y0wag")
+color = Color(0.8627451, 0, 0, 1)
+
+[node name="FoeBrain" type="Node" parent="." index="0" unique_id=1550933478]
+script = ExtResource("3_nsyu8")
+
+[node name="Weapon" type="Node" parent="." index="1" unique_id=1303754860]
+script = ExtResource("4_oxoh8")
+projectile_data = ExtResource("5_xj27d")
+
+[node name="FoeShooter" type="Node" parent="." index="2" unique_id=589412505]
+script = ExtResource("6_1nuvx")
