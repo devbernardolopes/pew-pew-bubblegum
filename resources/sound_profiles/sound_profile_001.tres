@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SoundProfile" format=3 uid="uid://bfmewgm1ofmey"]
+
+[ext_resource type="Script" uid="uid://bw0j601n2cpoi" path="res://resources/sound_profile.gd" id="1_i86qs"]
+[ext_resource type="AudioStream" uid="uid://cjslb47dns0ms" path="res://assets/sounds/laserRetro_000.ogg" id="1_lgpel"]
+[ext_resource type="AudioStream" uid="uid://der0am7kekuau" path="res://assets/sounds/explosionCrunch_002.ogg" id="2_eqdup"]
+
+[resource]
+script = ExtResource("1_i86qs")
+explosion = ExtResource("2_eqdup")
+fire = ExtResource("1_lgpel")
+hit = ExtResource("2_eqdup")
+metadata/_custom_type_script = "uid://bw0j601n2cpoi"

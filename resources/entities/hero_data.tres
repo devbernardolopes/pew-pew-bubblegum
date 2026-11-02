@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://c7jxc7x1acuns"]
 
 [ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_gfcdi"]
+[ext_resource type="Resource" uid="uid://bmws74k08fkg7" path="res://resources/sound_profiles/sound_profile_003.tres" id="2_o44k2"]
 
 [resource]
 script = ExtResource("1_gfcdi")
@@ -8,4 +9,5 @@ id = &"hero"
 team = 1
 base_speed = 284.0
 explosion_scale = 0.75
+sound_profile = ExtResource("2_o44k2")
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

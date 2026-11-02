@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://361bqdlbjp2c"]
 
 [ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_ukkyd"]
+[ext_resource type="Resource" uid="uid://c3ypljvwdkrlv" path="res://resources/sound_profiles/sound_profile_002.tres" id="2_h65c1"]
 
 [resource]
 script = ExtResource("1_ukkyd")
@@ -8,4 +9,5 @@ id = &"foe_kite"
 visual = 4
 base_speed = 352.0
 score_value = 350
+sound_profile = ExtResource("2_h65c1")
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

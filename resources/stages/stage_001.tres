@@ -1,27 +1,31 @@
 [gd_resource type="Resource" script_class="StageData" format=3 uid="uid://bv7lmw5x1q3t8"]
 
+[ext_resource type="AudioStream" uid="uid://c78xper34fjhn" path="res://assets/musics/S31-Night Prowler.ogg" id="1_8teif"]
 [ext_resource type="PackedScene" uid="uid://4veql8t8duff" path="res://scenes/entities/foe_triangle.tscn" id="1_foe01"]
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="4_stage"]
+[ext_resource type="Resource" uid="uid://bo0njo0yj4wio" path="res://resources/formations/formation_6r_wide.tres" id="5_njgka"]
 [ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="5_wave"]
-[ext_resource type="Curve2D" uid="uid://dgywtmoou6akn" path="res://resources/curves/entry_left_03.tres" id="6_l17ag"]
+[ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entry_left_01.tres" id="6_8teif"]
 [ext_resource type="Curve2D" uid="uid://rhy0fy3n10j3" path="res://resources/curves/entry_left_02.tres" id="6_pnxxg"]
-[ext_resource type="Resource" uid="uid://b885pd8hkhgrt" path="res://resources/formations/form_4_wide.tres" id="7_o3bh2"]
+[ext_resource type="PackedScene" uid="uid://cenl65vkdikgc" path="res://scenes/entities/foe_double_square.tscn" id="7_l21ra"]
 
 [sub_resource type="Resource" id="1_wave01"]
 script = ExtResource("5_wave")
 foe_scene = ExtResource("1_foe01")
 entry_curve = ExtResource("6_pnxxg")
-row = 1
-formation = ExtResource("7_o3bh2")
+row = 4
+formation = ExtResource("5_njgka")
 
 [sub_resource type="Resource" id="Resource_je0h4"]
 script = ExtResource("5_wave")
-foe_scene = ExtResource("1_foe01")
-entry_curve = ExtResource("6_l17ag")
-formation = ExtResource("7_o3bh2")
+foe_scene = ExtResource("7_l21ra")
+entry_curve = ExtResource("6_8teif")
+row = 2
+formation = ExtResource("5_njgka")
 delay = 0.25
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 
 [resource]
 script = ExtResource("4_stage")
 waves = Array[ExtResource("5_wave")]([SubResource("1_wave01"), SubResource("Resource_je0h4")])
+music_stream = ExtResource("1_8teif")

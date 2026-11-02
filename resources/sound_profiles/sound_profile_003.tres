@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoundProfile" format=3 uid="uid://bmws74k08fkg7"]
+
+[ext_resource type="AudioStream" uid="uid://td3bh26d55mo" path="res://assets/sounds/explosionCrunch_003.ogg" id="1_a4i0s"]
+[ext_resource type="Script" uid="uid://bw0j601n2cpoi" path="res://resources/sound_profile.gd" id="1_rs035"]
+[ext_resource type="AudioStream" uid="uid://ckfavpdrak8l5" path="res://assets/sounds/laserRetro_004.ogg" id="2_4oro3"]
+[ext_resource type="AudioStream" uid="uid://dnoqh6neawm4d" path="res://assets/sounds/explosionCrunch_000.ogg" id="3_deti7"]
+
+[resource]
+script = ExtResource("1_rs035")
+explosion = ExtResource("1_a4i0s")
+fire = ExtResource("2_4oro3")
+hit = ExtResource("3_deti7")
+metadata/_custom_type_script = "uid://bw0j601n2cpoi"

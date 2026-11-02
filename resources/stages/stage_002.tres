@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="StageData" format=3 uid="uid://c5krmfh35fnn8"]
 
+[ext_resource type="AudioStream" uid="uid://bs5ys7j42nn1" path="res://assets/musics/endless_cyber_runner.ogg" id="1_h4e0a"]
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="1_qcdsx"]
 [ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="2_j3gal"]
 [ext_resource type="Curve2D" uid="uid://dgywtmoou6akn" path="res://resources/curves/entry_left_03.tres" id="3_1enft"]
@@ -26,4 +27,5 @@ metadata/_custom_type_script = "uid://c775yud1oetrm"
 [resource]
 script = ExtResource("1_qcdsx")
 waves = Array[ExtResource("2_j3gal")]([SubResource("Resource_v6v53"), SubResource("Resource_a3xea")])
+music_stream = ExtResource("1_h4e0a")
 metadata/_custom_type_script = "uid://cfqxmshih2ed7"
