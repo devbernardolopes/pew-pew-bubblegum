@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://c4lo3tmmigpnv"]
+
+[ext_resource type="Script" uid="uid://102dmsidqlv6" path="res://scripts/hud.gd" id="1_h4s8v"]
+[ext_resource type="PackedScene" uid="uid://c1vb7q75v7fvt" path="res://scenes/entity.tscn" id="1_pol6k"]
+[ext_resource type="Script" uid="uid://c5nax51s2alh" path="res://scripts/editor/entities_editor_helper.gd" id="1_uc3kj"]
+[ext_resource type="Resource" uid="uid://c7jxc7x1acuns" path="res://resources/entities/hero_data.tres" id="2_yftk6"]
+[ext_resource type="Script" uid="uid://bxu46k5dlad5m" path="res://scripts/player_controller.gd" id="4_jegdv"]
+
+[node name="Universe" type="Node2D" unique_id=2088113174]
+
+[node name="Backgrounds" type="Node2D" parent="." unique_id=1548604871]
+
+[node name="Polygon2D" type="Polygon2D" parent="Backgrounds" unique_id=599172924]
+color = Color(0.009674036, 9.0004505e-06, 0.058172427, 1)
+polygon = PackedVector2Array(0, 0, 0, 648, 1152, 648, 1152, 0)
+metadata/_edit_lock_ = true
+
+[node name="CenterLine" type="Line2D" parent="Backgrounds" unique_id=925390992]
+visible = false
+points = PackedVector2Array(576, 0, 576, 648)
+width = 1.0
+
+[node name="Entities" type="Node2D" parent="." unique_id=1188340120]
+script = ExtResource("1_uc3kj")
+metadata/_edit_lock_ = true
+
+[node name="Hero" parent="Entities" unique_id=257360264 instance=ExtResource("1_pol6k")]
+position = Vector2(576, 608)
+data = ExtResource("2_yftk6")
+color = Color(0.3019608, 1, 1, 1)
+
+[node name="PlayerController" type="Node" parent="Entities/Hero" unique_id=857634023]
+script = ExtResource("4_jegdv")
+metadata/_custom_type_script = "uid://bxu46k5dlad5m"
+
+[node name="Hud" type="CanvasLayer" parent="." unique_id=1439519253]
+script = ExtResource("1_h4s8v")

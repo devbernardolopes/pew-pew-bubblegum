@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b6bog6eo5ic8c"]
+
+[node name="Triangle" type="Polygon2D" unique_id=87337356]
+color = Color(1, 1, 1, 0.5019608)
+polygon = PackedVector2Array(64, 0, 0, 128, 128, 128)
+uv = PackedVector2Array(16, 0, 0, 32, 32, 32)

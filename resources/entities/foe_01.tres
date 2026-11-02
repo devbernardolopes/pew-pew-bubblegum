@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://banxaywbfr7vv"]
+
+[ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_e8epm"]
+
+[resource]
+script = ExtResource("1_e8epm")
+id = &"foe_01"
+visual = 1
+metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

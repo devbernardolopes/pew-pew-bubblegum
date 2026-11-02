@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://c7jxc7x1acuns"]
+
+[ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_gfcdi"]
+
+[resource]
+script = ExtResource("1_gfcdi")
+id = &"hero"
+team = 1
+max_health = 10
+metadata/_custom_type_script = "uid://cnpcyvxb0l32y"
