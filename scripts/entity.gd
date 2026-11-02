@@ -97,7 +97,7 @@ func die() -> void:
 
 func _center_entity() -> void:
 	# The editor viewport is not the game viewport, so read the project setting.
-	var viewport_width: float = float(ProjectSettings.get_setting(&"display/window/size/viewport_width"))
+	var viewport_width: float = Helpers.get_game_width()
 	position.x = viewport_width / 2.0
 
 

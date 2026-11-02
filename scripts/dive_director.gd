@@ -68,4 +68,4 @@ func _is_on_right_half(brain: FoeBrain) -> bool:
 	var entity: Entity = brain.get_parent() as Entity
 	if entity == null:
 		return false
-	return entity.global_position.x > get_viewport().get_visible_rect().size.x / 2.0
+	return entity.global_position.x > Helpers.get_game_width() / 2.0

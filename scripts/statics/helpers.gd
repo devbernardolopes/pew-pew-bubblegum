@@ -66,3 +66,20 @@ static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array
 		VISUAL.BULLET:
 			return BULLET_POLYGON
 	return result
+
+
+static func get_game_size() -> Vector2:
+	# The editor viewport is not the game viewport, so read the project setting.
+	var x: float = float(ProjectSettings.get_setting(&"display/window/size/viewport_width"))
+	var y: float = float(ProjectSettings.get_setting(&"display/window/size/viewport_height"))
+	return Vector2(x, y)
+
+
+static func get_game_width() -> float:
+	# The editor viewport is not the game viewport, so read the project setting.
+	return get_game_size().x
+
+
+static func get_game_height() -> float:
+	# The editor viewport is not the game viewport, so read the project setting.
+	return get_game_size().y

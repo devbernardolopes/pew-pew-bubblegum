@@ -86,7 +86,7 @@ func setup(curve: Curve2D, mirror: bool, slot: Marker2D, entry_delay: float) -> 
 		state = State.SETTLING
 		return
 	if mirror:
-		var viewport_width: float = get_viewport().get_visible_rect().size.x
+		var viewport_width: float = Helpers.get_game_width()
 		_xform = Transform2D(Vector2(-1, 0), Vector2(0, 1), Vector2(viewport_width, 0))
 	_entity.global_position = _xform * _curve.sample_baked(0.0, true)
 
@@ -173,9 +173,13 @@ func _follow_curve(curve: Curve2D, xform: Transform2D, speed: float, delta: floa
 
 func _warn_if_dive_ends_on_screen() -> void:
 	var end: Vector2 = _dive_xform * _dive_curve.sample_baked(_dive_curve.get_baked_length(), true)
-	var bottom: float = get_viewport().get_visible_rect().size.y
+	# The editor viewport is not the game viewport, so read the project setting.
+	#var bottom: float = get_viewport().get_visible_rect().size.y
+	var bottom: float = float(ProjectSettings.get_setting(&"display/window/size/viewport_height"))
+
 	if end.y < bottom + Helpers.ENTITY_HALF_WIDTH * _entity.scale_aux:
-		push_warning("FoeBrain.dive(): the dive curve ends too high, the foe will pop back above the screen.")
+		push_warning("FoeBrain.dive(): the dive curve ends too high (", 
+				end.y, "), the foe will pop back above the screen (", bottom, ").")
 
 
 func _get_speed() -> float:

@@ -13,12 +13,6 @@
 [ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dive_left.tres" id="10_dive"]
 [ext_resource type="Script" uid="uid://b81te8tub8bg" path="res://scripts/dive_director.gd" id="11_director"]
 
-[sub_resource type="Curve2D" id="Curve2D_yb76g"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, -96, 344, 0, 0, 0, 0, -40, 264, -61.226006, -25.289001, 61.226006, 25.289001, 96, 176, 35.937004, -65.219, -35.937004, 65.219, 160, 312, -22.627, -47.916004, 22.627, 47.916004, 56, 472, -63.888004, -9.317, 63.888004, 9.317, 192, 544, -24.628323, 52.800137, 24.628323, -52.800137, 328, 480, -51.909004, 21.296001, 51.909004, -21.296001, 344, 328, -54.114845, -29.856466, 54.114845, 29.856466, 512, 336, -9.317, -54.571003, 9.317, 54.571003, 576, 424, 50.233746, -6.6406565, -50.233746, 6.6406565, 504, 544, 0, 0, 0, 0, 192, 456, 0, 0, 0, 0, 416, 120)
-}
-point_count = 13
-
 [node name="Universe" type="Node2D" unique_id=2088113174]
 script = ExtResource("5_univ")
 
@@ -34,13 +28,11 @@ visible = false
 points = PackedVector2Array(576, 0, 576, 648)
 width = 1.0
 
-[node name="EntryPath" type="Path2D" parent="." unique_id=257252879]
-curve = SubResource("Curve2D_yb76g")
-
-[node name="EntryPath2" type="Path2D" parent="." unique_id=501823377]
+[node name="EntryPath" type="Path2D" parent="." unique_id=501823377]
 curve = ExtResource("7_curve")
 
 [node name="DivePath" type="Path2D" parent="." unique_id=1203745611]
+position = Vector2(24, 64)
 curve = ExtResource("10_dive")
 
 [node name="DiveDirector" type="Node" parent="." unique_id=1705528934]
