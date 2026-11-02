@@ -28,6 +28,7 @@ The testing device is:
 - A foe's `global_position` and `rotation` belong to its `FoeBrain` child, never to an `EntityController`; `Entity` leaves uncontrolled entities alone, so do not give a foe a controller.
 - `Weapon` is a child node of the shooter and stays team-agnostic (the projectile takes the shooter's `data.team`). `Projectile`s are built in code and spawned into the node in the `projectiles` group; the projectile is the monitoring side, so its mask lists the target Entity layer and Entities never list projectile layers.
 - Entry paths are shared `Curve2D` resources under `resources/curves/`, wrapped in a `Path2D` in the level so they can be reshaped in the editor; gameplay reads the curve, never the `Path2D`.
+- `FoeBrain`s register in the `foe_brains` group; a `DiveDirector` in the level decides who dives and when (`FoeBrain` never schedules its own dives). Dive curves are anchored at the foe's position at dive start, so one curve serves every slot.
 - Gameplay logic can be checked headlessly without opening the game: run a throwaway `extends SceneTree` script with `godot --headless --path . --script res://tools/name.gd`, instantiate the level there, then delete the script.
 
 ## Commit Convention

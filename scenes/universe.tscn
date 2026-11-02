@@ -10,6 +10,8 @@
 [ext_resource type="Curve2D" uid="uid://l3vxgx3vhu5j" path="res://resources/curves/entry_left.tres" id="7_curve"]
 [ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="8_weapon"]
 [ext_resource type="Resource" uid="uid://chjbpqj05soja" path="res://resources/projectiles/hero_bullet.tres" id="9_bullet"]
+[ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dive_left.tres" id="10_dive"]
+[ext_resource type="Script" uid="uid://b81te8tub8bg" path="res://scripts/dive_director.gd" id="11_director"]
 
 [sub_resource type="Curve2D" id="Curve2D_yb76g"]
 _data = {
@@ -37,6 +39,13 @@ curve = SubResource("Curve2D_yb76g")
 
 [node name="EntryPath2" type="Path2D" parent="." unique_id=501823377]
 curve = ExtResource("7_curve")
+
+[node name="DivePath" type="Path2D" parent="." unique_id=1203745611]
+curve = ExtResource("10_dive")
+
+[node name="DiveDirector" type="Node" parent="." unique_id=1705528934]
+script = ExtResource("11_director")
+dive_curve = ExtResource("10_dive")
 
 [node name="Formation" type="Node2D" parent="." unique_id=1337452019]
 position = Vector2(576, 80)
