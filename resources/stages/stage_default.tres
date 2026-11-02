@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://4veql8t8duff" path="res://scenes/entities/foe_triangle.tscn" id="1_foe01"]
 [ext_resource type="PackedScene" uid="uid://cenl65vkdikgc" path="res://scenes/entities/foe_double_square.tscn" id="2_foe02"]
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="4_stage"]
+[ext_resource type="Resource" uid="uid://dummy" path="res://resources/formations/form_3_rows.tres" id="5_o3bh2"]
 [ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="5_wave"]
 [ext_resource type="PackedScene" uid="uid://c2op66fmfonco" path="res://scenes/entities/foe_trapezoid.tscn" id="6_da535"]
 [ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entry_left_01.tres" id="6_l17ag"]
@@ -14,7 +15,7 @@ script = ExtResource("5_wave")
 foe_scene = ExtResource("1_foe01")
 entry_curve = ExtResource("6_pnxxg")
 row = 1
-formation = ExtResource("7_o3bh2")
+formation = ExtResource("5_o3bh2")
 
 [sub_resource type="Resource" id="2_wave02"]
 script = ExtResource("5_wave")
@@ -28,7 +29,7 @@ delay = 2.5
 script = ExtResource("5_wave")
 foe_scene = ExtResource("6_da535")
 entry_curve = ExtResource("6_pnxxg")
-formation = ExtResource("7_o3bh2")
+formation = ExtResource("5_o3bh2")
 delay = 4.0
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 

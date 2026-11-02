@@ -128,6 +128,9 @@ func _process_entering(delta: float) -> void:
 
 func _process_settling(delta: float) -> void:
 	if not is_instance_valid(_slot):
+		# The formation slot was rebuilt (e.g., new wave started); snap to current position and settle.
+		state = State.FORMATION
+		entered_formation.emit()
 		return
 	var speed: float = _get_speed()
 	_entity.global_position = _entity.global_position.move_toward(_slot.global_position, speed * delta)
@@ -142,8 +145,9 @@ func _process_settling(delta: float) -> void:
 
 
 func _process_formation() -> void:
-	_entity.global_position = _slot.global_position
-	_entity.rotation = PI
+	if is_instance_valid(_slot):
+		_entity.global_position = _slot.global_position
+		_entity.rotation = PI
 
 
 func _process_diving(delta: float) -> void:
@@ -152,7 +156,7 @@ func _process_diving(delta: float) -> void:
 		return
 	# The foe is off-screen both before and after the teleport, so snapping the
 	# rotation causes no visible pop.
-	_entity.global_position = Vector2(_slot.global_position.x, REENTRY_Y)
+	_entity.global_position = Vector2(_slot.global_position.x if is_instance_valid(_slot) else _entity.global_position.x, REENTRY_Y)
 	_entity.rotation = PI
 	_entity.score_multiplier = 1
 	state = State.SETTLING
