@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://c5nax51s2alh" path="res://scripts/editor/entities_editor_helper.gd" id="1_uc3kj"]
 [ext_resource type="Script" uid="uid://s1v84be4gvx6" path="res://scripts/universe.gd" id="5_univ"]
 [ext_resource type="Script" uid="uid://d1dsjjt3psx88" path="res://scripts/formation.gd" id="6_form"]
+[ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="7_5fwve"]
 [ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dive_left.tres" id="10_dive"]
 [ext_resource type="Script" uid="uid://b81te8tub8bg" path="res://scripts/dive_director.gd" id="11_director"]
 [ext_resource type="Resource" uid="uid://bv7lmw5x1q3t8" path="res://resources/stages/stage_default.tres" id="12_stage"]
@@ -26,8 +27,6 @@ width = 4.0
 [node name="DiveDirector" type="Node" parent="." unique_id=1705528934]
 script = ExtResource("11_director")
 dive_curve = ExtResource("10_dive")
-interval_min = 2.0
-interval_max = 3.5
 
 [node name="Formation" type="Node2D" parent="." unique_id=1337452019]
 position = Vector2(576, 80)
@@ -43,16 +42,15 @@ metadata/_edit_lock_ = true
 
 [node name="StageDirector" type="Node" parent="." unique_id=258270816]
 script = ExtResource("13_stage_dir")
-stage_data = ExtResource("12_stage")
+stages = Array[ExtResource("7_5fwve")]([ExtResource("12_stage")])
 
 [node name="HeroSpawn" type="Marker2D" parent="." unique_id=258270815]
 position = Vector2(576, 624)
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=9999999999]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1410065407]
 anchor_mode = 3
-position = Vector2(0, 0)
 
-[node name="Effects" type="Node2D" parent="." unique_id=9999999998 groups=["effects"]]
+[node name="Effects" type="Node2D" parent="." unique_id=1410065406 groups=["effects"]]
 
 [node name="Projectiles" type="Node2D" parent="." unique_id=1480221933 groups=["projectiles"]]
 

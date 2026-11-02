@@ -10,5 +10,7 @@ extends Resource
 @export var row: int = 0
 ## Seconds between two foes entering from the same side.
 @export var spacing: float = 0.25
+## The formation layout for this wave.
+@export var formation: FormationData = null
 ## Seconds after the previous wave started before this one begins.
 @export var delay: float = 0.0

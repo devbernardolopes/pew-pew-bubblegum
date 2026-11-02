@@ -18,15 +18,35 @@ const MAX_SLOT_SPEED: float = 128.0
 @export var sway_amplitude: float = 40.0
 ## Angular speed of the sway, in radians per second.
 @export var sway_speed: float = 1.2
+@export var formation_data: FormationData = null
 
 var _center_x: float = 0.0
 var _time: float = 0.0
 var _slots: Array[Marker2D] = []
 
 
-func _ready() -> void:
-	_center_x = position.x
+func apply_formation_data(data: FormationData) -> void:
+	if data == null:
+		return
+	# Only rebuild if parameters actually changed to avoid breaking slot references.
+	if rows == data.rows and spacing == data.spacing and sway_amplitude == data.sway_amplitude and sway_speed == data.sway_speed:
+		return
+	rows = data.rows
+	spacing = data.spacing
+	sway_amplitude = data.sway_amplitude
+	sway_speed = data.sway_speed
+	# Rebuild slots
+	for child in get_children():
+		child.queue_free()
+	_slots.clear()
 	_create_slots()
+
+func _ready() -> void:
+	if formation_data != null:
+		apply_formation_data(formation_data)
+	else:
+		_create_slots()
+	_center_x = position.x
 	if sway_amplitude * sway_speed >= MAX_SLOT_SPEED:
 		push_warning("Formation slots are too fast: lowering sway_amplitude or sway_speed lets foes catch them.")
 

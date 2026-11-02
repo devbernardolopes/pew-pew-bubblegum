@@ -3,8 +3,8 @@ extends Node
 ## Spawns waves in order from a [StageData] resource and manages the stage
 ## lifecycle: intro, spawning, playing, cleared, and game-over stop.
 
-## The stage definition (list of waves).
-@export var stage_data: StageData = null
+## The stage definitions (ordered list for cycling).
+@export var stages: Array[StageData] = []
 ## Formation node that holds the slots.
 @export var formation: Formation = null
 ## Entities container where foes are spawned.
@@ -32,6 +32,7 @@ var _base_interval_max: float = 3.0
 var _state: int = 0  # 0=INTRO, 1=SPAWNING, 2=PLAYING, 3=CLEARED, 4=STOPPED
 var _wave_index: int = 0
 var _timer: float = 0.0
+var _current_stage_index: int = 0
 
 
 func _ready() -> void:
@@ -42,12 +43,12 @@ func _ready() -> void:
 		entities = get_parent().get_node_or_null("Entities") as Node2D
 	if dive_director == null:
 		dive_director = get_parent().get_node_or_null("DiveDirector") as DiveDirector
-	if stage_data == null:
-		push_error("StageDirector: stage_data is null.")
+	if stages.is_empty():
+		push_error("StageDirector: stages is empty.")
 		_state = 4
 		return
-	if stage_data.waves.is_empty():
-		push_error("StageDirector: stage_data has no waves.")
+	if stages[0].waves.is_empty():
+		push_error("StageDirector: first stage has no waves.")
 		_state = 4
 		return
 	if dive_director == null:
@@ -66,16 +67,16 @@ func _physics_process(delta: float) -> void:
 			_timer -= delta
 			if _timer <= 0.0:
 				_state = 1  # SPAWNING
-				_timer = stage_data.waves[_wave_index].delay
+				_timer = _current_stage().waves[_wave_index].delay
 		1:  # SPAWNING
 			_timer -= delta
 			if _timer <= 0.0:
 				_spawn_current_wave()
 				_wave_index += 1
-				if _wave_index >= stage_data.waves.size():
+				if _wave_index >= _current_stage().waves.size():
 					_state = 2  # PLAYING
 				else:
-					_timer = stage_data.waves[_wave_index].delay
+					_timer = _current_stage().waves[_wave_index].delay
 		2:  # PLAYING
 			if _count_live_foes() == 0:
 				_state = 3  # CLEARED
@@ -83,11 +84,15 @@ func _physics_process(delta: float) -> void:
 		3:  # CLEARED
 			_timer -= delta
 			if _timer <= 0.0:
+				_current_stage_index = (_current_stage_index + 1) % stages.size()
 				GameManager.advance_stage()
 				_begin_stage()
 		4:  # STOPPED
 			pass
 
+
+func _current_stage() -> StageData:
+	return stages[_current_stage_index]
 
 func _begin_stage() -> void:
 	_apply_difficulty()
@@ -97,13 +102,17 @@ func _begin_stage() -> void:
 
 
 func _spawn_current_wave() -> void:
-	var wave: WaveData = stage_data.waves[_wave_index]
+	var wave: WaveData = _current_stage().waves[_wave_index]
 	if wave.foe_scene == null:
 		push_warning("StageDirector: wave %d has no foe_scene; skipping." % _wave_index)
 		return
 	if formation == null or entities == null:
 		push_error("StageDirector: formation or entities not set.")
 		return
+	# Apply per-wave formation layout
+	if wave.formation != null and formation != null:
+		formation.apply_formation_data(wave.formation)
+
 	# Spawn one foe per column in the wave's row, mirrored from the right.
 	var row: int = wave.row
 	var col_count: int = formation.columns

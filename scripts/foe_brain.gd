@@ -127,6 +127,8 @@ func _process_entering(delta: float) -> void:
 
 
 func _process_settling(delta: float) -> void:
+	if not is_instance_valid(_slot):
+		return
 	var speed: float = _get_speed()
 	_entity.global_position = _entity.global_position.move_toward(_slot.global_position, speed * delta)
 	_entity.rotation = lerp_angle(_entity.rotation, PI, 1.0 - exp(-turn_rate * delta))

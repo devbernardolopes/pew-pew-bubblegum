@@ -57,9 +57,7 @@ func _on_area_entered(area: Area2D) -> void:
 	if is_instance_valid(_shooter):
 		_shooter.shots_hit += 1
 	if target.is_dead and team == Helpers.TEAM.FRIEND and target.data != null and target.data.team == Helpers.TEAM.FOE:
-		var score_value: int = target.get_score_value()
-		GameManager.add_score(score_value)
-		EffectsScript.score_popup(global_position, score_value, target.score_multiplier > 1)
+		GameManager.add_score(target.get_score_value())
 	queue_free()
 
 
