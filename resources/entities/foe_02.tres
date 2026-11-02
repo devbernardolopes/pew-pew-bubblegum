@@ -6,4 +6,5 @@
 script = ExtResource("1_4mj2p")
 id = &"foe_02"
 visual = 2
+score_value = 150
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

@@ -28,6 +28,8 @@ const REENTRY_Y: float = -64.0
 @export var turn_rate: float = 8.0
 ## Multiplier applied to the foe's speed while diving.
 @export var dive_speed_multiplier: float = 1.5
+## Score multiplier applied while diving.
+const DIVE_SCORE_MULTIPLIER: int = 2
 
 var state: State = State.WAITING
 
@@ -104,6 +106,7 @@ func dive(curve: Curve2D, mirror: bool) -> bool:
 	_distance = 0.0
 	_warn_if_dive_ends_on_screen()
 	state = State.DIVING
+	_entity.score_multiplier = DIVE_SCORE_MULTIPLIER
 	dive_started.emit()
 	return true
 
@@ -149,6 +152,7 @@ func _process_diving(delta: float) -> void:
 	# rotation causes no visible pop.
 	_entity.global_position = Vector2(_slot.global_position.x, REENTRY_Y)
 	_entity.rotation = PI
+	_entity.score_multiplier = 1
 	state = State.SETTLING
 	dive_finished.emit()
 

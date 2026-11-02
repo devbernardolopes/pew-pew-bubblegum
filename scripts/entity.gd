@@ -37,6 +37,8 @@ var health: int = 0
 var shots_fired: int = 0
 var shots_hit: int = 0
 var is_dead: bool = false
+## Score multiplier (e.g. 2 while a foe is diving). Set by the brain.
+var score_multiplier: int = 1
 
 
 func _ready() -> void:
@@ -79,6 +81,13 @@ func reset_health() -> void:
 	if data == null:
 		return
 	health = data.max_health
+
+
+## Points awarded for destroying this Entity right now.
+func get_score_value() -> int:
+	if data == null:
+		return 0
+	return data.score_value * score_multiplier
 
 
 ## Subtracts [param amount] from [member health], killing the Entity when it

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://bv7lmw5x1q3t8"]
+
+[ext_resource type="PackedScene" uid="uid://4veql8t8duff" path="res://scenes/entities/foe_01.tscn" id="1_foe01"]
+[ext_resource type="PackedScene" uid="uid://cenl65vkdikgc" path="res://scenes/entities/foe_02.tscn" id="2_foe02"]
+[ext_resource type="Curve2D" uid="uid://l3vxgx3vhu5j" path="res://resources/curves/entry_left.tres" id="3_entry"]
+[ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="4_stage"]
+[ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="5_wave"]
+
+[sub_resource type="Resource" id="1_wave01"]
+script = ExtResource("5_wave")
+foe_scene = ExtResource("1_foe01")
+entry_curve = ExtResource("3_entry")
+
+[sub_resource type="Resource" id="2_wave02"]
+script = ExtResource("5_wave")
+foe_scene = ExtResource("2_foe02")
+entry_curve = ExtResource("3_entry")
+row = 1
+delay = 3.0
+
+[resource]
+script = ExtResource("4_stage")
+waves = Array[ExtResource("5_wave")]([SubResource("1_wave01"), SubResource("2_wave02")])

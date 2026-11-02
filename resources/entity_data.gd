@@ -8,3 +8,5 @@ extends Resource
 @export var base_speed: float = 256.0
 ## Damage dealt to an opposing Entity on contact.
 @export var contact_damage: int = 1
+## Points awarded when this Entity is destroyed by a hero bullet.
+@export var score_value: int = 0

@@ -7,6 +7,8 @@
 [ext_resource type="Curve2D" uid="uid://l3vxgx3vhu5j" path="res://resources/curves/entry_left.tres" id="7_curve"]
 [ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dive_left.tres" id="10_dive"]
 [ext_resource type="Script" uid="uid://b81te8tub8bg" path="res://scripts/dive_director.gd" id="11_director"]
+[ext_resource type="Resource" uid="uid://bv7lmw5x1q3t8" path="res://resources/stages/stage_default.tres" id="12_stage"]
+[ext_resource type="Script" uid="uid://dug6ksugj1bnx" path="res://scripts/stage_director.gd" id="13_stage_dir"]
 
 [node name="Universe" type="Node2D" unique_id=2088113174]
 script = ExtResource("5_univ")
@@ -41,6 +43,10 @@ script = ExtResource("6_form")
 [node name="Entities" type="Node2D" parent="." unique_id=1188340120]
 script = ExtResource("1_uc3kj")
 metadata/_edit_lock_ = true
+
+[node name="StageDirector" type="Node" parent="." unique_id=258270816]
+script = ExtResource("13_stage_dir")
+stage_data = ExtResource("12_stage")
 
 [node name="HeroSpawn" type="Marker2D" parent="." unique_id=258270815]
 position = Vector2(576, 624)

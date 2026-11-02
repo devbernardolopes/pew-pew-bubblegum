@@ -2,12 +2,7 @@ extends Node2D
 ## Test level: spawns waves of foes, manages hero lives and respawn, and shows
 ## the HUD.
 
-const FOE_SCENE: PackedScene = preload("res://scenes/entities/foe_01.tscn")
 const HERO_SCENE: PackedScene = preload("res://scenes/entities/hero.tscn")
-## Delay between two foes of the same side entering, in seconds.
-const ENTRY_SPACING: float = 0.25
-## Number of foes launched from each side; placeholder until waves are authored.
-const COLUMNS_PER_SIDE: int = 4
 ## Time after hero death before a respawn is allowed, in seconds.
 const RESPAWN_DELAY: float = 1.5
 
@@ -25,13 +20,6 @@ var _is_waiting_to_respawn: bool = false
 
 func _ready() -> void:
 	spawn_hero()
-	var left_slots: Array[Marker2D] = []
-	var right_slots: Array[Marker2D] = []
-	for col: int in COLUMNS_PER_SIDE:
-		left_slots.append(formation.get_slot(0, col))
-		right_slots.append(formation.get_slot(0, col + COLUMNS_PER_SIDE))
-	spawn_wave(FOE_SCENE, entry_path.curve, false, left_slots, ENTRY_SPACING)
-	spawn_wave(FOE_SCENE, entry_path.curve, true, right_slots, ENTRY_SPACING)
 
 
 func _physics_process(delta: float) -> void:
@@ -80,12 +68,3 @@ func _is_safe_to_respawn() -> bool:
 		if p.team == Helpers.TEAM.FOE and not p.is_queued_for_deletion():
 			return false
 	return true
-
-
-## Instantiates one foe per slot and starts it along [param curve].
-func spawn_wave(foe_scene: PackedScene, curve: Curve2D, mirror: bool, slots: Array[Marker2D], spacing: float) -> void:
-	for index: int in slots.size():
-		var foe: Entity = foe_scene.instantiate() as Entity
-		entities.add_child(foe)
-		var brain: FoeBrain = foe.get_node(^"FoeBrain") as FoeBrain
-		brain.setup(curve, mirror, slots[index], index * spacing)
