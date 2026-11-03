@@ -8,6 +8,12 @@ const EffectsScript = preload("res://scripts/effects/effects.gd")
 
 ## Emitted when the Entity dies, right before it leaves the tree.
 signal died(entity: Entity)
+## Emitted when this entity is captured by a tractor beam.
+signal capture_started(entity: Entity)
+## Emitted when the carrier is back in formation and the life is committed.
+signal capture_committed(entity: Entity)
+## Emitted when the captured hero is released (no life cost).
+signal capture_released(entity: Entity)
 
 @export var data: EntityData = null:
 	set(v):
@@ -41,6 +47,10 @@ var shots_hit: int = 0
 var is_dead: bool = false
 ## Whether this entity is currently captured by a tractor beam.
 var capture_active: bool = false
+## Whether this hero is descending back to its home y after being released.
+var auto_descending: bool = false
+## The y position where the hero should return after release.
+var home_y: float = 0.0
 ## Score multiplier (e.g. 2 while a foe is diving). Set by the brain.
 var score_multiplier: int = 1
 var _trail_timer: float = 0.0
@@ -67,12 +77,15 @@ func _physics_process(delta: float) -> void:
 		return
 	if not data:
 		return
-	if is_dead or capture_active:
+	if is_dead:
 		return
-	var dir: float = 0.0
 	if capture_active:
 		# During capture the hero is frozen; position is controlled by the foe brain.
 		return
+	if auto_descending:
+		# Descending after release; ignore input and stay non-monitorable.
+		return
+	var dir: float = 0.0
 	if controller != null:
 		dir = controller.get_direction_h()
 		position.x += dir * data.base_speed * speed_multiplier * delta
@@ -94,10 +107,6 @@ func _physics_process(delta: float) -> void:
 			_trail_timer = 0.06
 			_spawn_trail()
 	if weapon != null and controller != null and controller.wants_fire() and not capture_active:
-		# Block firing while the brain is running the tractor beam.
-		var brain: FoeBrain = get_node_or_null(^"FoeBrain") as FoeBrain
-		if brain != null and brain.state == FoeBrain.State.TRACTOR_BEAM:
-			return
 		weapon.fire()
 
 
@@ -122,6 +131,8 @@ func take_damage(amount: int) -> void:
 	if data.god_mode:
 		return
 	if is_dead:
+		return
+	if capture_active or auto_descending:
 		return
 	health -= amount
 	# Non-lethal hit: white flash for ~0.08 s
@@ -160,14 +171,59 @@ func die() -> void:
 		EffectsScript.screen_shake(1.0, 0.3)
 	set_deferred(&"monitorable", false)
 	set_deferred(&"monitoring", false)
-	died.emit(self)
-	# If this entity was captured by a tractor beam, release the global lock.
-	if capture_active:
-		# Find any brain controlling capture and clear it.
-		# Since this entity is being removed, we clear the global flag.
-		# The brain handles its own cleanup, but we ensure no block remains.
-		FoeBrain._global_capture_active = false
+	died.emit()
+	#died.emit(self)
 	queue_free()
+
+
+## Starts capture: freeze the hero, disable monitoring, emit signal.
+func begin_capture() -> void:
+	capture_active = true
+	set_deferred(&"monitorable", false)
+	capture_started.emit(self)
+
+
+## Hides the hero while being pulled/parked.
+func park_captured() -> void:
+	visible = false
+
+
+## Commits the capture: the life is lost, the hero is freed by the caller.
+func commit_capture() -> void:
+	capture_active = false
+	capture_committed.emit(self)
+
+
+## Releases the hero with no life cost: shows it at the given world position
+## and starts an automatic descent to [member home_y].
+func release_from_capture(world_position: Vector2) -> void:
+	global_position = world_position
+	rotation = 0
+	visible = true
+	capture_active = false
+	auto_descending = true
+	set_deferred(&"monitorable", false)
+	var target_y: float = home_y
+	var dist: float = absf(world_position.y - target_y)
+	if dist < 1.0:
+		auto_descending = false
+		set_deferred(&"monitorable", true)
+		capture_released.emit(self)
+		return
+	var tween: Tween = create_tween()
+	tween.tween_property(self, ^"global_position:y", target_y, dist / 400.0)
+	tween.tween_callback(func() -> void:
+		auto_descending = false
+		set_deferred(&"monitorable", true)
+		capture_released.emit(self)
+	)
+
+
+## Plays a sound profile stream by key.
+func play_sound(key: String) -> void:
+	if data == null or data.sound_profile == null:
+		return
+	_play_profile_stream(key)
 
 
 func _center_entity() -> void:
@@ -264,6 +320,10 @@ func _play_profile_stream(key: String) -> void:
 		stream = data.sound_profile.fire
 	elif key == "hit":
 		stream = data.sound_profile.hit
+	elif key == "tractor_beam_grow":
+		stream = data.sound_profile.tractor_beam_grow
+	elif key == "tractor_beam_capture":
+		stream = data.sound_profile.tractor_beam_capture
 	if stream == null:
 		return
 	var player: AudioStreamPlayer = AudioStreamPlayer.new()

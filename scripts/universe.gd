@@ -45,7 +45,7 @@ func _physics_process(delta: float) -> void:
 	if _is_waiting_to_respawn:
 		_respawn_timer -= delta
 		if _respawn_timer <= 0.0:
-			if _is_safe_to_respawn() and not FoeBrain._global_capture_active:
+			if _is_safe_to_respawn() and not FoeBrain.is_capture_in_progress():
 				_is_waiting_to_respawn = false
 				GameManager.use_reserve_ship()
 				spawn_hero()
@@ -56,7 +56,11 @@ func spawn_hero() -> void:
 	hero = HERO_SCENE.instantiate() as Entity
 	entities.add_child(hero)
 	hero.global_position = hero_spawn.global_position
+	hero.home_y = hero_spawn.global_position.y
 	hero.died.connect(_on_hero_died)
+	hero.capture_started.connect(_on_hero_capture_started)
+	hero.capture_committed.connect(_on_hero_capture_committed)
+	hero.capture_released.connect(_on_hero_capture_released)
 	dive_director.enabled = true
 
 
@@ -73,12 +77,25 @@ func _on_hero_died(entity: Entity) -> void:
 
 
 ## Returns false when any foe is diving or any foe-team projectile is alive.
+func _on_hero_capture_started(entity: Entity) -> void:
+	dive_director.enabled = false
+
+
+func _on_hero_capture_committed(entity: Entity) -> void:
+	_on_hero_died(entity)
+	entity.queue_free()
+
+
+func _on_hero_capture_released(entity: Entity) -> void:
+	dive_director.enabled = true
+
+
 func _is_safe_to_respawn() -> bool:
 	for node: Node in get_tree().get_nodes_in_group(&"foe_brains"):
 		var brain: FoeBrain = node as FoeBrain
 		if brain == null:
 			continue
-		if brain.state == FoeBrain.State.DIVING:
+		if brain.state == FoeBrain.State.DIVING or brain.state == FoeBrain.State.TRACTOR_BEAM:
 			return false
 	for proj: Node in projectiles.get_children():
 		var p: Projectile = proj as Projectile
