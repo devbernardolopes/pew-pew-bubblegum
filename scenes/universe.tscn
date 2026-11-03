@@ -69,6 +69,7 @@ polygon = PackedVector2Array(0, 0, 0, 648, 1152, 648, 1152, 0)
 metadata/_edit_lock_ = true
 
 [node name="CenterLine" type="Line2D" parent="Backgrounds" unique_id=925390992]
+visible = false
 points = PackedVector2Array(576, 0, 576, 648)
 width = 4.0
 
@@ -119,6 +120,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LightweightCrt" type="ColorRect" parent="Filters" unique_id=845367261]
+visible = false
 material = SubResource("ShaderMaterial_7tiev")
 anchors_preset = 15
 anchor_right = 1.0

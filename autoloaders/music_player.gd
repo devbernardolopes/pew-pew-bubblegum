@@ -25,7 +25,7 @@ func _ready() -> void:
 	_active_player = _player_a
 
 
-func play_music(stream: AudioStream, fade_time: float = crossfade_duration) -> void:
+func play_music(stream: AudioStream, fade_time: float = crossfade_duration, loop: bool = false) -> void:
 	if stream == null or stream == _current_music:
 		return
 
@@ -34,6 +34,12 @@ func play_music(stream: AudioStream, fade_time: float = crossfade_duration) -> v
 	var next_player: AudioStreamPlayer = _player_b if _active_player == _player_a else _player_a
 
 	next_player.stream = stream
+	var _properties: Array[Dictionary] = next_player.stream.get_property_list()
+	if _properties and not _properties.is_empty():
+		for i in _properties.size():
+			var _property: Dictionary = _properties[i]
+			if _property.get("name") == "loop":
+				next_player.stream.set("loop", loop)
 	next_player.volume_db = -80.0
 	next_player.play()
 

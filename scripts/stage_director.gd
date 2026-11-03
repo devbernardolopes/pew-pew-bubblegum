@@ -123,7 +123,7 @@ func _begin_stage() -> void:
 	# Play stage music
 	var current: StageData = _current_stage()
 	if current != null and current.music_stream != null:
-		MusicPlayer.play_music(current.music_stream)
+		MusicPlayer.play_music(current.music_stream, MusicPlayer.crossfade_duration, true)
 
 
 func _spawn_current_wave() -> void:

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://ce5xotuwq6nt1"]
+
+[ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_p7nn1"]
+[ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="2_khctg"]
+
+[resource]
+script = ExtResource("1_p7nn1")
+id = &"foe_decagon"
+visual = 3
+base_speed = 296.0
+score_value = 750
+explosion_scale = 0.35
+sound_profile = ExtResource("2_khctg")
+tilt_enabled = true
+fire_pulse_enabled = true
+shake_on_fire_enabled = true
+metadata/_custom_type_script = "uid://cnpcyvxb0l32y"
