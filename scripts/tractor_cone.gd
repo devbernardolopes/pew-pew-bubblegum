@@ -42,7 +42,12 @@ func _process(delta: float) -> void:
 		Vector2(-bot_w / 2.0, height)
 	])
 
-	# Keep the cone anchored at the foe's muzzle (top at global position).
+	# Keep the cone anchored at the foe's muzzle (nose position, matching Weapon).
 	var entity: Entity = brain.get_parent() as Entity
 	if is_instance_valid(entity):
-		global_position = entity.global_position
+		var muzzle_offset: Vector2 = Vector2.ZERO
+		# Try to read muzzle_offset from a sibling Weapon if present.
+		for child in entity.get_children():
+			if child is Weapon:
+				muzzle_offset = child.muzzle_offset
+		global_position = entity.to_global(Vector2.UP * Helpers.ENTITY_HALF_WIDTH * entity.scale_aux + muzzle_offset)

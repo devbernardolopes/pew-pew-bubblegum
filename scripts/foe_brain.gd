@@ -223,10 +223,25 @@ func _process_diving(delta: float) -> void:
 						var hero_pos: Vector2 = hero.global_position
 						var foe_pos: Vector2 = _entity.global_position
 						var vertical_dist: float = hero_pos.y - foe_pos.y
-						if vertical_dist > 0.0 and vertical_dist < 500.0:
-							FoeBrain._global_capture_active = true
-							_tractor_active = true
-							state = State.TRACTOR_BEAM
+						if vertical_dist > 0.0:
+							# Dynamic target: cone bottom (foe_pos + cone_height) reaches hero polygon bottom (hero_pos + 64 * hero.scale_aux)
+							var cone_height: float = 400.0
+							if _entity != null and _entity.data != null and "tractor_beam_height" in _entity.data:
+								cone_height = float(_entity.data.get("tractor_beam_height"))
+							var hero_scale: float = hero.scale_aux if hero is Entity else 0.25
+							var foe_scale: float = _entity.scale_aux if _entity != null else 0.25
+							# Muzzle is at center - 64*scale_aux (+ muzzle_offset.y); cone grows downward from muzzle.
+							var muzzle_offset_y: float = 0.0
+							if _entity != null:
+								for child in _entity.get_children():
+									if child is Weapon:
+										muzzle_offset_y = child.muzzle_offset.y
+							var target_dist: float = cone_height - 64.0 * hero_scale - (64.0 * foe_scale - muzzle_offset_y)
+							# Only trigger when vertical distance is near the exact target and the curve still has distance to cover.
+							if abs(vertical_dist - target_dist) < 30.0 and (total_len - _distance) > 10.0:
+								FoeBrain._global_capture_active = true
+								_tractor_active = true
+								state = State.TRACTOR_BEAM
 	if not _follow_curve(_dive_curve, _dive_xform, speed, delta):
 		return
 	# The foe is off-screen both before and after the teleport, so snapping the
