@@ -9,6 +9,7 @@ enum VISUAL {
 	TRAPEZOID,
 	STAR,
 	BOW_TIE,
+	TURRET,
 }
 
 enum TEAM {
@@ -83,6 +84,35 @@ const BOW_TIE_POLYGON: PackedVector2Array = [
 	Vector2(0.0, 128.0),
 ]
 
+const TURRET_POLYGON: PackedVector2Array = [
+	Vector2(0.0, 128.0),
+	Vector2(16.0, 88.0),
+	Vector2(8.0, 64.0),
+	Vector2(24.0, 56.0),
+	Vector2(32.0, 0.0),
+	Vector2(40.0, 56.0),
+	Vector2(56.0, 64.0),
+	Vector2(40.0, 88.0),
+	Vector2(64.0, 80.0),
+	Vector2(88.0, 88.0),
+	Vector2(72.0, 64.0),
+	Vector2(88.0, 56.0),
+	Vector2(96.0, 0.0),
+	Vector2(104.0, 56.0),
+	Vector2(120.0, 64.0),
+	Vector2(112.0, 88.0),
+	Vector2(128.0, 128.0),
+	Vector2(112.0, 128.0),
+	Vector2(112.0, 120.0),
+	Vector2(96.0, 120.0),
+	Vector2(96.0, 128.0),
+	Vector2(32.0, 128.0),
+	Vector2(32.0, 120.0),
+	Vector2(16.0, 120.0),
+	Vector2(16.0, 128.0),
+]
+
+
 const ENTITY_WIDTH: float = 128.0
 const ENTITY_HALF_WIDTH: float = ENTITY_WIDTH / 2.0
 
@@ -113,6 +143,8 @@ static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array
 			return STAR_POLYGON
 		VISUAL.BOW_TIE:
 			return BOW_TIE_POLYGON
+		VISUAL.TURRET:
+			return TURRET_POLYGON
 	return result
 
 
