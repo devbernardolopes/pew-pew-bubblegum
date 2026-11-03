@@ -7,7 +7,7 @@
 script = ExtResource("1_p7nn1")
 id = &"foe_decagon"
 visual = 3
-base_speed = 296.0
+base_speed = 300.0
 score_value = 750
 explosion_scale = 0.35
 sound_profile = ExtResource("2_khctg")

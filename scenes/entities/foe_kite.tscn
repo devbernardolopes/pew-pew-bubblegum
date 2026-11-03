@@ -12,10 +12,11 @@ collision_layer = 4
 collision_mask = 2
 data = ExtResource("2_y0wag")
 color = Color(0.8627451, 0, 0, 1)
-scale_aux = 0.3
+speed_multiplier = 1.25
 
 [node name="FoeBrain" type="Node" parent="." index="0" unique_id=1550933478]
 script = ExtResource("3_nsyu8")
+turn_rate = 32.0
 
 [node name="Weapon" type="Node" parent="." index="1" unique_id=1303754860]
 script = ExtResource("4_oxoh8")
