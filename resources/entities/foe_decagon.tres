@@ -13,4 +13,6 @@ explosion_scale = 0.35
 sound_profile = ExtResource("2_khctg")
 fire_pulse_enabled = true
 tractor_beam_enabled = true
+tractor_beam_open_duration = 6.0
+tractor_beam_height = 300.0
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

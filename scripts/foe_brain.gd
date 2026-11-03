@@ -67,6 +67,7 @@ func _ready() -> void:
 		var cone: Polygon2D = cone_script.new() as Polygon2D
 		cone.name = "TractorCone"
 		cone.visible = false
+		cone.color.a = 0.25
 		if _entity != null and _entity.data != null:
 			if "tractor_beam_height" in _entity.data:
 				cone.cone_height = float(_entity.data.get("tractor_beam_height"))
