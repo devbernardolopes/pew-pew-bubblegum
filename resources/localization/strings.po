@@ -1,0 +1,45 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "SCORE_FORMAT"
+msgstr "SCORE  %06d"
+
+msgid "HIGH_SCORE_FORMAT"
+msgstr "HIGH SCORE  %06d"
+
+msgid "STAGE_FORMAT"
+msgstr "STAGE  %d"
+
+msgid "STAGE_BANNER_FORMAT"
+msgstr "STAGE %d"
+
+msgid "GAME_OVER_TEXT"
+msgstr "GAME OVER"
+
+msgid "PRESS_FIRE_TO_RESTART"
+msgstr "PRESS FIRE TO RESTART"
+
+msgid "NEW_HIGH_SCORE"
+msgstr "NEW HIGH SCORE!"
+
+msgid "SHOTS_FIRED_FORMAT"
+msgstr "SHOTS FIRED  %d"
+
+msgid "HITS_FORMAT"
+msgstr "HITS  %d"
+
+msgid "HIT_RATIO_FORMAT"
+msgstr "HIT RATIO  %s%%"
+
+msgid "SCORE_FORMAT_OVERLAY"
+msgstr "SCORE  %d"
+
+msgid "FLAWLESS_VICTORY"
+msgstr "FLAWLESS VICTORY"
+
+msgid "TITLE_TEXT"
+msgstr "Pew Pew Bubblegum"
+
+msgid "SCORE_POPUP_FORMAT"
+msgstr "+%d"

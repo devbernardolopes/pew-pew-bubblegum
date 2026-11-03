@@ -107,6 +107,14 @@ anchor_mode = 3
 [node name="Hud" type="CanvasLayer" parent="." unique_id=1439519253]
 script = ExtResource("1_h4s8v")
 
+[node name="FlawlessLabel" type="Label" parent="Hud" unique_id=987654321]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Filters" type="CanvasLayer" parent="." unique_id=1375779924]
 
 [node name="SimpleCrtVhs" type="ColorRect" parent="Filters" unique_id=2135814922]

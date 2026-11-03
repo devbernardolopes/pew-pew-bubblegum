@@ -177,7 +177,7 @@ func _refresh_shape() -> void:
 	if data.tilt_enabled:
 		if visual.material == null or visual.material.get_shader() == null:
 			var shader_mat: ShaderMaterial = ShaderMaterial.new()
-			shader_mat.shader = preload("res://resources/tilt_shader.gdshader")
+			shader_mat.shader = preload("res://shaders/tilt_shader.gdshader")
 			visual.material = shader_mat
 	else:
 		if visual.material != null and visual.material.get_shader() != null:

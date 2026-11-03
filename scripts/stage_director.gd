@@ -12,6 +12,9 @@ extends Node
 ## Dive director to adjust difficulty and disable dives on game over.
 @export var dive_director: DiveDirector = null
 
+## Emitted when the stage is cleared without any foe reaching formation.
+signal flawless_victory
+
 ## Duration of the "STAGE N" banner before the first wave starts.
 const INTRO_DURATION: float = 2.0
 ## Pause after the last foe dies before advancing to the next stage.
@@ -33,6 +36,8 @@ var _state: int = 0  # 0=INTRO, 1=SPAWNING, 2=PLAYING, 3=CLEARED, 4=STOPPED
 var _wave_index: int = 0
 var _timer: float = 0.0
 var _current_stage_index: int = 0
+var _formation_entries: int = 0
+var _total_foes_spawned: int = 0
 
 
 func _ready() -> void:
@@ -79,6 +84,8 @@ func _physics_process(delta: float) -> void:
 					_timer = _current_stage().waves[_wave_index].delay
 		2:  # PLAYING
 			if _count_live_foes() == 0:
+				if _total_foes_spawned > 0 and _formation_entries == 0:
+					flawless_victory.emit()
 				_state = 3  # CLEARED
 				_timer = CLEAR_DELAY
 		3:  # CLEARED
@@ -95,6 +102,8 @@ func _current_stage() -> StageData:
 	return stages[_current_stage_index]
 
 func _begin_stage() -> void:
+	_formation_entries = 0
+	_total_foes_spawned = 0
 	_apply_difficulty()
 	_wave_index = 0
 	_timer = INTRO_DURATION
@@ -132,6 +141,8 @@ func _spawn_current_wave() -> void:
 		entities.add_child(foe)
 		var brain: FoeBrain = foe.get_node("FoeBrain") as FoeBrain
 		brain.setup(wave.entry_curve, mirror, slot, slot_index * wave.spacing, formation, row, col)
+		brain.entered_formation.connect(_on_formation_entered)
+		_total_foes_spawned += 1
 		slot_index += 1
 
 
@@ -162,6 +173,10 @@ func _apply_difficulty() -> void:
 	var factor: float = maxf(1.0 - INTERVAL_SHRINK_PER_STAGE * float(s), INTERVAL_MIN_FACTOR)
 	dive_director.interval_min = _base_interval_min * factor
 	dive_director.interval_max = _base_interval_max * factor
+
+
+func _on_formation_entered() -> void:
+	_formation_entries += 1
 
 
 func _on_game_over() -> void:

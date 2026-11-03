@@ -1,7 +1,7 @@
 class_name Hud
 extends CanvasLayer
 ## Shows reserve ship icons, score / high score / stage labels, a stage banner,
-## and the game over overlay.
+## flawless victory label, and the game over overlay.
 
 const ICON_SPACING: float = 32.0
 const ICON_SCALE: float = 0.2
@@ -11,6 +11,7 @@ const OVERLAY_FONT_SIZE: int = 32
 const LABEL_FONT_SIZE: int = 20
 const BANNER_FONT_SIZE: int = 48
 const BANNER_DURATION: float = 2.0
+const FLAWLESS_DURATION: float = 2.0
 
 var _icons: Array[Polygon2D] = []
 var _overlay: Label = null
@@ -18,7 +19,9 @@ var _score_label: Label = null
 var _high_score_label: Label = null
 var _stage_label: Label = null
 var _banner: Label = null
+var _flawless_label: Label = null
 var _banner_timer: float = 0.0
+var _flawless_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -27,10 +30,15 @@ func _ready() -> void:
 	GameManager.high_score_changed.connect(_update_high_score_text)
 	GameManager.stage_changed.connect(_on_stage_changed)
 	GameManager.game_over.connect(_show_game_over)
+	if get_node_or_null("FlawlessLabel") != null:
+		var stage_dir: Node = get_parent().get_node_or_null("StageDirector")
+		if stage_dir is StageDirector:
+			stage_dir.flawless_victory.connect(_show_flawless)
 
 	_rebuild_icons(GameManager.reserve_ships)
 	_create_labels()
 	_create_banner()
+	_setup_flawless_label()
 	_update_score_text(GameManager.score)
 	_update_high_score_text(GameManager.high_score)
 	_update_stage_text(GameManager.stage)
@@ -43,6 +51,27 @@ func _process(delta: float) -> void:
 		_banner_timer -= delta
 		if _banner_timer <= 0.0:
 			_banner.visible = false
+	if _flawless_timer > 0.0:
+		_flawless_timer -= delta
+		if _flawless_timer <= 0.0:
+			if _flawless_label != null:
+				_flawless_label.visible = false
+
+
+func _setup_flawless_label() -> void:
+	_flawless_label = get_node_or_null("FlawlessLabel") as Label
+	if _flawless_label == null:
+		_flawless_label = Label.new()
+		_flawless_label.name = "FlawlessLabel"
+		_flawless_label.anchor_left = 0.0
+		_flawless_label.anchor_right = 1.0
+		_flawless_label.anchor_top = 0.0
+		_flawless_label.anchor_bottom = 1.0
+		_flawless_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_flawless_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		_flawless_label.add_theme_font_size_override("font_size", BANNER_FONT_SIZE)
+		_flawless_label.visible = false
+		add_child(_flawless_label)
 
 
 func _create_labels() -> void:
@@ -62,21 +91,21 @@ func _create_labels() -> void:
 func _update_score_text(s: int) -> void:
 	if _score_label == null:
 		return
-	_score_label.text = "SCORE  %06d" % s
+	_score_label.text = tr("SCORE_FORMAT") % s
 	_score_label.position = Vector2(16.0, 8.0)
 
 
 func _update_high_score_text(s: int) -> void:
 	if _high_score_label == null:
 		return
-	_high_score_label.text = "HIGH SCORE  %06d" % s
+	_high_score_label.text = tr("HIGH_SCORE_FORMAT") % s
 	_high_score_label.position = Vector2(Helpers.get_game_width() / 2.0 - 100.0, 8.0)
 
 
 func _update_stage_text(s: int) -> void:
 	if _stage_label == null:
 		return
-	_stage_label.text = "STAGE  %d" % s
+	_stage_label.text = tr("STAGE_FORMAT") % s
 	_stage_label.position = Vector2(Helpers.get_game_width() - 160.0, 8.0)
 
 
@@ -111,6 +140,16 @@ func _rebuild_icons(reserve: int) -> void:
 		_icons[i].position = Vector2(ICON_MARGIN_X + i * ICON_SPACING, y)
 
 
+func _show_flawless() -> void:
+	if _flawless_label == null:
+		_setup_flawless_label()
+	if _flawless_label == null:
+		return
+	_flawless_label.text = tr("FLAWLESS_VICTORY")
+	_flawless_label.visible = true
+	_flawless_timer = FLAWLESS_DURATION
+
+
 func _show_game_over() -> void:
 	if _overlay != null:
 		return
@@ -130,7 +169,7 @@ func _show_game_over() -> void:
 func _on_stage_changed(s: int) -> void:
 	_update_stage_text(s)
 	if _banner != null:
-		_banner.text = "STAGE %d" % s
+		_banner.text = tr("STAGE_BANNER_FORMAT") % s
 		_banner.visible = true
 		_banner_timer = BANNER_DURATION
 
@@ -140,12 +179,10 @@ func _update_overlay_text() -> void:
 		return
 	var ratio_percent: float = GameManager.get_hit_ratio() * 100.0
 	var ratio_str: String = "%.1f" % ratio_percent
-	var text: String = "GAME OVER\n\nSCORE  %d\n" % GameManager.score
+	var text: String = tr("GAME_OVER_TEXT") + "\n\n" + (tr("SCORE_FORMAT_OVERLAY") % GameManager.score) + "\n"
 	if GameManager.is_new_high_score:
-		text += "NEW HIGH SCORE!\n"
-	text += "\nSHOTS FIRED  %d\nHITS  %d\nHIT RATIO  %s%%" % [
-		GameManager.shots_fired, GameManager.shots_hit, ratio_str
-	]
+		text += tr("NEW_HIGH_SCORE") + "\n"
+	text += "\n" + (tr("SHOTS_FIRED_FORMAT") % GameManager.shots_fired) + "\n" + (tr("HITS_FORMAT") % GameManager.shots_hit) + "\n" + (tr("HIT_RATIO_FORMAT") % ratio_str)
 	if GameManager.time_since_end() >= int(GameManager.RESTART_DELAY * 1000.0):
-		text += "\n\nPRESS FIRE TO RESTART"
+		text += "\n\n" + tr("PRESS_FIRE_TO_RESTART")
 	_overlay.text = text
