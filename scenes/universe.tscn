@@ -118,6 +118,7 @@ vertical_alignment = 1
 [node name="Filters" type="CanvasLayer" parent="." unique_id=1375779924]
 
 [node name="SimpleCrtVhs" type="ColorRect" parent="Filters" unique_id=2135814922]
+visible = false
 material = SubResource("ShaderMaterial_m7uww")
 anchors_preset = 15
 anchor_right = 1.0
@@ -126,7 +127,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LightweightCrt" type="ColorRect" parent="Filters" unique_id=845367261]
-visible = false
 material = SubResource("ShaderMaterial_7tiev")
 anchors_preset = 15
 anchor_right = 1.0
