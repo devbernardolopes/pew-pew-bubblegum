@@ -153,7 +153,7 @@ func _spawn_current_wave() -> void:
 		var foe: Entity = wave.foe_scene.instantiate() as Entity
 		entities.add_child(foe)
 		var brain: FoeBrain = foe.get_node("FoeBrain") as FoeBrain
-		brain.setup(wave.entry_curve, mirror, slot, slot_index * wave.spacing)
+		brain.setup(wave.entry_curve, mirror, slot, slot_index * wave.spacing, wave.dive_curves)
 		brain.entered_formation.connect(_on_formation_entered)
 		_total_foes_spawned += 1
 		slot_index += 1

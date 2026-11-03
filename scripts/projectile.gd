@@ -56,8 +56,6 @@ func _on_area_entered(area: Area2D) -> void:
 	target.take_damage(_data.base_damage)
 	if is_instance_valid(_shooter):
 		_shooter.shots_hit += 1
-	if target.is_dead and team == Helpers.TEAM.FRIEND and target.data != null and target.data.team == Helpers.TEAM.FOE:
-		GameManager.add_score(target.get_score_value())
 	queue_free()
 
 

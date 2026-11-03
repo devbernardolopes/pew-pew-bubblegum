@@ -89,9 +89,7 @@ func _physics_process(delta: float) -> void:
 			_trail_timer = 0.06
 			_spawn_trail()
 	if weapon != null and controller != null and controller.wants_fire():
-		if weapon.fire():
-			if data.fire_pulse_enabled:
-				_pulse_fire()
+		weapon.fire()
 
 
 ## Sets [member health] back to the maximum of [member data]. Use it when
@@ -143,9 +141,11 @@ func die() -> void:
 	if data != null:
 		explosion_scale = data.explosion_scale
 	EffectsScript.explode(data.visual, scale_aux, global_position, color, explosion_scale)
-	# Score popup handled by projectile on kill; add here for non-projectile kills (e.g. ramming)
+	# The popup and the score are awarded here so that every way of dying pays
+	# out once: bullets, ramming, or anything added later.
 	if data != null and data.score_value > 0:
 		EffectsScript.score_popup(global_position, data.score_value * score_multiplier, score_multiplier > 1)
+		GameManager.add_score(get_score_value())
 	# Screen shake only when hero dies
 	if data != null and data.team == Helpers.TEAM.FRIEND:
 		EffectsScript.screen_shake(1.0, 0.3)
@@ -282,3 +282,14 @@ func _pulse_fire() -> void:
 	var pulse_tween: Tween = create_tween()
 	pulse_tween.tween_property(visual, ^"modulate", Color(2.0, 2.0, 2.0), 0.05)
 	pulse_tween.tween_property(visual, ^"modulate", color, 0.15)
+
+
+## Plays the feedback of a shot: the sprite pulse, plus the camera shake when
+## this Entity asks for it. [Weapon] calls it after every successful shot, so
+## every shooter gets the same behaviour driven by its own [member data].
+func play_fire_feedback() -> void:
+	if data == null or not data.fire_pulse_enabled:
+		return
+	_pulse_fire()
+	if data.shake_on_fire_enabled:
+		EffectsScript.screen_shake(0.2, 0.05)

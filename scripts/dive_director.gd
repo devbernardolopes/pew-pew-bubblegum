@@ -2,10 +2,9 @@ class_name DiveDirector
 extends Node
 ## Decides when and who dives. It waits until the whole wave is in formation,
 ## then picks a foe at random every so often.
-## [FoeBrain] never schedules its own dives.
+## [FoeBrain] never schedules its own dives, and the curves come from the foe's
+## [WaveData]: the director only decides who and when.
 
-## Curve a diving foe follows; it is anchored at the foe's position at dive start.
-@export var dive_curve: Curve2D = null
 ## When false no new dives start; later phases can pause dives with it.
 @export var enabled: bool = true
 ## Maximum number of foes diving at the same time.
@@ -23,7 +22,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if not enabled or dive_curve == null:
+	if not enabled:
 		return
 	var brains: Array[FoeBrain] = _get_brains()
 	if brains.is_empty():
@@ -42,11 +41,12 @@ func _physics_process(delta: float) -> void:
 			FoeBrain.State.DIVING:
 				divers += 1
 			FoeBrain.State.FORMATION:
-				candidates.append(brain)
+				if brain.has_dive_curves():
+					candidates.append(brain)
 	if divers >= max_divers or candidates.is_empty():
 		return
 	var chosen: FoeBrain = candidates.pick_random()
-	chosen.dive(dive_curve, _is_on_right_half(chosen))
+	chosen.dive(_is_on_right_half(chosen))
 
 
 func _get_brains() -> Array[FoeBrain]:

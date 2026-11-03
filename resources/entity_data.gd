@@ -15,5 +15,9 @@ extends Resource
 @export var sound_profile: SoundProfile = null
 @export var tilt_enabled: bool = false
 @export var trail_enabled: bool = false
+## Whether firing flashes this Entity's sprite (see [method Entity.play_fire_feedback]).
 @export var fire_pulse_enabled: bool = false
+## Whether firing also shakes the camera. It only has an effect when
+## [member fire_pulse_enabled] is on too.
+@export var shake_on_fire_enabled: bool = false
 @export var god_mode: bool = false

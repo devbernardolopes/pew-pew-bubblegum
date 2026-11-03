@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://duifefti75jou"]
 
-[ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dive_left_01.tres" id="1_5osji"]
+[ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dives/dive_left_01.tres" id="1_5osji"]
 
 [node name="DiveLeft01" type="Path2D" unique_id=588117995]
 curve = ExtResource("1_5osji")

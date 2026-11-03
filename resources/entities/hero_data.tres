@@ -12,5 +12,6 @@ explosion_scale = 0.75
 sound_profile = ExtResource("2_o44k2")
 tilt_enabled = true
 fire_pulse_enabled = true
+shake_on_fire_enabled = true
 god_mode = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

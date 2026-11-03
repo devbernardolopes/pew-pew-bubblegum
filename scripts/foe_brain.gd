@@ -36,6 +36,8 @@ var state: State = State.WAITING
 var _entity: Entity = null
 var _curve: Curve2D = null
 var _dive_curve: Curve2D = null
+## The dive curves of the wave this foe belongs to; one is picked per dive.
+var _dive_curves: Array[Curve2D] = []
 var _slot: Marker2D = null
 var _xform: Transform2D = Transform2D.IDENTITY
 var _dive_xform: Transform2D = Transform2D.IDENTITY
@@ -71,12 +73,14 @@ func _physics_process(delta: float) -> void:
 ## Sends the foe along [param curve] and then into [param slot].
 ## The foe is placed at the start of the path right away, so it waits off-screen.
 ## [param entry_delay] is in seconds; the foe starts moving once it reaches zero.
+## [param dive_curves] are the curves of the foe's wave; [method dive] picks one.
 ## The slot belongs to a formation that lives for the whole stage, so it stays
 ## valid for the rest of the foe's life.
-func setup(curve: Curve2D, mirror: bool, slot: Marker2D, entry_delay: float) -> void:
+func setup(curve: Curve2D, mirror: bool, slot: Marker2D, entry_delay: float, dive_curves: Array[Curve2D] = []) -> void:
 	_curve = curve
 	_slot = slot
 	_entry_delay = entry_delay
+	_dive_curves = dive_curves
 	_distance = 0.0
 	_xform = Transform2D.IDENTITY
 	state = State.WAITING
@@ -95,10 +99,14 @@ func setup(curve: Curve2D, mirror: bool, slot: Marker2D, entry_delay: float) -> 
 	_entity.global_position = _xform * _curve.sample_baked(0.0, true)
 
 
-## Starts a dive along [param curve], anchored at the foe's current position.
-## Returns false, and does nothing, unless the foe is in FORMATION.
-func dive(curve: Curve2D, mirror: bool) -> bool:
-	if state != State.FORMATION or curve == null or _slot == null or _entity == null:
+## Starts a dive along one of the wave's curves, picked at random, anchored at
+## the foe's current position. Returns false, and does nothing, unless the foe
+## is in FORMATION and its wave has at least one dive curve.
+func dive(mirror: bool) -> bool:
+	if state != State.FORMATION or _slot == null or _entity == null:
+		return false
+	var curve: Curve2D = _pick_dive_curve()
+	if curve == null:
 		return false
 	var origin: Vector2 = _entity.global_position
 	var side: float = -1.0 if mirror else 1.0
@@ -111,6 +119,26 @@ func dive(curve: Curve2D, mirror: bool) -> bool:
 	_entity.score_multiplier = DIVE_SCORE_MULTIPLIER
 	dive_started.emit()
 	return true
+
+
+## Tells whether this foe has anything to dive along, so the [DiveDirector] can
+## skip waves that never dive instead of picking a foe that cannot move.
+func has_dive_curves() -> bool:
+	for curve: Curve2D in _dive_curves:
+		if curve != null:
+			return true
+	return false
+
+
+## Returns one of the wave's dive curves at random, or null when it has none.
+func _pick_dive_curve() -> Curve2D:
+	var usable: Array[Curve2D] = []
+	for curve: Curve2D in _dive_curves:
+		if curve != null:
+			usable.append(curve)
+	if usable.is_empty():
+		return null
+	return usable.pick_random()
 
 
 func _process_waiting(delta: float) -> void:

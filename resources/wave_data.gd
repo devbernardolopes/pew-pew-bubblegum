@@ -12,6 +12,9 @@ extends Resource
 @export var spacing: float = 0.25
 ## The formation layout for this wave.
 @export var formation: FormationData = null
+## Curves a foe of this wave may dive along; one is picked at random per dive.
+## The wave is the only source of truth: an empty list means the wave never dives.
+@export var dive_curves: Array[Curve2D] = []
 ## Seconds after the previous wave started before this one begins.
 @export var delay: float = 0.0
 
@@ -46,6 +49,9 @@ func validate(stage_path: String = "", wave_index: int = -1, foe_cache: Dictiona
 						where, peak, foe_speed, describe(formation)])
 	if entry_curve == null:
 		issues.append("[error] %s: entry_curve is null." % where)
+	for i: int in dive_curves.size():
+		if dive_curves[i] == null:
+			issues.append("[error] %s: dive_curves[%d] is null." % [where, i])
 	if spacing < 0.0:
 		issues.append("[warning] %s: spacing is negative (%.2f s)." % [where, spacing])
 	if delay < 0.0:
