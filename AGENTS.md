@@ -29,6 +29,7 @@ The testing device is:
 - `Weapon` is a child node of the shooter and stays team-agnostic (the projectile takes the shooter's `data.team`). `Projectile`s are built in code and spawned into the node in the `projectiles` group; the projectile is the monitoring side, so its mask lists the target Entity layer and Entities never list projectile layers.
 - Entry paths are shared `Curve2D` resources under `resources/curves/`, wrapped in a `Path2D` in the level so they can be reshaped in the editor; gameplay reads the curve, never the `Path2D`.
 - `FoeBrain`s register in the `foe_brains` group; a `DiveDirector` in the level decides who dives and when (`FoeBrain` never schedules its own dives). Dive curves are anchored at the foe's position at dive start, so one curve serves every slot.
+- Formations are built once per `FormationData` per stage and never rebuilt or freed mid-stage: `StageDirector` owns them under the level's `Formations` node, caches one instance per distinct `FormationData` (waves sharing the resource sway in unison), and only frees them when the next stage begins. The slot a foe receives in `FoeBrain.setup()` is therefore valid for the foe's whole life, and a foe never looks its slot up again.
 - Gameplay logic can be checked headlessly without opening the game: run a throwaway `extends SceneTree` script with `godot --headless --path . --script res://tools/name.gd`, instantiate the level there, then delete the script.
 
 ## Commit Convention

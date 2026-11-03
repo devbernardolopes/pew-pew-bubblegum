@@ -1,59 +1,43 @@
 class_name Formation
 extends Node2D
-## A grid of [Marker2D] slots that sways horizontally.
+## An immutable grid of [Marker2D] slots that sways horizontally.
 ## Foes read the slots every frame instead of being parented to them, so a
 ## slot never scales or rotates along with a foe.
+##
+## A [Formation] is built once from its [member data] and never rebuilt while
+## its stage runs, so every slot reference stays valid for a foe's whole life.
 
-## Peak speed of a slot, in pixels per second. It must stay well below a foe's
-## [member EntityData.base_speed], or settling foes can never catch their slot.
-const MAX_SLOT_SPEED: float = 128.0
+## The layout to build. It must be assigned before the node enters the tree.
+@export var data: FormationData = null
 
-## Number of slots per row.
-@export var columns: int = 8
-## Number of rows of slots; rows extend downwards from the Formation's origin.
-@export var rows: int = 2
-## Distance between two neighboring slots, in pixels.
-@export var spacing: Vector2 = Vector2(48, 40)
-## Width of the horizontal sway, in pixels.
-@export var sway_amplitude: float = 40.0
-## Angular speed of the sway, in radians per second.
-@export var sway_speed: float = 1.2
-@export var formation_data: FormationData = null
+## Number of slots per row, read from [member data].
+var columns: int:
+	get:
+		return data.columns if data != null else 0
+
+## Number of rows of slots, read from [member data].
+var rows: int:
+	get:
+		return data.rows if data != null else 0
 
 var _center_x: float = 0.0
 var _time: float = 0.0
 var _slots: Array[Marker2D] = []
 
 
-func apply_formation_data(data: FormationData) -> void:
-	if data == null:
-		return
-	# Only rebuild if parameters actually changed to avoid breaking slot references.
-	if rows == data.rows and spacing == data.spacing and sway_amplitude == data.sway_amplitude and sway_speed == data.sway_speed:
-		return
-	rows = data.rows
-	spacing = data.spacing
-	sway_amplitude = data.sway_amplitude
-	sway_speed = data.sway_speed
-	# Rebuild slots
-	for child in get_children():
-		child.queue_free()
-	_slots.clear()
-	_create_slots()
-
 func _ready() -> void:
-	if formation_data != null:
-		apply_formation_data(formation_data)
-	else:
-		_create_slots()
 	_center_x = position.x
-	if sway_amplitude * sway_speed >= MAX_SLOT_SPEED:
-		push_warning("Formation slots are too fast: lowering sway_amplitude or sway_speed lets foes catch them.")
+	if data == null:
+		push_error("Formation: data is null; no slots were created.")
+		return
+	_create_slots()
 
 
 func _physics_process(delta: float) -> void:
+	if data == null:
+		return
 	_time += delta
-	position.x = _center_x + sin(_time * sway_speed) * sway_amplitude
+	position.x = _center_x + sin(_time * data.sway_speed) * data.sway_amplitude
 
 
 ## Returns the slot at [param row] and [param col], or [code]null[/code] when
@@ -65,11 +49,11 @@ func get_slot(row: int, col: int) -> Marker2D:
 
 
 func _create_slots() -> void:
-	var half_width: float = (columns - 1) * spacing.x / 2.0
+	var half_width: float = data.get_half_width()
 	for row: int in rows:
 		for col: int in columns:
 			var slot: Marker2D = Marker2D.new()
 			slot.name = "Slot_%d_%d" % [row, col]
-			slot.position = Vector2(col * spacing.x - half_width, row * spacing.y)
+			slot.position = Vector2(col * data.spacing.x - half_width, row * data.spacing.y)
 			add_child(slot)
 			_slots.append(slot)

@@ -2,11 +2,15 @@ class_name StageDirector
 extends Node
 ## Spawns waves in order from a [StageData] resource and manages the stage
 ## lifecycle: intro, spawning, playing, cleared, and game-over stop.
+##
+## It owns the [Formation] instances of the current stage: one per distinct
+## [FormationData], built when the first wave needs it and freed only when the
+## next stage begins, so no foe ever loses the slot it was given.
 
 ## The stage definitions (ordered list for cycling).
 @export var stages: Array[StageData] = []
-## Formation node that holds the slots.
-@export var formation: Formation = null
+## Node that holds one [Formation] child per distinct [FormationData].
+@export var formations_root: Node2D = null
 ## Entities container where foes are spawned.
 @export var entities: Node2D = null
 ## Dive director to adjust difficulty and disable dives on game over.
@@ -38,12 +42,15 @@ var _timer: float = 0.0
 var _current_stage_index: int = 0
 var _formation_entries: int = 0
 var _total_foes_spawned: int = 0
+## [FormationData] to the [Formation] built for it during the current stage.
+var _formations: Dictionary = {}
+var _formation_serial: int = 0
 
 
 func _ready() -> void:
 	# Find siblings by name; NodePath references can fail in some contexts.
-	if formation == null:
-		formation = get_parent().get_node_or_null("Formation") as Formation
+	if formations_root == null:
+		formations_root = get_parent().get_node_or_null("Formations") as Node2D
 	if entities == null:
 		entities = get_parent().get_node_or_null("Entities") as Node2D
 	if dive_director == null:
@@ -52,16 +59,20 @@ func _ready() -> void:
 		push_error("StageDirector: stages is empty.")
 		_state = 4
 		return
-	if stages[0].waves.is_empty():
+	if stages[0] == null or stages[0].waves.is_empty():
 		push_error("StageDirector: first stage has no waves.")
 		_state = 4
 		return
 	if dive_director == null:
 		push_warning("StageDirector: dive_director not set; difficulty scaling disabled.")
-	# Remember the base settings from the director for difficulty scaling.
-	_base_max_divers = dive_director.max_divers
-	_base_interval_min = dive_director.interval_min
-	_base_interval_max = dive_director.interval_max
+	else:
+		# Remember the base settings from the director for difficulty scaling.
+		_base_max_divers = dive_director.max_divers
+		_base_interval_min = dive_director.interval_min
+		_base_interval_max = dive_director.interval_max
+	if OS.is_debug_build() and _validate_stages():
+		_state = 4
+		return
 	GameManager.game_over.connect(_on_game_over)
 	_begin_stage()
 
@@ -102,6 +113,7 @@ func _current_stage() -> StageData:
 	return stages[_current_stage_index]
 
 func _begin_stage() -> void:
+	_free_formations()
 	_formation_entries = 0
 	_total_foes_spawned = 0
 	_apply_difficulty()
@@ -119,12 +131,13 @@ func _spawn_current_wave() -> void:
 	if wave.foe_scene == null:
 		push_warning("StageDirector: wave %d has no foe_scene; skipping." % _wave_index)
 		return
-	if formation == null or entities == null:
-		push_error("StageDirector: formation or entities not set.")
+	if formations_root == null or entities == null:
+		push_error("StageDirector: formations_root or entities not set.")
 		return
-	# Apply per-wave formation layout
-	if wave.formation != null and formation != null:
-		formation.apply_formation_data(wave.formation)
+	var formation: Formation = _get_formation(wave.formation)
+	if formation == null:
+		push_warning("StageDirector: wave %d has no formation; skipping." % _wave_index)
+		return
 
 	# Spawn one foe per column in the wave's row, mirrored from the right.
 	var row: int = wave.row
@@ -140,10 +153,55 @@ func _spawn_current_wave() -> void:
 		var foe: Entity = wave.foe_scene.instantiate() as Entity
 		entities.add_child(foe)
 		var brain: FoeBrain = foe.get_node("FoeBrain") as FoeBrain
-		brain.setup(wave.entry_curve, mirror, slot, slot_index * wave.spacing, formation, row, col)
+		brain.setup(wave.entry_curve, mirror, slot, slot_index * wave.spacing)
 		brain.entered_formation.connect(_on_formation_entered)
 		_total_foes_spawned += 1
 		slot_index += 1
+
+
+## Returns the [Formation] of [param data] for the current stage, building it on
+## first use. The instance is never rebuilt, so its slots outlive every foe.
+func _get_formation(data: FormationData) -> Formation:
+	if data == null or formations_root == null:
+		return null
+	if _formations.has(data):
+		return _formations[data] as Formation
+	var formation: Formation = Formation.new()
+	formation.name = "Formation_%d" % _formation_serial
+	_formation_serial += 1
+	# The layout must be in place before the node enters the tree: _ready()
+	# builds the slots from it and never rebuilds them afterwards.
+	formation.data = data
+	formations_root.add_child(formation)
+	_formations[data] = formation
+	return formation
+
+
+## Frees every formation of the stage that just ended. Only called when no foe
+## is alive, so no brain is left holding a slot that is about to disappear.
+func _free_formations() -> void:
+	for formation: Formation in _formations.values():
+		if is_instance_valid(formation):
+			formation.queue_free()
+	_formations.clear()
+
+
+## Prints the problems of every stage and returns whether any of them is an
+## error, which stops the director before the first stage starts.
+func _validate_stages() -> bool:
+	var has_errors: bool = false
+	for stage: StageData in stages:
+		if stage == null:
+			push_error("StageDirector: a stage in the list is null.")
+			has_errors = true
+			continue
+		for issue: String in stage.validate():
+			if issue.begins_with("[error]"):
+				push_error(issue)
+				has_errors = true
+			else:
+				push_warning(issue)
+	return has_errors
 
 
 func _count_live_foes() -> int:

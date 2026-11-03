@@ -7,7 +7,6 @@ const HERO_SCENE: PackedScene = preload("res://scenes/entities/hero.tscn")
 const RESPAWN_DELAY: float = 1.5
 
 @onready var center_line: Line2D = $Backgrounds/CenterLine
-@onready var formation: Formation = $Formation
 @onready var dive_director: DiveDirector = $DiveDirector
 @onready var hero_spawn: Marker2D = $HeroSpawn
 @onready var entities: Node2D = $Entities

@@ -37,9 +37,6 @@ var _entity: Entity = null
 var _curve: Curve2D = null
 var _dive_curve: Curve2D = null
 var _slot: Marker2D = null
-var _formation: Formation = null
-var _row: int = 0
-var _col: int = 0
 var _xform: Transform2D = Transform2D.IDENTITY
 var _dive_xform: Transform2D = Transform2D.IDENTITY
 var _entry_delay: float = 0.0
@@ -74,12 +71,11 @@ func _physics_process(delta: float) -> void:
 ## Sends the foe along [param curve] and then into [param slot].
 ## The foe is placed at the start of the path right away, so it waits off-screen.
 ## [param entry_delay] is in seconds; the foe starts moving once it reaches zero.
-func setup(curve: Curve2D, mirror: bool, slot: Marker2D, entry_delay: float, formation_node: Formation = null, row_index: int = 0, col_index: int = 0) -> void:
+## The slot belongs to a formation that lives for the whole stage, so it stays
+## valid for the rest of the foe's life.
+func setup(curve: Curve2D, mirror: bool, slot: Marker2D, entry_delay: float) -> void:
 	_curve = curve
 	_slot = slot
-	_formation = formation_node
-	_row = row_index
-	_col = col_index
 	_entry_delay = entry_delay
 	_distance = 0.0
 	_xform = Transform2D.IDENTITY
@@ -132,47 +128,37 @@ func _process_entering(delta: float) -> void:
 		state = State.SETTLING
 
 
-func _current_slot() -> Marker2D:
-	if is_instance_valid(_slot):
-		return _slot
-	if _formation != null and is_instance_valid(_formation):
-		return _formation.get_slot(_row, _col)
-	return null
-
 func _process_settling(delta: float) -> void:
-	var slot: Marker2D = _current_slot()
-	if slot == null:
-		# The formation slot was rebuilt (e.g., new wave started); snap to current position and settle.
-		state = State.FORMATION
-		entered_formation.emit()
+	if not is_instance_valid(_slot):
 		return
 	var speed: float = _get_speed()
-	_entity.global_position = _entity.global_position.move_toward(slot.global_position, speed * delta)
+	_entity.global_position = _entity.global_position.move_toward(_slot.global_position, speed * delta)
 	_entity.rotation = lerp_angle(_entity.rotation, PI, 1.0 - exp(-turn_rate * delta))
-	var is_on_slot: bool = _entity.global_position.distance_to(slot.global_position) < SNAP_DISTANCE
+	var is_on_slot: bool = _entity.global_position.distance_to(_slot.global_position) < SNAP_DISTANCE
 	var is_facing_down: bool = absf(angle_difference(_entity.rotation, PI)) < SNAP_ANGLE
 	if is_on_slot and is_facing_down:
-		_entity.global_position = slot.global_position
+		_entity.global_position = _slot.global_position
 		_entity.rotation = PI
 		state = State.FORMATION
 		entered_formation.emit()
 
 
 func _process_formation() -> void:
-	var slot: Marker2D = _current_slot()
-	if slot != null:
-		_entity.global_position = slot.global_position
-		_entity.rotation = PI
+	if not is_instance_valid(_slot):
+		return
+	_entity.global_position = _slot.global_position
+	_entity.rotation = PI
 
 
 func _process_diving(delta: float) -> void:
+	if not is_instance_valid(_slot):
+		return
 	var speed: float = _get_speed() * dive_speed_multiplier
 	if not _follow_curve(_dive_curve, _dive_xform, speed, delta):
 		return
 	# The foe is off-screen both before and after the teleport, so snapping the
 	# rotation causes no visible pop.
-	var current_slot: Marker2D = _current_slot()
-	_entity.global_position = Vector2(current_slot.global_position.x if current_slot != null else _entity.global_position.x, REENTRY_Y)
+	_entity.global_position = Vector2(_slot.global_position.x, REENTRY_Y)
 	_entity.rotation = PI
 	_entity.score_multiplier = 1
 	state = State.SETTLING
