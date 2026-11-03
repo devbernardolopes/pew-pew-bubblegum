@@ -13,12 +13,15 @@
 [ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entries/entry_left_01.tres" id="11_fe31u"]
 [ext_resource type="Curve2D" uid="uid://dusssoaxmjkhi" path="res://resources/curves/dives/dive_left_02.tres" id="12_a0iew"]
 [ext_resource type="PackedScene" uid="uid://db6w567pp7o3t" path="res://scenes/entities/foe_decagon.tscn" id="13_sqfdi"]
+[ext_resource type="Curve2D" uid="uid://bothmpxl7w34p" path="res://resources/curves/entries/entry_left_04.tres" id="14_pgnvl"]
+[ext_resource type="PackedScene" uid="uid://dxubr4abeow0f" path="res://scenes/entities/foe_bow_tie.tscn" id="15_71w36"]
+[ext_resource type="Resource" uid="uid://yx23sfb2klah" path="res://resources/formations/formation_10c_2r_wide.tres" id="16_5rehs"]
 
 [sub_resource type="Resource" id="Resource_6btpn"]
 script = ExtResource("2_3kesv")
 foe_scene = ExtResource("5_g3ivw")
 entry_curve = ExtResource("5_84doo")
-row = 3
+row = 4
 spacing = 0.35
 formation = ExtResource("6_84doo")
 dive_curves = Array[Curve2D]([ExtResource("4_g3ivw")])
@@ -56,8 +59,19 @@ dive_curves = Array[Curve2D]([ExtResource("4_g3ivw"), ExtResource("12_a0iew"), E
 delay = 5.0
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 
+[sub_resource type="Resource" id="Resource_s2f30"]
+script = ExtResource("2_3kesv")
+foe_scene = ExtResource("15_71w36")
+entry_curve = ExtResource("14_pgnvl")
+row = 3
+spacing = 0.3
+formation = ExtResource("16_5rehs")
+dive_curves = Array[Curve2D]([ExtResource("12_a0iew"), ExtResource("10_sqfdi")])
+delay = 2.2
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
 [resource]
 script = ExtResource("1_s1plp")
-waves = Array[ExtResource("2_3kesv")]([SubResource("Resource_6btpn"), SubResource("Resource_u1ol7"), SubResource("Resource_585a5"), SubResource("Resource_efpld")])
+waves = Array[ExtResource("2_3kesv")]([SubResource("Resource_6btpn"), SubResource("Resource_u1ol7"), SubResource("Resource_585a5"), SubResource("Resource_efpld"), SubResource("Resource_s2f30")])
 music_stream = ExtResource("1_wn4bw")
 metadata/_custom_type_script = "uid://cfqxmshih2ed7"

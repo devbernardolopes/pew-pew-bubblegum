@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://s1v84be4gvx6" path="res://scripts/universe.gd" id="5_univ"]
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="7_5fwve"]
 [ext_resource type="Resource" uid="uid://c5krmfh35fnn8" path="res://resources/stages/stage_002.tres" id="9_yb76g"]
+[ext_resource type="Resource" uid="uid://r12gefnka2ch" path="res://resources/stages/stage_004.tres" id="10_7f6e7"]
 [ext_resource type="Resource" uid="uid://doyg4wjpqbbh2" path="res://resources/stages/stage_003.tres" id="10_h8wxb"]
 [ext_resource type="Shader" uid="uid://cv74uy1y4byec" path="res://shaders/simple_crt_vhs.gdshader" id="11_7viwd"]
 [ext_resource type="Script" uid="uid://b81te8tub8bg" path="res://scripts/dive_director.gd" id="11_director"]
@@ -61,12 +62,6 @@ script = ExtResource("5_univ")
 
 [node name="Backgrounds" type="Node2D" parent="." unique_id=1548604871]
 
-[node name="Polygon2D" type="Polygon2D" parent="Backgrounds" unique_id=599172924]
-visible = false
-color = Color(0.009674036, 9.0004505e-06, 0.058172427, 1)
-polygon = PackedVector2Array(0, 0, 0, 648, 1152, 648, 1152, 0)
-metadata/_edit_lock_ = true
-
 [node name="Starfield" type="Parallax2D" parent="Backgrounds" unique_id=1548604872]
 scroll_scale = Vector2(0.1, 0.1)
 autoscroll = Vector2(0, 10)
@@ -116,7 +111,7 @@ metadata/_edit_lock_ = true
 
 [node name="StageDirector" type="Node" parent="." unique_id=258270816]
 script = ExtResource("13_stage_dir")
-stages = Array[ExtResource("7_5fwve")]([ExtResource("12_stage"), ExtResource("9_yb76g"), ExtResource("10_h8wxb")])
+stages = Array[ExtResource("7_5fwve")]([ExtResource("12_stage"), ExtResource("9_yb76g"), ExtResource("10_h8wxb"), ExtResource("10_7f6e7")])
 
 [node name="HeroSpawn" type="Marker2D" parent="." unique_id=258270815]
 position = Vector2(576, 576)
