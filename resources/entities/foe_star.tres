@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://fr1rekdbshqx"]
 
 [ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_sq257"]
-[ext_resource type="Resource" uid="uid://bmws74k08fkg7" path="res://resources/sound_profiles/sound_profile_003.tres" id="2_dbyh7"]
+[ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="2_dbyh7"]
 
 [resource]
 script = ExtResource("1_sq257")
@@ -11,6 +11,5 @@ base_speed = 378.0
 score_value = 600
 explosion_scale = 0.75
 sound_profile = ExtResource("2_dbyh7")
-tilt_enabled = true
 fire_pulse_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

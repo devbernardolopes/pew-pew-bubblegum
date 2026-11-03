@@ -1,10 +1,9 @@
 [gd_resource type="Resource" script_class="ProjectileData" format=3 uid="uid://ddpgespltt4n3"]
 
-[ext_resource type="Script" uid="uid://txnc58qwywfs" path="res://resources/projectile_data.gd" id="1_gfcdi"]
+[ext_resource type="Script" uid="uid://txnc58qwywfs" path="res://resources/projectile_data.gd" id="1_4umih"]
 
 [resource]
-script = ExtResource("1_gfcdi")
-id = &"foe_bullet"
+script = ExtResource("1_4umih")
+id = &"foe_bullet_1_256"
 color = Color(1, 0.45, 0.75, 1)
-base_speed = 320.0
 metadata/_custom_type_script = "uid://txnc58qwywfs"

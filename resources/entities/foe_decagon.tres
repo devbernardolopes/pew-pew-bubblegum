@@ -11,7 +11,5 @@ base_speed = 296.0
 score_value = 750
 explosion_scale = 0.35
 sound_profile = ExtResource("2_khctg")
-tilt_enabled = true
 fire_pulse_enabled = true
-shake_on_fire_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

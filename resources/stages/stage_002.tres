@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="2_j3gal"]
 [ext_resource type="Curve2D" uid="uid://dgywtmoou6akn" path="res://resources/curves/entries/entry_left_03.tres" id="3_1enft"]
 [ext_resource type="PackedScene" uid="uid://dgm4lav3x0tdv" path="res://scenes/entities/foe_kite.tscn" id="4_xd4ep"]
-[ext_resource type="Resource" uid="uid://yx23sfb2klah" path="res://resources/formations/formation_2r_wide.tres" id="6_h4e0a"]
+[ext_resource type="Resource" uid="uid://yx23sfb2klah" path="res://resources/formations/formation_10c_2r_wide.tres" id="6_h4e0a"]
 [ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entries/entry_left_01.tres" id="6_pofeh"]
 [ext_resource type="PackedScene" uid="uid://s7pipqm2lc1g" path="res://scenes/entities/foe_star.tscn" id="7_h4e0a"]
 [ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dives/dive_left_01.tres" id="10_dive"]

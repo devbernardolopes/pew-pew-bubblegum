@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://bv7lmw5x1q3t8" path="res://resources/stages/stage_001.tres" id="12_stage"]
 [ext_resource type="Script" uid="uid://dug6ksugj1bnx" path="res://scripts/stage_director.gd" id="13_stage_dir"]
 [ext_resource type="Shader" uid="uid://bfqoilw60w5vk" path="res://shaders/vhs_and_crt_monitor.gdshader" id="13_yanup"]
+[ext_resource type="Script" uid="uid://d4bwsg2t7ggi8" path="res://scripts/starfield_layer.gd" id="14_starfield"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m7uww"]
 shader = ExtResource("11_7viwd")
@@ -60,13 +61,43 @@ script = ExtResource("5_univ")
 
 [node name="Backgrounds" type="Node2D" parent="." unique_id=1548604871]
 
-[node name="Starfield" type="Parallax2D" parent="Backgrounds" unique_id=1548604872]
-scroll_scale = Vector2(0.1, 0.1)
-
 [node name="Polygon2D" type="Polygon2D" parent="Backgrounds" unique_id=599172924]
+visible = false
 color = Color(0.009674036, 9.0004505e-06, 0.058172427, 1)
 polygon = PackedVector2Array(0, 0, 0, 648, 1152, 648, 1152, 0)
 metadata/_edit_lock_ = true
+
+[node name="Starfield" type="Parallax2D" parent="Backgrounds" unique_id=1548604872]
+scroll_scale = Vector2(0.1, 0.1)
+autoscroll = Vector2(0, 10)
+script = ExtResource("14_starfield")
+rng_seed = 101
+
+[node name="StarfieldMid" type="Parallax2D" parent="Backgrounds" unique_id=1548604873]
+scroll_scale = Vector2(0.35, 0.35)
+autoscroll = Vector2(0, 25)
+script = ExtResource("14_starfield")
+star_count = 45
+star_size_max = 2
+alpha_min = 0.5
+alpha_max = 0.8
+star_color = Color(0.65, 0.8, 1, 1)
+rng_seed = 202
+
+[node name="StarfieldNear" type="Parallax2D" parent="Backgrounds" unique_id=1548604874]
+scroll_scale = Vector2(0.65, 0.65)
+autoscroll = Vector2(0, 55)
+script = ExtResource("14_starfield")
+star_count = 18
+star_size_min = 2
+star_size_max = 3
+alpha_min = 0.8
+alpha_max = 1.0
+star_color = Color(0.85, 0.95, 1, 1)
+accent_chance = 0.15
+streak_chance = 0.35
+streak_length = 5
+rng_seed = 303
 
 [node name="CenterLine" type="Line2D" parent="Backgrounds" unique_id=925390992]
 visible = false
@@ -120,7 +151,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LightweightCrt" type="ColorRect" parent="Filters" unique_id=845367261]
-visible = false
 material = SubResource("ShaderMaterial_7tiev")
 anchors_preset = 15
 anchor_right = 1.0

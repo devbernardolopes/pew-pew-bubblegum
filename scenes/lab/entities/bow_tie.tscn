@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bf0ynppydruwg"]
+
+[ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_axlko"]
+
+[node name="BowTie" type="Polygon2D" unique_id=427118995]
+color = Color(0.16470589, 0.043137256, 0.015686275, 1)
+polygon = PackedVector2Array(0, 0, 64, 48, 128, 0, 128, 128, 64, 80, 0, 128)
+script = ExtResource("1_axlko")

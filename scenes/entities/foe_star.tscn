@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://fr1rekdbshqx" path="res://resources/entities/foe_star.tres" id="2_a3xea"]
 [ext_resource type="Script" uid="uid://cxx0a7y036em" path="res://scripts/foe_brain.gd" id="3_prdgu"]
 [ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="4_ff0n4"]
-[ext_resource type="Resource" uid="uid://ddpgespltt4n3" path="res://resources/projectiles/foe_bullet.tres" id="5_40u8l"]
+[ext_resource type="Resource" uid="uid://ddpgespltt4n3" path="res://resources/projectiles/foe_bullet_1_256.tres" id="5_40u8l"]
 [ext_resource type="Script" uid="uid://br3iivlmoyasu" path="res://scripts/foe_shooter.gd" id="6_g6tyx"]
 
 [node name="Foe" unique_id=2135809465 instance=ExtResource("1_a3xea")]

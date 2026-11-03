@@ -1,9 +1,11 @@
 [gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://yx23sfb2klah"]
 
-[ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="1_m6kkj"]
+[ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="1_nakvr"]
 
 [resource]
-script = ExtResource("1_m6kkj")
+script = ExtResource("1_nakvr")
+columns = 10
+rows = 6
 spacing = Vector2(64, 52)
 sway_amplitude = 48.0
 sway_speed = 1.4

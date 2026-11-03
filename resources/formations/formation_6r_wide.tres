@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_4j166")
-rows = 5
+rows = 6
 spacing = Vector2(72, 48)
 sway_amplitude = 128.0
 metadata/_custom_type_script = "uid://cspnel4tvson"
