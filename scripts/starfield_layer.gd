@@ -35,6 +35,13 @@ extends Parallax2D
 ## Height of a streak, in pixels. The star's width is kept.
 @export var streak_length: int = 4
 
+@export_group("Warp")
+## Multiplier applied to [member autoscroll] during the stage banner.
+@export var autoscroll_boost: float = 10.0
+## Multiplier applied to [member scroll_scale] during the stage banner.
+@export var scroll_scale_boost: float = 2.0
+
+
 @export_group("Random")
 ## Seed for the star layout. Use a different value for every layer.
 @export var rng_seed: int = 1
@@ -61,6 +68,29 @@ func _ready() -> void:
 	# included in the repeated canvas. repeat_size also enables autoscroll.
 	repeat_size = Vector2(game_size)
 	repeat_times = 2
+
+
+var _base_autoscroll: Vector2 = Vector2.ZERO
+var _base_scroll_scale: Vector2 = Vector2.ONE
+var _boost_active: bool = false
+
+
+func apply_boost() -> void:
+	if _boost_active:
+		return
+	_boost_active = true
+	_base_autoscroll = autoscroll
+	_base_scroll_scale = scroll_scale
+	autoscroll = autoscroll * autoscroll_boost
+	scroll_scale = scroll_scale * scroll_scale_boost
+
+
+func clear_boost() -> void:
+	if not _boost_active:
+		return
+	_boost_active = false
+	autoscroll = _base_autoscroll
+	scroll_scale = _base_scroll_scale
 
 
 func _build_image(game_size: Vector2i) -> Image:

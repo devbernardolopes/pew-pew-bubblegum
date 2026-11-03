@@ -13,6 +13,9 @@ const BANNER_FONT_SIZE: int = 48
 const BANNER_DURATION: float = 2.0
 const FLAWLESS_DURATION: float = 2.0
 
+signal stage_banner_started
+signal stage_banner_finished
+
 var _icons: Array[Polygon2D] = []
 var _overlay: Label = null
 var _score_label: Label = null
@@ -51,6 +54,7 @@ func _process(delta: float) -> void:
 		_banner_timer -= delta
 		if _banner_timer <= 0.0:
 			_banner.visible = false
+			stage_banner_finished.emit()
 	if _flawless_timer > 0.0:
 		_flawless_timer -= delta
 		if _flawless_timer <= 0.0:
@@ -172,6 +176,7 @@ func _on_stage_changed(s: int) -> void:
 		_banner.text = tr("STAGE_BANNER_FORMAT") % s
 		_banner.visible = true
 		_banner_timer = BANNER_DURATION
+		stage_banner_started.emit()
 
 
 func _update_overlay_text() -> void:

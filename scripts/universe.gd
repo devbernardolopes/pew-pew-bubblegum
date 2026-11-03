@@ -22,6 +22,24 @@ func _ready() -> void:
 		center_line.visible = false
 	spawn_hero()
 
+	# Connect stage banner to starfield warp effect.
+	var hud: Hud = get_node_or_null("Hud") as Hud
+	if hud != null:
+		hud.stage_banner_started.connect(_on_stage_banner_started)
+		hud.stage_banner_finished.connect(_on_stage_banner_finished)
+
+
+func _on_stage_banner_started() -> void:
+	for layer: StarfieldLayer in [$Backgrounds/Starfield, $Backgrounds/StarfieldMid, $Backgrounds/StarfieldNear]:
+		if is_instance_valid(layer):
+			layer.apply_boost()
+
+
+func _on_stage_banner_finished() -> void:
+	for layer: StarfieldLayer in [$Backgrounds/Starfield, $Backgrounds/StarfieldMid, $Backgrounds/StarfieldNear]:
+		if is_instance_valid(layer):
+			layer.clear_boost()
+
 
 func _physics_process(delta: float) -> void:
 	if _is_waiting_to_respawn:
