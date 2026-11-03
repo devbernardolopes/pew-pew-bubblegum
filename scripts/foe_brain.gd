@@ -242,6 +242,7 @@ func _process_diving(delta: float) -> void:
 								FoeBrain._global_capture_active = true
 								_tractor_active = true
 								state = State.TRACTOR_BEAM
+								dive_finished.emit()
 	if not _follow_curve(_dive_curve, _dive_xform, speed, delta):
 		return
 	# The foe is off-screen both before and after the teleport, so snapping the
