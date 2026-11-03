@@ -10,4 +10,5 @@ base_speed = 352.0
 score_value = 100
 sound_profile = ExtResource("2_a18xr")
 fire_pulse_enabled = true
+tractor_beam_open_duration = 4.0
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

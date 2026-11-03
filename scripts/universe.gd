@@ -45,7 +45,7 @@ func _physics_process(delta: float) -> void:
 	if _is_waiting_to_respawn:
 		_respawn_timer -= delta
 		if _respawn_timer <= 0.0:
-			if _is_safe_to_respawn():
+			if _is_safe_to_respawn() and not FoeBrain._global_capture_active:
 				_is_waiting_to_respawn = false
 				GameManager.use_reserve_ship()
 				spawn_hero()

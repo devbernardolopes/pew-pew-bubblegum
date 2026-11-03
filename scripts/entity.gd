@@ -39,6 +39,8 @@ var health: int = 0
 var shots_fired: int = 0
 var shots_hit: int = 0
 var is_dead: bool = false
+## Whether this entity is currently captured by a tractor beam.
+var capture_active: bool = false
 ## Score multiplier (e.g. 2 while a foe is diving). Set by the brain.
 var score_multiplier: int = 1
 var _trail_timer: float = 0.0
@@ -65,9 +67,12 @@ func _physics_process(delta: float) -> void:
 		return
 	if not data:
 		return
-	if is_dead:
+	if is_dead or capture_active:
 		return
 	var dir: float = 0.0
+	if capture_active:
+		# During capture the hero is frozen; position is controlled by the foe brain.
+		return
 	if controller != null:
 		dir = controller.get_direction_h()
 		position.x += dir * data.base_speed * speed_multiplier * delta

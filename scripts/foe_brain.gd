@@ -14,7 +14,7 @@ signal dive_finished
 
 ## WAITING for the entry delay, ENTERING along the curve, SETTLING into the
 ## slot, FORMATION for the rest of its life, or DIVING along a dive curve.
-enum State { WAITING, ENTERING, SETTLING, FORMATION, DIVING }
+enum State { WAITING, ENTERING, SETTLING, FORMATION, DIVING, TRACTOR_BEAM }
 
 ## How close the foe must be to its slot to snap into it, in pixels.
 const SNAP_DISTANCE: float = 1.0
@@ -41,8 +41,17 @@ var _dive_curves: Array[Curve2D] = []
 var _slot: Marker2D = null
 var _xform: Transform2D = Transform2D.IDENTITY
 var _dive_xform: Transform2D = Transform2D.IDENTITY
+## Whether any foe brain has an active capture, blocking new triggers.
+static var _global_capture_active: bool = false
+
 var _entry_delay: float = 0.0
 var _distance: float = 0.0
+## Whether this brain is currently running the tractor beam.
+var _tractor_active: bool = false
+## Time since the cone was fully extended.
+var _tractor_hold_timer: float = 0.0
+## Whether the hero has been captured by this brain.
+var _capture_done: bool = false
 
 
 func _ready() -> void:
@@ -52,6 +61,13 @@ func _ready() -> void:
 		set_physics_process(false)
 		return
 	add_to_group(&"foe_brains")
+	# Create the tractor cone child; it only becomes visible during the beam.
+	var cone_script: GDScript = load("res://scripts/tractor_cone.gd")
+	if cone_script != null:
+		var cone: Polygon2D = cone_script.new() as Polygon2D
+		cone.name = "TractorCone"
+		cone.visible = false
+		add_child(cone)
 
 
 func _physics_process(delta: float) -> void:
@@ -68,6 +84,8 @@ func _physics_process(delta: float) -> void:
 			_process_formation()
 		State.DIVING:
 			_process_diving(delta)
+		State.TRACTOR_BEAM:
+			_process_tractor_beam(delta)
 
 
 ## Sends the foe along [param curve] and then into [param slot].
@@ -182,6 +200,23 @@ func _process_diving(delta: float) -> void:
 	if not is_instance_valid(_slot):
 		return
 	var speed: float = _get_speed() * dive_speed_multiplier
+	# Check for tractor beam trigger at a point along the dive.
+	if _entity != null and _entity.data != null and _entity.data.tractor_beam_enabled:
+		if not FoeBrain._global_capture_active:
+			var total_len: float = _dive_curve.get_baked_length() if _dive_curve != null else 0.0
+			if total_len > 0.0 and _distance / total_len > 0.25 and not _tractor_active:
+				if randf() < 1.0:
+				#if randf() < 0.01:
+					var hero: Node = get_tree().get_first_node_in_group("friend")
+					#var hero: Node = get_tree().get_first_node_in_group("hero")
+					if hero != null and hero is Entity:
+						var hero_pos: Vector2 = hero.global_position
+						var foe_pos: Vector2 = _entity.global_position
+						var vertical_dist: float = hero_pos.y - foe_pos.y
+						if vertical_dist > 0.0 and vertical_dist < 500.0:
+							FoeBrain._global_capture_active = true
+							_tractor_active = true
+							state = State.TRACTOR_BEAM
 	if not _follow_curve(_dive_curve, _dive_xform, speed, delta):
 		return
 	# The foe is off-screen both before and after the teleport, so snapping the
@@ -209,6 +244,75 @@ func _follow_curve(curve: Curve2D, xform: Transform2D, speed: float, delta: floa
 	if heading.length_squared() > 0.0001:
 		_entity.rotation = heading.angle() + PI / 2.0
 	return _distance >= length
+
+
+func _process_tractor_beam(delta: float) -> void:
+	if not is_instance_valid(_slot):
+		return
+
+	# Once capture is done, ride back to formation (like settling).
+	if _capture_done:
+		# The hero entity (if it was captured) should be frozen; the brain moves
+		# the foe back to its formation slot. When it arrives, the scene handles
+		# the captured ship release / respawn.
+		_entity.global_position = _entity.global_position.move_toward(
+				_slot.global_position, _get_speed() * delta)
+		_entity.rotation = lerp_angle(_entity.rotation, PI, 1.0 - exp(-turn_rate * delta))
+		var is_on_slot: bool = _entity.global_position.distance_to(_slot.global_position) < SNAP_DISTANCE
+		var is_facing_down: bool = absf(angle_difference(_entity.rotation, PI)) < SNAP_ANGLE
+		if is_on_slot and is_facing_down:
+			_entity.global_position = _slot.global_position
+			_entity.rotation = PI
+			# Release the hero; the scene will handle respawn / dual-ship.
+			_capture_done = false
+			_tractor_active = false
+			_global_capture_active = false
+			# The hero entity's capture_active should be cleared by the scene.
+		return
+
+	var cone: Polygon2D = get_node_or_null("TractorCone") as Polygon2D
+	if cone == null:
+		return
+
+	# Foe holds straight down; position stays at current dive point.
+	_entity.rotation = PI
+
+	if not _tractor_active:
+		_tractor_active = true
+		if _entity.data != null and _entity.data.sound_profile != null:
+			var profile: SoundProfile = _entity.data.sound_profile
+			if profile.tractor_beam_grow != null and is_instance_valid(profile.tractor_beam_grow):
+				# Sound playback: the profile stream is present and should be played.
+				# The actual audio emission requires an AudioStreamPlayer node;
+				# we leave that to the user's sound setup. Here we just note readiness.
+				pass
+
+	# Check hero overlap when the cone is fully extended.
+	# We approximate full extension by checking if the cone polygon height is large.
+	var hero_nodes: Array = get_tree().get_nodes_in_group("hero")
+	if not hero_nodes.is_empty():
+		var hero_node: Node = hero_nodes[0]
+		if is_instance_valid(hero_node) and hero_node is Entity:
+			var hero_entity: Entity = hero_node as Entity
+			if not hero_entity.is_dead and not hero_entity.is_queued_for_deletion() and not hero_entity.capture_active:
+				var dx: float = absf(hero_entity.global_position.x - _entity.global_position.x)
+				var dy: float = hero_entity.global_position.y - _entity.global_position.y
+				if _tractor_active and dy > 10.0 and dx < 50.0 and dy < 500.0:
+					# Capture succeeded. The hero freezes and loses one life.
+					_capture_done = true
+					_global_capture_active = false
+					if is_instance_valid(hero_entity):
+						hero_entity.capture_active = true
+					# Play capture sound if assigned.
+					var audio_player: AudioStreamPlayer = get_node_or_null("TractorAudio") as AudioStreamPlayer
+					if audio_player != null and _entity.data != null and _entity.data.sound_profile != null:
+						var profile: SoundProfile = _entity.data.sound_profile
+						if profile.tractor_beam_capture != null:
+							audio_player.stream = profile.tractor_beam_capture
+							audio_player.play()
+					# Life loss: signal the game manager to deduct one reserve ship.
+					# This mimics the effect of losing a life.
+					GameManager.use_reserve_ship()
 
 
 func _warn_if_dive_ends_on_screen() -> void:

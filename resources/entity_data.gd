@@ -20,4 +20,8 @@ extends Resource
 ## Whether firing also shakes the camera. It only has an effect when
 ## [member fire_pulse_enabled] is on too.
 @export var shake_on_fire_enabled: bool = false
+## Whether this foe can trigger a tractor beam capture during its dive.
+@export var tractor_beam_enabled: bool = false
+## How long the tractor beam cone stays fully open (seconds).
+@export var tractor_beam_open_duration: float = 3.0
 @export var god_mode: bool = false

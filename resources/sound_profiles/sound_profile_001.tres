@@ -3,10 +3,14 @@
 [ext_resource type="Script" uid="uid://bw0j601n2cpoi" path="res://resources/sound_profile.gd" id="1_i86qs"]
 [ext_resource type="AudioStream" uid="uid://cjslb47dns0ms" path="res://assets/sounds/laserRetro_000.ogg" id="1_lgpel"]
 [ext_resource type="AudioStream" uid="uid://der0am7kekuau" path="res://assets/sounds/explosionCrunch_002.ogg" id="2_eqdup"]
+[ext_resource type="AudioStream" uid="uid://deq6rx100c6y4" path="res://assets/sounds/engineCircular_003.ogg" id="4_7jbfe"]
+[ext_resource type="AudioStream" uid="uid://m4hpo35s44x1" path="res://assets/sounds/forceField_000.ogg" id="5_mqv04"]
 
 [resource]
 script = ExtResource("1_i86qs")
 explosion = ExtResource("2_eqdup")
 fire = ExtResource("1_lgpel")
 hit = ExtResource("2_eqdup")
+tractor_beam_grow = ExtResource("5_mqv04")
+tractor_beam_capture = ExtResource("4_7jbfe")
 metadata/_custom_type_script = "uid://bw0j601n2cpoi"

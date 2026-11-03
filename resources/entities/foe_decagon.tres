@@ -12,4 +12,5 @@ score_value = 750
 explosion_scale = 0.35
 sound_profile = ExtResource("2_khctg")
 fire_pulse_enabled = true
+tractor_beam_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"
