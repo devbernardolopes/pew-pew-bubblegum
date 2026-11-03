@@ -69,6 +69,8 @@ func _try_fire() -> bool:
 	var hero: Entity = get_tree().get_first_node_in_group(&"friend") as Entity
 	if weapon == null or hero == null or hero.is_dead:
 		return false
+	if _brain != null and _brain.state == FoeBrain.State.TRACTOR_BEAM:
+		return false
 	var pos: Vector2 = _entity.global_position
 	if pos.y < 0.0 or pos.y > hero.global_position.y - min_height_above_hero:
 		return false

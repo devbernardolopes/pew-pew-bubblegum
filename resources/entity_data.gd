@@ -24,4 +24,6 @@ extends Resource
 @export var tractor_beam_enabled: bool = false
 ## How long the tractor beam cone stays fully open (seconds).
 @export var tractor_beam_open_duration: float = 3.0
+## Maximum cone height/length, in pixels.
+@export var tractor_beam_height: float = 400.0
 @export var god_mode: bool = false

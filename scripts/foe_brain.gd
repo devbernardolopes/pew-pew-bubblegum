@@ -67,11 +67,20 @@ func _ready() -> void:
 		var cone: Polygon2D = cone_script.new() as Polygon2D
 		cone.name = "TractorCone"
 		cone.visible = false
+		if _entity != null and _entity.data != null:
+			if "tractor_beam_height" in _entity.data:
+				cone.cone_height = float(_entity.data.get("tractor_beam_height"))
 		add_child(cone)
 
 
 func _physics_process(delta: float) -> void:
 	if _entity == null or _entity.data == null:
+		return
+	# If the parent entity is being removed (e.g. destroyed), release the global lock.
+	if not is_instance_valid(_entity) or _entity.is_queued_for_deletion():
+		FoeBrain._global_capture_active = false
+		_tractor_active = false
+		_capture_done = false
 		return
 	match state:
 		State.WAITING:
@@ -252,9 +261,6 @@ func _process_tractor_beam(delta: float) -> void:
 
 	# Once capture is done, ride back to formation (like settling).
 	if _capture_done:
-		# The hero entity (if it was captured) should be frozen; the brain moves
-		# the foe back to its formation slot. When it arrives, the scene handles
-		# the captured ship release / respawn.
 		_entity.global_position = _entity.global_position.move_toward(
 				_slot.global_position, _get_speed() * delta)
 		_entity.rotation = lerp_angle(_entity.rotation, PI, 1.0 - exp(-turn_rate * delta))
@@ -263,7 +269,6 @@ func _process_tractor_beam(delta: float) -> void:
 		if is_on_slot and is_facing_down:
 			_entity.global_position = _slot.global_position
 			_entity.rotation = PI
-			# Release the hero; the scene will handle respawn / dual-ship.
 			_capture_done = false
 			_tractor_active = false
 			_global_capture_active = false
@@ -279,40 +284,59 @@ func _process_tractor_beam(delta: float) -> void:
 
 	if not _tractor_active:
 		_tractor_active = true
-		if _entity.data != null and _entity.data.sound_profile != null:
-			var profile: SoundProfile = _entity.data.sound_profile
-			if profile.tractor_beam_grow != null and is_instance_valid(profile.tractor_beam_grow):
-				# Sound playback: the profile stream is present and should be played.
-				# The actual audio emission requires an AudioStreamPlayer node;
-				# we leave that to the user's sound setup. Here we just note readiness.
-				pass
+		_tractor_hold_timer = 0.0
 
-	# Check hero overlap when the cone is fully extended.
-	# We approximate full extension by checking if the cone polygon height is large.
-	var hero_nodes: Array = get_tree().get_nodes_in_group("hero")
-	if not hero_nodes.is_empty():
-		var hero_node: Node = hero_nodes[0]
-		if is_instance_valid(hero_node) and hero_node is Entity:
-			var hero_entity: Entity = hero_node as Entity
-			if not hero_entity.is_dead and not hero_entity.is_queued_for_deletion() and not hero_entity.capture_active:
-				var dx: float = absf(hero_entity.global_position.x - _entity.global_position.x)
-				var dy: float = hero_entity.global_position.y - _entity.global_position.y
-				if _tractor_active and dy > 10.0 and dx < 50.0 and dy < 500.0:
-					# Capture succeeded. The hero freezes and loses one life.
-					_capture_done = true
-					_global_capture_active = false
-					if is_instance_valid(hero_entity):
-						hero_entity.capture_active = true
-					# Play capture sound if assigned.
-					var audio_player: AudioStreamPlayer = get_node_or_null("TractorAudio") as AudioStreamPlayer
-					if audio_player != null and _entity.data != null and _entity.data.sound_profile != null:
-						var profile: SoundProfile = _entity.data.sound_profile
-						if profile.tractor_beam_capture != null:
-							audio_player.stream = profile.tractor_beam_capture
-							audio_player.play()
-					# Life loss: signal the game manager to deduct one reserve ship.
-					# This mimics the effect of losing a life.
-					GameManager.use_reserve_ship()
+	# Only capture once the cone has fully grown.
+	if cone.is_full():
+		_tractor_hold_timer += delta
+		var duration: float = 3.0
+		if _entity != null and _entity.data != null and "tractor_beam_open_duration" in _entity.data:
+			duration = float(_entity.data.get("tractor_beam_open_duration"))
+
+		# Check hero overlap when the cone is fully extended.
+		var hero_nodes: Array = get_tree().get_nodes_in_group("hero")
+		if not hero_nodes.is_empty():
+			var hero_node: Node = hero_nodes[0]
+			if is_instance_valid(hero_node) and hero_node is Entity:
+				var hero_entity: Entity = hero_node as Entity
+				if not hero_entity.is_dead and not hero_entity.is_queued_for_deletion() and not hero_entity.capture_active:
+					var dx: float = absf(hero_entity.global_position.x - _entity.global_position.x)
+					var dy: float = hero_entity.global_position.y - _entity.global_position.y
+					if dy > 10.0 and dx < 50.0 and dy < 500.0:
+						# Capture succeeded. The hero freezes and loses one life.
+						_capture_done = true
+						_global_capture_active = false
+						if is_instance_valid(hero_entity):
+							hero_entity.capture_active = true
+						# Play capture sound if assigned.
+						var audio_player: AudioStreamPlayer = get_node_or_null("TractorAudio") as AudioStreamPlayer
+						if audio_player != null and _entity.data != null and _entity.data.sound_profile != null:
+							var profile: SoundProfile = _entity.data.sound_profile
+							if profile.tractor_beam_capture != null:
+								audio_player.stream = profile.tractor_beam_capture
+								audio_player.play()
+						GameManager.use_reserve_ship()
+
+			# Hero no longer valid; abort the beam.
+			var hero_dead_or_gone: bool = false
+			if hero_nodes.is_empty() or not is_instance_valid(hero_node):
+				hero_dead_or_gone = true
+			elif hero_node is Entity:
+				var ent: Entity = hero_node as Entity
+				if ent.is_queued_for_deletion() or ent.is_dead:
+					hero_dead_or_gone = true
+			if hero_dead_or_gone:
+				_capture_done = false
+				_tractor_active = false
+				_global_capture_active = false
+
+		# Retract / end the beam after the set open duration.
+		if _tractor_hold_timer >= duration and not _capture_done:
+			_capture_done = false
+			_tractor_active = false
+			_global_capture_active = false
+			# Return to formation after abort.
+			state = State.SETTLING
 
 
 func _warn_if_dive_ends_on_screen() -> void:

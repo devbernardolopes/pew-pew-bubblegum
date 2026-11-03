@@ -93,7 +93,11 @@ func _physics_process(delta: float) -> void:
 		if abs(dir) > 0.01 and _trail_timer <= 0.0:
 			_trail_timer = 0.06
 			_spawn_trail()
-	if weapon != null and controller != null and controller.wants_fire():
+	if weapon != null and controller != null and controller.wants_fire() and not capture_active:
+		# Block firing while the brain is running the tractor beam.
+		var brain: FoeBrain = get_node_or_null(^"FoeBrain") as FoeBrain
+		if brain != null and brain.state == FoeBrain.State.TRACTOR_BEAM:
+			return
 		weapon.fire()
 
 
@@ -157,6 +161,12 @@ func die() -> void:
 	set_deferred(&"monitorable", false)
 	set_deferred(&"monitoring", false)
 	died.emit(self)
+	# If this entity was captured by a tractor beam, release the global lock.
+	if capture_active:
+		# Find any brain controlling capture and clear it.
+		# Since this entity is being removed, we clear the global flag.
+		# The brain handles its own cleanup, but we ensure no block remains.
+		FoeBrain._global_capture_active = false
 	queue_free()
 
 
