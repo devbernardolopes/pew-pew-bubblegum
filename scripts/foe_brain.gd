@@ -60,6 +60,8 @@ var _beam_timer: float = 0.0
 var _rider: Polygon2D = null
 ## The scale of the hero at capture time, used for rider positioning after the hero is freed.
 var _rider_hero_scale: float = 0.25
+## Cached y of the Weapon muzzle in entity space; NAN until it is looked up.
+var _muzzle_offset_y: float = NAN
 
 
 static func is_capture_in_progress() -> bool:
@@ -196,19 +198,21 @@ func _can_start_beam() -> bool:
 	if _carry != Carry.NONE:
 		return false
 	# The hero must exist and be capturable.
-	var hero_nodes: Array = get_tree().get_nodes_in_group(&"friend")
-	for node: Node in hero_nodes:
-		if node is Entity:
-			var ent: Entity = node as Entity
-			if ent == null or not is_instance_valid(ent):
-				continue
-			if ent.is_dead or ent.is_queued_for_deletion():
-				continue
-			if ent.capture_active or ent.auto_descending:
-				continue
-			# Found a capturable hero.
-			return true
-	return false
+	return _get_capturable_hero() != null
+
+
+## Returns the first hero the beam may capture, or null when none is available.
+func _get_capturable_hero() -> Entity:
+	for node: Node in get_tree().get_nodes_in_group(&"friend"):
+		var hero: Entity = node as Entity
+		if hero == null or not is_instance_valid(hero):
+			continue
+		if hero.is_dead or hero.is_queued_for_deletion():
+			continue
+		if hero.capture_active or hero.auto_descending:
+			continue
+		return hero
+	return null
 
 
 func _start_beam() -> void:
@@ -243,17 +247,6 @@ func _on_beam_retracted() -> void:
 func _process_beam(delta: float) -> void:
 	if _entity == null:
 		return
-
-	# If the hero was captured, update rider each frame.
-	if _carry != Carry.NONE and _captured_hero != null and is_instance_valid(_captured_hero):
-		if _rider == null:
-			_create_rider()
-		if _rider != null:
-			var hero_scale: float = _captured_hero.scale_aux
-			var foe_scale: float = _entity.scale_aux
-			var d: float = Helpers.ENTITY_HALF_WIDTH * (foe_scale + hero_scale) + 2.0
-			_rider.global_position = _entity.to_global(Vector2(0.0, d))
-			_rider.rotation = _entity.rotation + PI
 
 	# Phase: TURNING
 	if _beam_phase == BeamPhase.TURNING:
@@ -378,33 +371,23 @@ func _process_diving(delta: float) -> void:
 		return
 	var speed: float = _get_speed() * dive_speed_multiplier
 
-	# Check for tractor beam trigger.
-	if _entity != null and _entity.data != null and _entity.data.tractor_beam_enabled:
+	var reached_end: bool = _follow_curve(_dive_curve, _dive_xform, speed, delta)
+
+	# Check for tractor beam trigger with the foe already moved for this frame,
+	# so the cone's far end lands exactly on the hero's bottom edge.
+	if not reached_end and _entity.data.tractor_beam_enabled:
 		if _beam_planned and not is_capture_in_progress() and _can_start_beam():
 			# Re-check when on screen.
 			if _entity.global_position.y >= Helpers.ENTITY_HALF_WIDTH * _entity.scale_aux:
-				# Check if cone bottom reaches hero.
-				var hero_nodes: Array = get_tree().get_nodes_in_group(&"friend")
-				for node: Node in hero_nodes:
-					if node is Entity:
-						var hero: Entity = node as Entity
-						if hero == null or not is_instance_valid(hero) or hero.is_dead:
-							continue
-						if hero.capture_active or hero.auto_descending:
-							continue
-						# Compute beam origin at muzzle when facing down.
-						var muzzle_offset_y: float = 0.0
-						for child in _entity.get_children():
-							if child is Weapon:
-								muzzle_offset_y = (child as Weapon).muzzle_offset.y
-						var origin_y: float = _entity.global_position.y + Helpers.ENTITY_HALF_WIDTH * _entity.scale_aux - muzzle_offset_y
-						var cone_height: float = float(_entity.data.tractor_beam_height) if _entity.data != null else 400.0
-						# Trigger when the cone's far end reaches or passes the hero's center.
-						if origin_y + cone_height >= hero.global_position.y:
-							_start_beam()
-							return
+				var hero: Entity = _get_capturable_hero()
+				if hero != null:
+					var overshoot: float = _get_beam_far_end_y() - _get_hero_bottom_y(hero)
+					if overshoot >= 0.0:
+						_entity.global_position.y -= minf(overshoot, speed * delta)
+						_start_beam()
+						return
 
-	if not _follow_curve(_dive_curve, _dive_xform, speed, delta):
+	if not reached_end:
 		return
 	# End of dive: return to formation.
 	_entity.global_position = Vector2(_slot.global_position.x, REENTRY_Y)
@@ -477,19 +460,17 @@ func _abort_beam_no_capture() -> void:
 	_free_rider()
 
 
-func _on_entity_died(entity_arg: Entity = null) -> void:
+func _on_entity_died(_entity_arg: Entity) -> void:
 	if _capturer == self:
 		_capturer = null
 
 	if _carry == Carry.PENDING:
-		# Carrier killed before commit: release hero with no life cost.
+		# Carrier killed before commit: release the hero where it is, no life cost.
 		if _captured_hero != null and is_instance_valid(_captured_hero):
-			var rider_world_pos: Vector2 = Vector2.ZERO
+			var release_pos: Vector2 = _captured_hero.global_position
 			if _rider != null:
-				rider_world_pos = _rider.global_position
-			else:
-				rider_world_pos = _entity.global_position
-			_captured_hero.release_from_capture(rider_world_pos)
+				release_pos = _rider.global_position
+			_captured_hero.release_from_capture(release_pos)
 		_carry = Carry.NONE
 		_captured_hero = null
 		_free_rider()
@@ -514,6 +495,8 @@ func _on_entity_died(entity_arg: Entity = null) -> void:
 
 
 func _create_rider() -> void:
+	if _rider != null:
+		return
 	if _captured_hero == null or not is_instance_valid(_captured_hero) or _captured_hero.data == null:
 		return
 	_rider_hero_scale = _captured_hero.scale_aux
@@ -563,6 +546,30 @@ func _follow_curve(curve: Curve2D, xform: Transform2D, speed: float, delta: floa
 
 func _get_speed() -> float:
 	return _entity.data.base_speed * _entity.speed_multiplier
+
+
+## Returns the y of the Weapon muzzle relative to the entity centre, cached so
+## the children are only scanned once.
+func _get_muzzle_offset_y() -> float:
+	if not is_nan(_muzzle_offset_y):
+		return _muzzle_offset_y
+	_muzzle_offset_y = 0.0
+	for child: Node in _entity.get_children():
+		var weapon: Weapon = child as Weapon
+		if weapon != null:
+			_muzzle_offset_y = weapon.muzzle_offset.y
+			break
+	return _muzzle_offset_y
+
+
+## Returns the world y of the cone's far end when the foe faces down.
+func _get_beam_far_end_y() -> float:
+	return _entity.global_position.y + Helpers.ENTITY_HALF_WIDTH * _entity.scale_aux - _get_muzzle_offset_y() + _entity.data.tractor_beam_height
+
+
+## Returns the world y of the bottom edge of the hero's polygon.
+func _get_hero_bottom_y(hero: Entity) -> float:
+	return hero.global_position.y + Helpers.ENTITY_HALF_WIDTH * hero.scale_aux
 
 
 func _warn_if_dive_ends_on_screen() -> void:

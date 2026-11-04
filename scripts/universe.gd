@@ -77,7 +77,7 @@ func _on_hero_died(entity: Entity) -> void:
 
 
 ## Returns false when any foe is diving or any foe-team projectile is alive.
-func _on_hero_capture_started(entity: Entity) -> void:
+func _on_hero_capture_started(_entity: Entity) -> void:
 	dive_director.enabled = false
 
 
@@ -86,7 +86,7 @@ func _on_hero_capture_committed(entity: Entity) -> void:
 	entity.queue_free()
 
 
-func _on_hero_capture_released(entity: Entity) -> void:
+func _on_hero_capture_released(_entity: Entity) -> void:
 	dive_director.enabled = true
 
 
