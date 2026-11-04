@@ -11,6 +11,7 @@ enum VISUAL {
 	BOW_TIE = 106,
 	TURRET = 107,
 	H = 108,
+	BOSS_01 = 200,
 }
 
 enum TEAM {
@@ -130,6 +131,44 @@ const H_POLYGON: PackedVector2Array = [
 	Vector2(40.0, 0.0),
 ]
 
+const BOSS_01_POLYGON: PackedVector2Array = [
+	Vector2(24.0, 64.0),
+	Vector2(72.0, 0.0),
+	Vector2(88.0, 32.0),
+	Vector2(144.0, 0.0),
+	Vector2(144.1105, 15.77902),
+	Vector2(128.0, 48.0),
+	Vector2(144.0, 48.0),
+	Vector2(160.0, 32.0),
+	Vector2(224.0, 32.0),
+	Vector2(240.0, 48.0),
+	Vector2(256.0, 48.0),
+	Vector2(232.0, 16.0),
+	Vector2(232.0, 0.0),
+	Vector2(296.0, 32.0),
+	Vector2(312.0, 0.0),
+	Vector2(360.0, 64.0),
+	Vector2(384.0, 128.0),
+	Vector2(352.0, 184.0),
+	Vector2(384.0, 224.0),
+	Vector2(320.0, 320.0),
+	Vector2(320.0, 256.0),
+	Vector2(304.0, 224.0),
+	Vector2(248.0, 240.0),
+	Vector2(224.0, 296.0),
+	Vector2(200.0, 200.0),
+	Vector2(192.0, 192.0),
+	Vector2(184.0, 200.0),
+	Vector2(160.0, 296.0),
+	Vector2(136.0, 240.0),
+	Vector2(80.0, 224.0),
+	Vector2(64.0, 256.0),
+	Vector2(64.0, 320.0),
+	Vector2(0.0, 224.0),
+	Vector2(32.0, 184.0),
+	Vector2(0.0, 128.0),
+]
+
 const ENTITY_WIDTH: float = 128.0
 const ENTITY_HALF_WIDTH: float = ENTITY_WIDTH / 2.0
 
@@ -164,6 +203,8 @@ static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array
 			return TURRET_POLYGON.duplicate()
 		VISUAL.H:
 			return H_POLYGON.duplicate()
+		VISUAL.BOSS_01:
+			return BOSS_01_POLYGON.duplicate()
 	return result
 
 
