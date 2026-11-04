@@ -179,7 +179,7 @@ func _queue_return(ship: Entity, from: Vector2) -> void:
 	ship.visible = true
 	ship.returning = true
 	ship.externally_driven = true
-	ship.monitorable = false
+	ship.set_deferred("monitorable", false)
 	if _returning == null:
 		_start_return(ship, from)
 	else:
@@ -200,7 +200,7 @@ func _dock_returning() -> void:
 	if ship != null and is_instance_valid(ship):
 		ship.global_position = _return_target
 		ship.returning = false
-		ship.monitorable = true
+		ship.set_deferred("monitorable", true)
 		# Docking on the left makes the newcomer the leader, so the block never
 		# moves to make room for it.
 		if ships.is_empty() or ship.global_position.x < ships[0].global_position.x:

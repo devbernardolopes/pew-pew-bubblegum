@@ -135,7 +135,7 @@ func _set_action_frozen(frozen: bool) -> void:
 		Node.PROCESS_MODE_DISABLED if frozen else Node.PROCESS_MODE_INHERIT
 	)
 	for node: Node in [$Entities, $Projectiles, $Formations, $DiveDirector, $StageDirector]:
-		node.process_mode = mode
+		node.set_deferred("process_mode", mode)
 
 
 ## Returns false when any foe is diving or any foe-team projectile is alive.

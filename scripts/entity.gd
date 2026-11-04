@@ -232,7 +232,7 @@ func _refresh_shape() -> void:
 	if not data or not collision:
 		return
 	var points: PackedVector2Array = Helpers.get_polygon(data.visual)
-	collision.polygon = points
+	collision.set_deferred("polygon", points)
 	visual.polygon = points
 	collision.scale = Vector2.ONE * scale_aux
 	visual.scale = Vector2.ONE * scale_aux

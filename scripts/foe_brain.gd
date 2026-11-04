@@ -493,7 +493,7 @@ func _return_ship(ship: Entity, from: Vector2) -> void:
 		# No fleet in this scene: leave the ship playable where it was freed.
 		ship.global_position = from
 		ship.returning = false
-		ship.monitorable = true
+		ship.set_deferred("monitorable", true)
 		return
 	fleet.recruit(ship, from)
 
