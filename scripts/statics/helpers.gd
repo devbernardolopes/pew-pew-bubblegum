@@ -128,23 +128,23 @@ static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array
 	var result: PackedVector2Array = [Vector2.ZERO]
 	match _visual:
 		VISUAL.BULLET:
-			return BULLET_POLYGON
+			return BULLET_POLYGON.duplicate()
 		VISUAL.TRIANGLE:
-			return TRIANGLE_POLYGON
+			return TRIANGLE_POLYGON.duplicate()
 		VISUAL.DOUBLE_SQUARE:
-			return DOUBLE_SQUARE_POLYGON
+			return DOUBLE_SQUARE_POLYGON.duplicate()
 		VISUAL.DECAGON:
-			return DECAGON_POLYGON
+			return DECAGON_POLYGON.duplicate()
 		VISUAL.KITE:
-			return KITE_POLYGON
+			return KITE_POLYGON.duplicate()
 		VISUAL.TRAPEZOID:
-			return TRAPEZOID_POLYGON
+			return TRAPEZOID_POLYGON.duplicate()
 		VISUAL.STAR:
-			return STAR_POLYGON
+			return STAR_POLYGON.duplicate()
 		VISUAL.BOW_TIE:
-			return BOW_TIE_POLYGON
+			return BOW_TIE_POLYGON.duplicate()
 		VISUAL.TURRET:
-			return TURRET_POLYGON
+			return TURRET_POLYGON.duplicate()
 	return result
 
 
