@@ -12,4 +12,6 @@ base_speed = 272.0
 score_value = 150
 sound_profile = ExtResource("2_hmy6p")
 tilt_enabled = true
+trail_enabled = true
+fire_pulse_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

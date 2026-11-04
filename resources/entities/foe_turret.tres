@@ -11,4 +11,6 @@ color = Color(0.8, 1, 0, 1)
 score_value = 2000
 sound_profile = ExtResource("2_sagfd")
 tilt_enabled = true
+trail_enabled = true
+fire_pulse_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

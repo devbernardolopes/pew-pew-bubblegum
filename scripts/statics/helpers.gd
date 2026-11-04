@@ -179,6 +179,24 @@ static func get_game_width() -> float:
 	return get_game_size().x
 
 
+## Returns [param points] (in the 0..ENTITY_WIDTH box) deformed as if the shape
+## rolled by [param angle] radians around its vertical centre line, seen from
+## above with a weak perspective of strength [param perspective].
+static func roll_polygon(points: PackedVector2Array, angle: float, perspective: float) -> PackedVector2Array:
+	var result: PackedVector2Array = PackedVector2Array()
+	result.resize(points.size())
+	var center: Vector2 = Vector2.ONE * ENTITY_HALF_WIDTH
+	var cos_a: float = cos(angle)
+	var sin_a: float = sin(angle)
+	for i: int in points.size():
+		var p: Vector2 = points[i] - center
+		# Positive depth is away from the camera: the lowered wing.
+		var depth: float = p.x * sin_a
+		var factor: float = 1.0 / maxf(1.0 + depth * perspective, 0.2)
+		result[i] = center + Vector2(p.x * cos_a, p.y) * factor
+	return result
+
+
 static func get_game_height() -> float:
 	# The editor viewport is not the game viewport, so read the project setting.
 	return get_game_size().y

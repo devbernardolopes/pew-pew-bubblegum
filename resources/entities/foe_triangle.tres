@@ -10,5 +10,7 @@ color = Color(1, 0.0627451, 0.9411765, 1)
 score_value = 100
 sound_profile = ExtResource("2_a18xr")
 tilt_enabled = true
+trail_enabled = true
+fire_pulse_enabled = true
 tractor_beam_open_duration = 4.0
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

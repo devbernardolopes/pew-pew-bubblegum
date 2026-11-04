@@ -42,3 +42,21 @@ extends Resource
 @export var tractor_beam_pull_speed: float = 90.0
 ## Score awarded for killing a carrier whose ship was committed.
 @export var tractor_beam_rescue_bonus: int = 1000
+
+@export_group("Tilt")
+## Roll angle at full horizontal speed, in degrees.
+@export_range(0.0, 70.0, 0.5, "suffix:°") var tilt_max_angle: float = 35.0
+## How strongly the lowered wing shrinks and the raised wing grows.
+@export_range(0.0, 0.01, 0.0005) var tilt_perspective: float = 0.003
+## How quickly the roll follows the motion, per second (higher is snappier).
+@export_range(1.0, 40.0) var tilt_response: float = 14.0
+## Whether the collision polygon is deformed too. Off keeps the hitbox fixed.
+@export var tilt_affects_collision: bool = false
+
+@export_group("Trail")
+## Distance travelled between two ghosts, in pixels.
+@export_range(2.0, 64.0) var trail_spacing: float = 10.0
+## Seconds a ghost takes to fade out.
+@export_range(0.05, 1.0) var trail_lifetime: float = 0.25
+## Opacity of a ghost when it appears.
+@export_range(0.0, 1.0) var trail_alpha: float = 0.3

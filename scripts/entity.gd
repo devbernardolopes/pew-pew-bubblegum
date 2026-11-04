@@ -47,7 +47,17 @@ var returning: bool = false
 var externally_driven: bool = false
 ## Score multiplier (e.g. 2 while a foe is diving). Set by the brain.
 var score_multiplier: int = 1
-var _trail_timer: float = 0.0
+
+const TILT_STEPS: float = 24.0
+const TILT_DEADZONE: float = 0.04
+const TELEPORT_SPEED_FACTOR: float = 4.0
+
+var _base_points: PackedVector2Array = PackedVector2Array()
+var _tilt: float = 0.0
+var _tilt_applied: float = 0.0
+var _last_position: Vector2 = Vector2.ZERO
+var _motion_primed: bool = false
+var _trail_distance: float = 0.0
 
 
 func _ready() -> void:
@@ -73,38 +83,65 @@ func _physics_process(delta: float) -> void:
 		return
 	if is_dead:
 		return
+	_update_motion_feedback(delta)
 	if capture_active or returning or externally_driven:
 		# Another node owns this entity's position (a capture, the fleet, a brain).
 		return
-	var dir: float = 0.0
+	var wants_fire: bool = false
 	if controller != null:
-		dir = controller.get_direction_h()
+		var dir: float = controller.get_direction_h()
 		position.x += dir * data.base_speed * speed_multiplier * delta
-		position.x = clampf(position.x, 
-			Helpers.ENTITY_HALF_WIDTH * scale_aux, 
+		position.x = clampf(position.x,
+			Helpers.ENTITY_HALF_WIDTH * scale_aux,
 			get_viewport_rect().size.x - (Helpers.ENTITY_HALF_WIDTH * scale_aux))
-	else:
-		# Foes and other entities without a controller derive tilt direction from rotation
-		dir = cos(rotation - PI / 2.0)
-	drive(dir, controller != null and controller.wants_fire(), delta)
+		wants_fire = controller.wants_fire()
+	drive(wants_fire)
+
+
+func _update_motion_feedback(delta: float) -> void:
+	if delta <= 0.0 or visual == null:
+		return
+	var step: Vector2 = global_position - _last_position
+	_last_position = global_position
+	var top_speed: float = maxf(data.base_speed * speed_multiplier, 1.0)
+	var is_motion: bool = _motion_primed and absf(step.x) <= top_speed * TELEPORT_SPEED_FACTOR * delta
+	_motion_primed = true
+	if data.tilt_enabled:
+		var target: float = _tilt
+		if is_motion:
+			target = clampf(step.x / delta * cos(global_rotation) / top_speed, -1.0, 1.0)
+			if absf(target) < TILT_DEADZONE:
+				target = 0.0
+		_tilt += (target - _tilt) * (1.0 - exp(-data.tilt_response * delta))
+		_apply_tilt(false)
+	if data.trail_enabled and is_motion:
+		_trail_distance += step.length()
+		if _trail_distance >= data.trail_spacing:
+			_trail_distance = fmod(_trail_distance, data.trail_spacing)
+			_spawn_trail()
+
+
+## Rebuilds the polygons for the current roll, only when the quantized value
+## changed (or when [param force] is set).
+func _apply_tilt(force: bool) -> void:
+	if visual == null or _base_points.is_empty():
+		return
+	var quantized: float = roundf(_tilt * TILT_STEPS) / TILT_STEPS
+	if not force and is_equal_approx(quantized, _tilt_applied):
+		return
+	_tilt_applied = quantized
+	var points: PackedVector2Array = _base_points
+	if quantized != 0.0:
+		points = Helpers.roll_polygon(
+			_base_points, deg_to_rad(data.tilt_max_angle) * quantized, data.tilt_perspective)
+	visual.polygon = points
+	if data.tilt_affects_collision and collision != null:
+		collision.set_deferred(&"polygon", points)
 
 
 ## Applies this frame's facing feedback and firing. [Fleet] calls it for the
 ## ships it owns, which have no controller of their own.
-func drive(dir: float, wants_fire: bool, delta: float) -> void:
-	if data == null or visual == null:
-		return
-	# Update tilt shader uniform based on horizontal direction
-	if data.tilt_enabled and visual.material != null:
-		var mat: ShaderMaterial = visual.material as ShaderMaterial
-		if mat != null:
-			mat.set_shader_parameter("tilt_amount", dir)
-			mat.set_shader_parameter("glow_amount", clampf(absf(dir) * 2.0, 0.0, 1.0))
-	if data.trail_enabled:
-		_trail_timer -= delta
-		if absf(dir) > 0.01 and _trail_timer <= 0.0:
-			_trail_timer = 0.06
-			_spawn_trail(dir)
+func drive(wants_fire: bool) -> void:
 	if wants_fire and weapon != null:
 		weapon.fire()
 
@@ -225,6 +262,7 @@ func _refresh_shape() -> void:
 	if not data or not collision:
 		return
 	var points: PackedVector2Array = Helpers.get_polygon(data.visual)
+	_base_points = points
 	collision.set_deferred("polygon", points)
 	visual.polygon = points
 	collision.scale = Vector2.ONE * scale_aux
@@ -234,21 +272,11 @@ func _refresh_shape() -> void:
 	collision.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0
 	visual.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0
 	visual.color = data.color
-	#visual.texture = preload("res://resources/textures/curve_texture_01.tres")
 	if data.tilt_enabled:
-		if visual.material == null or visual.material.get_shader() == null:
-			var shader_mat: ShaderMaterial = ShaderMaterial.new()
-			shader_mat.shader = preload("res://shaders/tilt_shader.gdshader")
-			#shader_mat.shader = preload("res://shaders/shine_sweep.gdshader")
-			#shader_mat.set_shader_parameter("shine_color", Color.BLUE)
-			#shader_mat.set_shader_parameter("width", 0.16)
-			#shader_mat.set_shader_parameter("angle", 0.025)
-			#shader_mat.set_shader_parameter("progress", 0.0)
-			
-			visual.material = shader_mat
+		_apply_tilt(true)
 	else:
-		if visual.material != null and visual.material.get_shader() != null:
-			visual.material = null
+		_tilt = 0.0
+		_tilt_applied = 0.0
 	_apply_layers()
 
 
@@ -331,19 +359,25 @@ func _play_profile_stream(key: String) -> void:
 	player.finished.connect(func() -> void: player.queue_free())
 
 
-func _spawn_trail(dir: float) -> void:
-	if not is_instance_valid(self) or is_queued_for_deletion():
+## Leaves a fading copy of the current shape right behind this entity.
+func _spawn_trail() -> void:
+	var parent: Node = get_parent()
+	if parent == null or visual == null:
 		return
 	var ghost: Polygon2D = Polygon2D.new()
-	if visual != null:
-		ghost.polygon = visual.polygon
-		ghost.color = data.color
-		ghost.scale = visual.scale
-		ghost.position = global_position + Vector2(20, 0) * -sign(dir)
-	get_tree().current_scene.add_child(ghost)
+	ghost.polygon = visual.polygon
+	ghost.color = visual.color
+	# Not frozen with the rest of $Entities while a rescued ship flies home.
+	ghost.process_mode = Node.PROCESS_MODE_ALWAYS
+	parent.add_child(ghost)
+	# Draw it just behind this entity, not on top of everything.
+	parent.move_child(ghost, get_index())
+	# Same transform as the visual, so it lines up exactly (offset, scale, rotation).
+	ghost.global_transform = visual.global_transform
+	ghost.modulate.a = data.trail_alpha
 	var tween: Tween = ghost.create_tween()
-	tween.tween_property(ghost, ^"modulate:a", 0.0, 0.3)
-	tween.tween_callback(Callable(ghost.queue_free))
+	tween.tween_property(ghost, ^"modulate:a", 0.0, data.trail_lifetime).set_ease(Tween.EASE_OUT)
+	tween.tween_callback(ghost.queue_free)
 
 
 func _pulse_fire() -> void:
@@ -351,7 +385,7 @@ func _pulse_fire() -> void:
 		return
 	var pulse_tween: Tween = create_tween()
 	pulse_tween.tween_property(visual, ^"modulate", Color(2.0, 2.0, 2.0), 0.05)
-	pulse_tween.tween_property(visual, ^"modulate", data.color, 0.15)
+	pulse_tween.tween_property(visual, ^"modulate", Color.WHITE, 0.15)
 
 
 ## Plays the feedback of a shot: the sprite pulse, plus the camera shake when

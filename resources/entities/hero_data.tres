@@ -11,4 +11,5 @@ team = 1
 sound_profile = ExtResource("2_o44k2")
 tilt_enabled = true
 trail_enabled = true
+fire_pulse_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

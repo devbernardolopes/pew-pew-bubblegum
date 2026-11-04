@@ -78,7 +78,7 @@ func _physics_process(delta: float) -> void:
 		_place(_clamped_x(leader.global_position.x + dir * speed * delta))
 	for ship: Entity in ships:
 		if is_instance_valid(ship):
-			ship.drive(dir, wants_fire, delta)
+			ship.drive(wants_fire)
 
 
 func _exit_tree() -> void:
