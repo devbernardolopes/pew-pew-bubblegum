@@ -88,7 +88,7 @@ func _exit_tree() -> void:
 
 ## Adds a new ship at [param at] and returns it; null when the fleet is full.
 func spawn_ship(at: Vector2) -> Entity:
-	if ships.size() >= MAX_SHIPS:
+	if _reserved_slots() >= MAX_SHIPS:
 		return null
 	var ship: Entity = _create_ship(at)
 	if ship == null:
@@ -151,6 +151,12 @@ func free_slot_for(from_x: float) -> Vector2:
 	if right_fits and not left_fits:
 		return right
 	return left if absf(left.x - from_x) <= absf(right.x - from_x) else right
+
+
+## Whether a tractor beam may capture: false when two ships are in play or one
+## is flying home (a rescue in flight will make two).
+func allows_capture() -> bool:
+	return _reserved_slots() < MAX_SHIPS
 
 
 ## Whether a freed ship is still on its way home.

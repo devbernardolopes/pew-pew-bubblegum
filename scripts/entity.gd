@@ -100,18 +100,11 @@ func drive(dir: float, wants_fire: bool, delta: float) -> void:
 		if mat != null:
 			mat.set_shader_parameter("tilt_amount", dir)
 			mat.set_shader_parameter("glow_amount", clampf(absf(dir) * 2.0, 0.0, 1.0))
-			mat.set_shader_parameter("tilt_amount", dir)
-			#if mat.shader:
-				#if not mat.get_shader_parameter("progress") == null:
-					#var _progress: float = mat.get_shader_parameter("progress")
-					#mat.set_shader_parameter("progress", lerpf(_progress, 1.0, 1.0 * delta))
-					#print(_progress)
-					#print(delta)
 	if data.trail_enabled:
 		_trail_timer -= delta
 		if absf(dir) > 0.01 and _trail_timer <= 0.0:
 			_trail_timer = 0.06
-			_spawn_trail()
+			_spawn_trail(dir)
 	if wants_fire and weapon != null:
 		weapon.fire()
 
@@ -338,7 +331,7 @@ func _play_profile_stream(key: String) -> void:
 	player.finished.connect(func() -> void: player.queue_free())
 
 
-func _spawn_trail() -> void:
+func _spawn_trail(dir: float) -> void:
 	if not is_instance_valid(self) or is_queued_for_deletion():
 		return
 	var ghost: Polygon2D = Polygon2D.new()
@@ -346,8 +339,7 @@ func _spawn_trail() -> void:
 		ghost.polygon = visual.polygon
 		ghost.color = data.color
 		ghost.scale = visual.scale
-		var trail_dir: float = controller.get_direction_h() if controller != null else cos(rotation - PI / 2.0)
-		ghost.position = global_position + Vector2(20, 0) * -sign(trail_dir)
+		ghost.position = global_position + Vector2(20, 0) * -sign(dir)
 	get_tree().current_scene.add_child(ghost)
 	var tween: Tween = ghost.create_tween()
 	tween.tween_property(ghost, ^"modulate:a", 0.0, 0.3)

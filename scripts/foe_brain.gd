@@ -190,10 +190,19 @@ func _pick_dive_curve() -> Curve2D:
 	return usable.pick_random()
 
 
+func _fleet_allows_capture() -> bool:
+	var fleet: Fleet = get_tree().get_first_node_in_group(&"fleet") as Fleet
+	if fleet == null:
+		return true
+	return fleet.allows_capture()
+
+
 func _can_start_beam() -> bool:
 	if is_capture_in_progress():
 		return false
 	if _carry != Carry.NONE:
+		return false
+	if not _fleet_allows_capture():
 		return false
 	# The hero must exist and be capturable.
 	return _get_capturable_hero() != null
@@ -257,9 +266,13 @@ func _process_beam(delta: float) -> void:
 
 	# Phase: EXTENDING
 	if _beam_phase == BeamPhase.EXTENDING:
-		# Wait for fully_extended signal (handled in _on_beam_fully_extended).
 		# While extending, keep facing down.
 		_entity.rotation = PI
+		if not _fleet_allows_capture():
+			if _beam != null:
+				_beam.retract()
+			_beam_timer = 0.0
+			_beam_phase = BeamPhase.RETRACTING
 		return
 
 	# Phase: HOLDING
@@ -273,6 +286,13 @@ func _process_beam(delta: float) -> void:
 		var hero: Entity = null
 		if _beam != null:
 			hero = _beam.get_touching_hero()
+
+		if not _fleet_allows_capture():
+			_beam_timer = 0.0
+			_beam_phase = BeamPhase.RETRACTING
+			if _beam != null:
+				_beam.retract()
+			return
 
 		if hero != null:
 			# Capture succeeded.
@@ -495,7 +515,9 @@ func _return_ship(ship: Entity, from: Vector2) -> void:
 		ship.returning = false
 		ship.set_deferred("monitorable", true)
 		return
-	fleet.recruit(ship, from)
+	if not fleet.recruit(ship, from):
+		push_warning("FoeBrain: recruit() failed for freed ship; freeing it.")
+		ship.queue_free()
 
 
 ## Spawns the ship rescued from a committed capture and sends it home.
@@ -503,7 +525,9 @@ func _return_new_ship(from: Vector2) -> void:
 	var fleet: Fleet = get_tree().get_first_node_in_group(&"fleet") as Fleet
 	if fleet == null:
 		return
-	fleet.recruit_new(from)
+	var new_ship: Entity = fleet.recruit_new(from)
+	if new_ship == null:
+		push_warning("FoeBrain: recruit_new() returned null; no rescue ship created.")
 
 
 func _create_rider() -> void:

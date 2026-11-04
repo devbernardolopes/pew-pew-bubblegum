@@ -71,8 +71,10 @@ func _create_fleet() -> void:
 
 
 func _on_fleet_member_added(ship: Entity) -> void:
-	ship.capture_started.connect(_on_ship_capture_started)
-	ship.capture_committed.connect(_on_ship_capture_committed)
+	if not ship.capture_started.is_connected(_on_ship_capture_started):
+		ship.capture_started.connect(_on_ship_capture_started)
+	if not ship.capture_committed.is_connected(_on_ship_capture_committed):
+		ship.capture_committed.connect(_on_ship_capture_committed)
 	dive_director.enabled = true
 
 
