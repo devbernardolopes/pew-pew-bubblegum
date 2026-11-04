@@ -58,6 +58,8 @@ var _beam: TractorBeam = null
 var _beam_timer: float = 0.0
 ## Rider visual: a red-tinted polygon showing the captured hero docked on the foe.
 var _rider: Polygon2D = null
+## The scale of the hero at capture time, used for rider positioning after the hero is freed.
+var _rider_hero_scale: float = 0.25
 
 
 static func is_capture_in_progress() -> bool:
@@ -77,16 +79,10 @@ func _ready() -> void:
 		_beam = preload("res://scripts/tractor_beam.gd").new() as TractorBeam
 		_beam.name = "TractorBeam"
 		_beam.visible = false
-		if _entity != null:
-			var muzzle_offset: Vector2 = Vector2.ZERO
-			for child in _entity.get_children():
-				if child is Weapon:
-					muzzle_offset = (child as Weapon).muzzle_offset
-			_beam.position = Vector2.UP * Helpers.ENTITY_HALF_WIDTH * _entity.scale_aux + muzzle_offset
-			if _entity.data != null:
-				_beam.grow_duration = float(_entity.data.tractor_beam_grow_duration)
-				_beam.cone_height = float(_entity.data.tractor_beam_height)
-				_beam.cone_width = float(_entity.data.tractor_beam_width)
+		if _entity.data != null:
+			_beam.grow_duration = float(_entity.data.tractor_beam_grow_duration)
+			_beam.cone_height = float(_entity.data.tractor_beam_height)
+			_beam.cone_width = float(_entity.data.tractor_beam_width)
 		_entity.add_child.call_deferred(_beam)
 		_beam.fully_extended.connect(_on_beam_fully_extended)
 		_beam.retracted.connect(_on_beam_retracted)
@@ -104,38 +100,13 @@ func _physics_process(delta: float) -> void:
 			_capturer = null
 		return
 
-	# Update rider position whenever we are carrying, in any state.
-	if _carry != Carry.NONE and _captured_hero != null and is_instance_valid(_captured_hero):
-		if _rider == null:
-			_create_rider()
+	# Update rider position whenever we are carrying.
+	if _carry != Carry.NONE:
 		if _rider != null:
-			# Rider is top-level and follows the foe.
-			var hero_scale: float = _captured_hero.scale_aux
+			var hero_scale: float = _rider_hero_scale
 			var foe_scale: float = _entity.scale_aux
-			# Distance between the centers when docked on the back.
 			var d: float = Helpers.ENTITY_HALF_WIDTH * (foe_scale + hero_scale) + 2.0
-			# With the foe facing down (PI), the back is straight up (local UP rotated by PI = world UP).
-			# Wait: rotation PI means the nose points down (positive y). The back is opposite: negative y locally.
-			# So the rider should sit above the foe (negative world y when rotation = PI).
-			# Actually, the prompt says: "with the foe at rotation = PI, the rider sits directly above it, nose up".
-			# That means rotation = PI + PI = 0 for the rider? Let's re-read...
-			# "The rider is upright while the foe faces down in formation and rotates with the foe during dives,
-			# i.e. it stays docked on the foe's back."
-			# "Place it at the muzzle: local Vector2.UP * ..." for the beam. The rider should follow the foe.
-			# With the foe at rotation PI, the back is in the direction of rotation + PI = 0 (world UP).
-			# So rider position = foe.to_global(Vector2.UP * d) when rotation=PI? No.
-			# If the rider follows the foe, and the foe's back is opposite to its nose, then:
-			# rider_world_pos = foe.global_position + Vector2.UP.rotated(foe.rotation + PI) * d
-			# But with rotation=PI: UP.rotated(2*PI) = UP = (0, -1) = world UP.
-			# That puts the rider above the foe. But the prompt says "pulled up above it" during the pull,
-			# and then "carried back to formation" with the rider above.
-			# Actually, looking at the old description: "pulled up above it", then "carried back".
-			# The rider should be above the foe (negative y when foe is facing down).
-			# But wait: the prompt says for rider placement: "place it at foe.to_global(Vector2(0, d)) with rotation = foe.rotation + PI".
-			# Let me use that exact formula.
-			var rider_offset: Vector2 = Vector2(0.0, d)
-			var rider_world_pos: Vector2 = _entity.to_global(rider_offset)
-			_rider.global_position = rider_world_pos
+			_rider.global_position = _entity.to_global(Vector2(0.0, d))
 			_rider.rotation = _entity.rotation + PI
 
 	match state:
@@ -178,8 +149,6 @@ func setup(curve: Curve2D, mirror: bool, slot: Marker2D, entry_delay: float, div
 
 func dive(mirror: bool) -> bool:
 	if state != State.FORMATION or _slot == null or _entity == null:
-		return false
-	if _carry != Carry.NONE:
 		return false
 	var curve: Curve2D = _pick_dive_curve()
 	if curve == null:
@@ -243,6 +212,8 @@ func _can_start_beam() -> bool:
 
 
 func _start_beam() -> void:
+	if is_capture_in_progress():
+		return
 	_beam_planned = false
 	_capturer = self
 	_beam_phase = BeamPhase.TURNING
@@ -250,8 +221,6 @@ func _start_beam() -> void:
 	_entity.score_multiplier = 1
 	dive_finished.emit()
 	state = State.TRACTOR_BEAM
-	if _beam != null:
-		_beam.extend()
 
 
 func _on_beam_fully_extended() -> void:
@@ -292,6 +261,8 @@ func _process_beam(delta: float) -> void:
 		if absf(angle_difference(_entity.rotation, PI)) < SNAP_ANGLE:
 			_entity.rotation = PI
 			_beam_phase = BeamPhase.EXTENDING
+			if _entity != null and _entity.data != null and _entity.data.sound_profile != null:
+				_entity.play_sound("tractor_beam_grow")
 			if _beam != null:
 				_beam.extend()
 		return
@@ -320,13 +291,10 @@ func _process_beam(delta: float) -> void:
 			_captured_hero = hero
 			_carry = Carry.PENDING
 			hero.begin_capture()
-			if hero.data != null and hero.data.sound_profile != null:
-				hero.play_sound("tractor_beam_capture")
+			if _entity != null and _entity.data != null and _entity.data.sound_profile != null:
+				_entity.play_sound("tractor_beam_capture")
 			_beam_timer = 0.0
 			_beam_phase = BeamPhase.ALIGNING
-			# Retract the cone; the hero is frozen.
-			if _beam != null:
-				_beam.retract()
 			return
 
 		if _beam_timer >= duration:
@@ -379,6 +347,7 @@ func _process_beam(delta: float) -> void:
 		if _captured_hero.global_position.distance_to(target_pos) < 2.0:
 			_captured_hero.global_position = target_pos
 			_captured_hero.park_captured()
+			_create_rider()
 			# Retract the cone.
 			_beam_timer = 0.0
 			_beam_phase = BeamPhase.RETRACTING
@@ -399,7 +368,8 @@ func _process_beam(delta: float) -> void:
 			else:
 				# No capture; return to formation.
 				state = State.SETTLING
-				_capturer = null
+				if _capturer == self:
+					_capturer = null
 		return
 
 
@@ -474,9 +444,11 @@ func _process_settling(delta: float) -> void:
 			_carry = Carry.COMMITTED
 			if _captured_hero != null and is_instance_valid(_captured_hero):
 				_captured_hero.commit_capture()
-			_capturer = null
+			if _capturer == self:
+				_capturer = null
 		else:
-			_capturer = null
+			if _capturer == self:
+				_capturer = null
 		state = State.FORMATION
 		entered_formation.emit()
 
@@ -500,10 +472,12 @@ func _abort_beam_no_capture() -> void:
 		_beam.retract()
 	_carry = Carry.NONE
 	_captured_hero = null
-	_capturer = null
+	if _capturer == self:
+		_capturer = null
+	_free_rider()
 
 
-func _on_entity_died() -> void:
+func _on_entity_died(entity_arg: Entity = null) -> void:
 	if _capturer == self:
 		_capturer = null
 
@@ -518,6 +492,7 @@ func _on_entity_died() -> void:
 			_captured_hero.release_from_capture(rider_world_pos)
 		_carry = Carry.NONE
 		_captured_hero = null
+		_free_rider()
 
 	if _carry == Carry.COMMITTED:
 		# Carrier killed after commit: award rescue bonus and emit signal.
@@ -535,20 +510,25 @@ func _on_entity_died() -> void:
 			captured_ship_rescued.emit(rider_world_pos)
 		_carry = Carry.NONE
 		_captured_hero = null
+		_free_rider()
 
 
 func _create_rider() -> void:
 	if _captured_hero == null or not is_instance_valid(_captured_hero) or _captured_hero.data == null:
 		return
+	_rider_hero_scale = _captured_hero.scale_aux
 	_rider = Polygon2D.new()
 	_rider.top_level = true
 	_rider.color = TractorBeam.CAPTURED_SHIP_COLOR
-	_rider.polygon = Helpers.get_polygon(_captured_hero.data.visual)
-	_rider.scale = Vector2.ONE * _captured_hero.scale_aux
-	# Center the polygon like the entity's visual.
-	_rider.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * _captured_hero.scale_aux * -1.0
+	var points: PackedVector2Array = Helpers.get_polygon(_captured_hero.data.visual)
+	# Center polygon around origin so it pivots at its centre like the entity.
+	var offset: Vector2 = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * -1.0
+	for i in range(points.size()):
+		points[i] += offset
+	_rider.polygon = points
+	_rider.scale = Vector2.ONE * _rider_hero_scale
 	# Place initially at the rider position (above the foe).
-	var hero_scale: float = _captured_hero.scale_aux
+	var hero_scale: float = _rider_hero_scale
 	var foe_scale: float = _entity.scale_aux
 	var d: float = Helpers.ENTITY_HALF_WIDTH * (foe_scale + hero_scale) + 2.0
 	_rider.global_position = _entity.to_global(Vector2(0.0, d))
@@ -560,6 +540,12 @@ func _free_rider() -> void:
 	if _rider != null:
 		_rider.queue_free()
 		_rider = null
+
+
+func _exit_tree() -> void:
+	if _capturer == self:
+		_capturer = null
+	_free_rider()
 
 
 func _follow_curve(curve: Curve2D, xform: Transform2D, speed: float, delta: float) -> bool:

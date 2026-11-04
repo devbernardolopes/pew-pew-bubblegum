@@ -171,8 +171,7 @@ func die() -> void:
 		EffectsScript.screen_shake(1.0, 0.3)
 	set_deferred(&"monitorable", false)
 	set_deferred(&"monitoring", false)
-	died.emit()
-	#died.emit(self)
+	died.emit(self)
 	queue_free()
 
 

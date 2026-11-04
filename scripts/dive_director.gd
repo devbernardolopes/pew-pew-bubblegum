@@ -40,6 +40,8 @@ func _physics_process(delta: float) -> void:
 		match brain.state:
 			FoeBrain.State.DIVING:
 				divers += 1
+			FoeBrain.State.TRACTOR_BEAM:
+				divers += 1
 			FoeBrain.State.FORMATION:
 				if brain.has_dive_curves():
 					candidates.append(brain)

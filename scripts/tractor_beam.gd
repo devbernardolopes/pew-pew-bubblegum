@@ -47,6 +47,16 @@ func _ready() -> void:
 
 	_collision = CollisionPolygon2D.new()
 	_collision.disabled = true
+	# Build full-size collision polygon once; only disable/enable toggles it.
+	var top_w: float = 4.0
+	var bot_w: float = cone_width
+	var polygon_points: PackedVector2Array = [
+		Vector2(-top_w / 2.0, 0.0),
+		Vector2(top_w / 2.0, 0.0),
+		Vector2(bot_w / 2.0, -cone_height),
+		Vector2(-bot_w / 2.0, -cone_height),
+	]
+	_collision.polygon = polygon_points
 	add_child(_collision)
 
 	_refresh_polygons(0.0)
@@ -136,8 +146,8 @@ func _refresh_polygons(progress: float) -> void:
 	var polygon_points: PackedVector2Array = [
 		Vector2(-top_w / 2.0, 0.0),
 		Vector2(top_w / 2.0, 0.0),
-		Vector2(bot_w / 2.0, height),
-		Vector2(-bot_w / 2.0, height),
+		Vector2(bot_w / 2.0, -height),
+		Vector2(-bot_w / 2.0, -height),
 	]
 	_visual.polygon = polygon_points
-	_collision.polygon = polygon_points
+	# Collision polygon stays full-size; only _collision.disabled changes.
