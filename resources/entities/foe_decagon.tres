@@ -12,7 +12,6 @@ score_value = 750
 explosion_scale = 0.35
 sound_profile = ExtResource("2_khctg")
 tilt_enabled = true
-fire_pulse_enabled = true
 tractor_beam_enabled = true
 tractor_beam_chance = 0.1
 tractor_beam_height = 192.0

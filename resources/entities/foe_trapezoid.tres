@@ -13,5 +13,4 @@ base_speed = 300.0
 score_value = 200
 sound_profile = ExtResource("2_urp5c")
 tilt_enabled = true
-fire_pulse_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"
