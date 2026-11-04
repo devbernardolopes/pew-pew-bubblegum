@@ -76,6 +76,28 @@ func _ready() -> void:
 		area_entered.connect(_on_area_entered)
 
 
+#func _process(delta: float) -> void:
+	#if not Engine.is_editor_hint():
+		#if not data:
+			#return
+		#if not data.god_mode and data.god_mode_effect:
+			#return
+		#if not visual:
+			#return
+		#if not visual.texture:
+			#return
+		#if not visual.material:
+			#return
+		#if not visual.material is ShaderMaterial:
+			#return
+		#var _shader_material: ShaderMaterial = (visual.material as ShaderMaterial)
+		#var _horizontal_influence_speed: float = 0.2
+		#var _horizontal_influence: float = _shader_material.get_shader_parameter("horizontal_influence")
+		#var _new_horiontal_influence: float = clampf(lerpf(_horizontal_influence, 1.0, _horizontal_influence_speed * delta), 0.5, 1.0)
+		#_shader_material.set_shader_parameter("horizontal_influence", _new_horiontal_influence)
+		#print(_horizontal_influence, " -> ", _new_horiontal_influence)
+
+
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
@@ -277,6 +299,17 @@ func _refresh_shape() -> void:
 	else:
 		_tilt = 0.0
 		_tilt_applied = 0.0
+	if data.god_mode and data.god_mode_effect:
+		var _shader_material: ShaderMaterial = ShaderMaterial.new()
+		var _shader: Shader = preload("res://shaders/moving_rainbow_gradient.gdshader")
+		visual.texture = preload("res://resources/textures/gradient_texture_2d_01.tres")
+		#if not visual.material:
+		_shader_material.shader = _shader
+		_shader_material.set_shader_parameter("strength", 0.5)
+		_shader_material.set_shader_parameter("speed", 0.5)
+		_shader_material.set_shader_parameter("angle", 0.025)
+		visual.material = _shader_material
+		#visual.texture = preload("res://resources/textures/curve_texture_01.tres")
 	_apply_layers()
 
 

@@ -8,6 +8,7 @@ script = ExtResource("1_xey27")
 id = &"foe_h"
 visual = 108
 color = Color(1, 0, 1, 1)
+score_value = 900
 sound_profile = ExtResource("2_7qewd")
 tilt_enabled = true
 trail_enabled = true

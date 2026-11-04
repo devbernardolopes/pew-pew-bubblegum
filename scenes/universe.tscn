@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://s1v84be4gvx6" path="res://scripts/universe.gd" id="5_univ"]
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="7_5fwve"]
 [ext_resource type="Resource" uid="uid://dyhvx11vswr2s" path="res://resources/stages/stage_000.tres" id="7_7f6e7"]
+[ext_resource type="Resource" uid="uid://cp4hp6a0pqbli" path="res://resources/stages/stage_alpha.tres" id="7_kk3rw"]
 [ext_resource type="Resource" uid="uid://c5krmfh35fnn8" path="res://resources/stages/stage_002.tres" id="9_yb76g"]
 [ext_resource type="Resource" uid="uid://r12gefnka2ch" path="res://resources/stages/stage_004.tres" id="10_7f6e7"]
 [ext_resource type="Resource" uid="uid://doyg4wjpqbbh2" path="res://resources/stages/stage_003.tres" id="10_h8wxb"]
@@ -15,6 +16,20 @@
 [ext_resource type="Script" uid="uid://dug6ksugj1bnx" path="res://scripts/stage_director.gd" id="13_stage_dir"]
 [ext_resource type="Shader" uid="uid://bfqoilw60w5vk" path="res://shaders/vhs_and_crt_monitor.gdshader" id="13_yanup"]
 [ext_resource type="Script" uid="uid://d4bwsg2t7ggi8" path="res://scripts/starfield_layer.gd" id="14_starfield"]
+[ext_resource type="Shader" uid="uid://bocf4h02wlgl2" path="res://shaders/synthwave_grid.gdshader" id="16_fbuf2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qvluj"]
+shader = ExtResource("16_fbuf2")
+shader_parameter/line_color = Color(0.039, 0.071, 0.961, 1)
+shader_parameter/vanishing_point = Vector2(0.5, 0.15)
+shader_parameter/depth_gradient = 5.0
+shader_parameter/v_line_density = 50.0
+shader_parameter/v_line_sin_cutoff = 0.9
+shader_parameter/h_line_density = 50.0
+shader_parameter/h_line_sin_cutoff = 0.9
+shader_parameter/h_line_scroll_rate = -0.02
+shader_parameter/horizon_y_uv = 0.25
+shader_parameter/fade_horizon_y_uv = 0.75
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m7uww"]
 shader = ExtResource("11_7viwd")
@@ -112,7 +127,7 @@ metadata/_edit_lock_ = true
 
 [node name="StageDirector" type="Node" parent="." unique_id=258270816]
 script = ExtResource("13_stage_dir")
-stages = Array[ExtResource("7_5fwve")]([ExtResource("7_7f6e7"), ExtResource("12_stage"), ExtResource("9_yb76g"), ExtResource("10_h8wxb"), ExtResource("10_7f6e7")])
+stages = Array[ExtResource("7_5fwve")]([ExtResource("7_kk3rw"), ExtResource("7_7f6e7"), ExtResource("12_stage"), ExtResource("9_yb76g"), ExtResource("10_h8wxb"), ExtResource("10_7f6e7")])
 
 [node name="HeroSpawn" type="Marker2D" parent="." unique_id=258270815]
 position = Vector2(576, 576)
@@ -123,6 +138,18 @@ anchor_mode = 3
 [node name="Effects" type="Node2D" parent="." unique_id=1410065406 groups=["effects"]]
 
 [node name="Projectiles" type="Node2D" parent="." unique_id=1480221933 groups=["projectiles"]]
+
+[node name="Background" type="CanvasLayer" parent="." unique_id=1712992530]
+layer = -1
+
+[node name="SynthwaveGrid" type="ColorRect" parent="Background" unique_id=1024442840]
+visible = false
+material = SubResource("ShaderMaterial_qvluj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Hud" type="CanvasLayer" parent="." unique_id=1439519253]
 script = ExtResource("1_h4s8v")
@@ -147,6 +174,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LightweightCrt" type="ColorRect" parent="Filters" unique_id=845367261]
+visible = false
 material = SubResource("ShaderMaterial_7tiev")
 anchors_preset = 15
 anchor_right = 1.0

@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1_nakvr")
-columns = 10
-rows = 6
+columns = 16
+rows = 8
 spacing = Vector2(64, 52)
 sway_amplitude = 48.0
-sway_speed = 1.4
+sway_speed = 4.0
 metadata/_custom_type_script = "uid://cspnel4tvson"

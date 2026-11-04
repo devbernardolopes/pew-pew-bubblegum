@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://bmqclkvlh8sml"]
+
+[ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="1_igr2y"]
+
+[resource]
+script = ExtResource("1_igr2y")
+columns = 4
+rows = 4
+spacing = Vector2(128, 128)
+sway_amplitude = 128.0
+sway_speed = 2.75
+metadata/_custom_type_script = "uid://cspnel4tvson"

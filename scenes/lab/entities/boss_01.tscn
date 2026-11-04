@@ -1,8 +1,17 @@
 [gd_scene format=3 uid="uid://lkowx1emc0jn"]
 
+[ext_resource type="Shader" uid="uid://1n6qffudl02k" path="res://shaders/linear_rainbown.gdshader" id="1_cx4y1"]
 [ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_p5j01"]
+[ext_resource type="Texture2D" uid="uid://hymwfwgt2t3a" path="res://resources/textures/curve_texture_01.tres" id="2_acgh0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fbuf2"]
+shader = ExtResource("1_cx4y1")
+shader_parameter/horizontal_influence = 0.5
+shader_parameter/vertical_influence = 0.0
 
 [node name="Boss01" type="Polygon2D" unique_id=385358697]
+material = SubResource("ShaderMaterial_fbuf2")
 color = Color(0.8611975, 0.112640165, 0.25397617, 1)
+texture = ExtResource("2_acgh0")
 polygon = PackedVector2Array(24, 64, 72, 0, 88, 32, 144, 0, 144.1105, 15.779022, 128, 48, 144, 48, 160, 32, 224, 32, 240, 48, 256, 48, 232, 16, 232, 0, 296, 32, 312, 0, 360, 64, 384, 128, 352, 184, 384, 224, 320, 320, 320, 256, 304, 224, 248, 240, 224, 296, 200, 200, 192, 192, 184, 200, 160, 296, 136, 240, 80, 224, 64, 256, 64, 320, 0, 224, 32, 184, 0, 128)
 script = ExtResource("1_p5j01")
