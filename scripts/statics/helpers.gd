@@ -1,15 +1,16 @@
 class_name Helpers
 
 enum VISUAL {
-	BULLET,
-	TRIANGLE,
-	DOUBLE_SQUARE,
-	DECAGON,
-	KITE,
-	TRAPEZOID,
-	STAR,
-	BOW_TIE,
-	TURRET,
+	BULLET = 10,
+	TRIANGLE = 100,
+	DOUBLE_SQUARE = 101,
+	DECAGON = 102,
+	KITE = 103,
+	TRAPEZOID = 104,
+	STAR = 105,
+	BOW_TIE = 106,
+	TURRET = 107,
+	H = 108,
 }
 
 enum TEAM {
@@ -49,9 +50,11 @@ const DECAGON_POLYGON: PackedVector2Array = [
 ]
 
 const KITE_POLYGON: PackedVector2Array = [
-	Vector2(0.0, 104.0),
+	Vector2(0.0, 88.0),
+	Vector2(32.0, 64.0),
 	Vector2(64.0, 0.0),
-	Vector2(128.0, 104.0),
+	Vector2(96.0, 64.0),
+	Vector2(128.0, 88.0),
 	Vector2(64.0, 128.0),
 ]
 
@@ -112,6 +115,20 @@ const TURRET_POLYGON: PackedVector2Array = [
 	Vector2(16.0, 128.0),
 ]
 
+const H_POLYGON: PackedVector2Array = [
+	Vector2(24.0, 8.0),
+	Vector2(0.0, 128.0),
+	Vector2(40.0, 128.0),
+	Vector2(40.0, 88.0),
+	Vector2(88.0, 88.0),
+	Vector2(88.0, 128.0),
+	Vector2(128.0, 128.0),
+	Vector2(104.0, 8.0),
+	Vector2(88.0, 0.0),
+	Vector2(88.0, 48.0),
+	Vector2(40.0, 48.0),
+	Vector2(40.0, 0.0),
+]
 
 const ENTITY_WIDTH: float = 128.0
 const ENTITY_HALF_WIDTH: float = ENTITY_WIDTH / 2.0
@@ -145,6 +162,8 @@ static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array
 			return BOW_TIE_POLYGON.duplicate()
 		VISUAL.TURRET:
 			return TURRET_POLYGON.duplicate()
+		VISUAL.H:
+			return H_POLYGON.duplicate()
 	return result
 
 

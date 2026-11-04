@@ -1,6 +1,26 @@
 [gd_scene format=3 uid="uid://b6bog6eo5ic8c"]
 
+[ext_resource type="Shader" uid="uid://bey10umfk731j" path="res://shaders/shine_sweep.gdshader" id="1_paplq"]
+[ext_resource type="Texture2D" uid="uid://hymwfwgt2t3a" path="res://resources/textures/curve_texture_01.tres" id="2_paplq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_khctg"]
+shader = ExtResource("1_paplq")
+shader_parameter/shine_color = Color(0, 0, 1, 1)
+shader_parameter/progress = 0.55
+shader_parameter/width = 0.16
+shader_parameter/angle = 0.02500002331040995
+shader_parameter/intensity = 1.1
+shader_parameter/bands = 1.0
+shader_parameter/band_gap = 0.12
+shader_parameter/band_falloff = 0.45
+shader_parameter/hardness = 0.0
+shader_parameter/tail_color = Color(1, 1, 1, 1)
+shader_parameter/auto_speed = 0.0
+shader_parameter/auto_pause = 1.0
+
 [node name="Triangle" type="Polygon2D" unique_id=87337356]
-color = Color(1, 1, 1, 0.5019608)
+material = SubResource("ShaderMaterial_khctg")
+color = Color(1, 0.0627451, 0.9411765, 1)
+texture = ExtResource("2_paplq")
 polygon = PackedVector2Array(64, 0, 0, 128, 128, 128)
 uv = PackedVector2Array(16, 0, 0, 32, 32, 32)

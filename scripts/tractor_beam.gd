@@ -40,7 +40,7 @@ func _ready() -> void:
 	_visual = Polygon2D.new()
 	_visual.show_behind_parent = true
 	if parent != null:
-		_visual.color = Color(parent.color.r, parent.color.g, parent.color.b, 0.25)
+		_visual.color = Color(parent.data.color.r, parent.data.color.g, parent.data.color.b, 0.25)
 	else:
 		_visual.color = Color(1.0, 1.0, 1.0, 0.25)
 	add_child(_visual)

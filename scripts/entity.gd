@@ -20,13 +20,6 @@ signal capture_released(entity: Entity)
 		data = v
 		_refresh_shape()
 
-## The Color used to fill the Polygon2D of this Entity instance
-@export var color: Color = Color.WHITE:
-	set(v):
-		color = v
-		if visual:
-			visual.color = v
-
 ## A little helper so that I can set [param scale] quickly in the Inspector
 @export var scale_aux: float = 0.25:
 	set(v):
@@ -36,6 +29,7 @@ signal capture_released(entity: Entity)
 @export var speed_multiplier: float = 1.0
 
 @export_tool_button("Center") var center_button: Callable = _center_entity
+@export_tool_button("Refresh Visual") var refresh_visual_button: Callable = _refresh_shape
 
 var collision: CollisionPolygon2D = null
 var visual: Polygon2D = null
@@ -106,6 +100,13 @@ func drive(dir: float, wants_fire: bool, delta: float) -> void:
 		if mat != null:
 			mat.set_shader_parameter("tilt_amount", dir)
 			mat.set_shader_parameter("glow_amount", clampf(absf(dir) * 2.0, 0.0, 1.0))
+			mat.set_shader_parameter("tilt_amount", dir)
+			#if mat.shader:
+				#if not mat.get_shader_parameter("progress") == null:
+					#var _progress: float = mat.get_shader_parameter("progress")
+					#mat.set_shader_parameter("progress", lerpf(_progress, 1.0, 1.0 * delta))
+					#print(_progress)
+					#print(delta)
 	if data.trail_enabled:
 		_trail_timer -= delta
 		if absf(dir) > 0.01 and _trail_timer <= 0.0:
@@ -113,7 +114,6 @@ func drive(dir: float, wants_fire: bool, delta: float) -> void:
 			_spawn_trail()
 	if wants_fire and weapon != null:
 		weapon.fire()
-
 
 ## Sets [member health] back to the maximum of [member data]. Use it when
 ## [member data] is assigned after the Entity entered the tree.
@@ -146,7 +146,7 @@ func take_damage(amount: int) -> void:
 			visual.color = Color.WHITE
 			var flash_tween: Tween = create_tween()
 			flash_tween.tween_interval(0.08)
-			flash_tween.tween_property(visual, ^"color", color, 0.0)
+			flash_tween.tween_property(visual, ^"color", data.color, 0.0)
 	if health <= 0:
 		die()
 	else:
@@ -165,7 +165,7 @@ func die() -> void:
 	var explosion_scale: float = 1.0
 	if data != null:
 		explosion_scale = data.explosion_scale
-	EffectsScript.explode(data.visual, scale_aux, global_position, color, explosion_scale)
+	EffectsScript.explode(data.visual, scale_aux, global_position, data.color, explosion_scale)
 	# The popup and the score are awarded here so that every way of dying pays
 	# out once: bullets, ramming, or anything added later.
 	if data != null and data.score_value > 0:
@@ -240,11 +240,18 @@ func _refresh_shape() -> void:
 	# the Entity pivots around the center of its shape.
 	collision.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0
 	visual.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0
-	visual.color = color
+	visual.color = data.color
+	#visual.texture = preload("res://resources/textures/curve_texture_01.tres")
 	if data.tilt_enabled:
 		if visual.material == null or visual.material.get_shader() == null:
 			var shader_mat: ShaderMaterial = ShaderMaterial.new()
 			shader_mat.shader = preload("res://shaders/tilt_shader.gdshader")
+			#shader_mat.shader = preload("res://shaders/shine_sweep.gdshader")
+			#shader_mat.set_shader_parameter("shine_color", Color.BLUE)
+			#shader_mat.set_shader_parameter("width", 0.16)
+			#shader_mat.set_shader_parameter("angle", 0.025)
+			#shader_mat.set_shader_parameter("progress", 0.0)
+			
 			visual.material = shader_mat
 	else:
 		if visual.material != null and visual.material.get_shader() != null:
@@ -337,7 +344,7 @@ func _spawn_trail() -> void:
 	var ghost: Polygon2D = Polygon2D.new()
 	if visual != null:
 		ghost.polygon = visual.polygon
-		ghost.color = color
+		ghost.color = data.color
 		ghost.scale = visual.scale
 		var trail_dir: float = controller.get_direction_h() if controller != null else cos(rotation - PI / 2.0)
 		ghost.position = global_position + Vector2(20, 0) * -sign(trail_dir)
@@ -352,7 +359,7 @@ func _pulse_fire() -> void:
 		return
 	var pulse_tween: Tween = create_tween()
 	pulse_tween.tween_property(visual, ^"modulate", Color(2.0, 2.0, 2.0), 0.05)
-	pulse_tween.tween_property(visual, ^"modulate", color, 0.15)
+	pulse_tween.tween_property(visual, ^"modulate", data.color, 0.15)
 
 
 ## Plays the feedback of a shot: the sprite pulse, plus the camera shake when

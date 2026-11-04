@@ -4,5 +4,5 @@
 
 [node name="Kite" type="Polygon2D" unique_id=652061006]
 color = Color(0.73333335, 0.09803922, 0.1882353, 1)
-polygon = PackedVector2Array(0, 104, 64, 0, 128, 104, 64, 128)
+polygon = PackedVector2Array(0, 88, 32, 64, 64, 0, 96, 64, 128, 88, 64, 128)
 script = ExtResource("1_u6fek")

@@ -41,7 +41,7 @@ func fire(direction: Vector2 = Vector2.ZERO) -> bool:
 	if direction != Vector2.ZERO:
 		shot_direction = direction.normalized()
 	projectile.launch(projectile_data, _entity.data.team, _entity, nose, shot_direction)
-	projectile.set_color(_entity.color)
+	projectile.set_color(_entity.data.color)
 	_entity.play_fire_feedback()
 	_in_flight += 1
 	projectile.tree_exited.connect(_on_projectile_gone)

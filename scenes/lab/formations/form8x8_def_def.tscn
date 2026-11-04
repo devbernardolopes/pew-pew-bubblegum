@@ -1,0 +1,173 @@
+[gd_scene format=3 uid="uid://h7pnoh7kosnb"]
+
+[node name="Form8x8DefDef" type="GridContainer" unique_id=12661916]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -424.0
+offset_right = 424.0
+offset_bottom = 480.0
+grow_horizontal = 2
+theme_override_constants/h_separation = 48
+theme_override_constants/v_separation = 40
+columns = 8
+
+[node name="Panel" type="Panel" parent="." unique_id=1293987260]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel2" type="Panel" parent="." unique_id=1042749013]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel3" type="Panel" parent="." unique_id=1549913631]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel4" type="Panel" parent="." unique_id=1986894342]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel5" type="Panel" parent="." unique_id=2070095149]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel6" type="Panel" parent="." unique_id=2143041525]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel7" type="Panel" parent="." unique_id=1696368615]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel8" type="Panel" parent="." unique_id=49776808]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel9" type="Panel" parent="." unique_id=934054764]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel10" type="Panel" parent="." unique_id=253177151]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel11" type="Panel" parent="." unique_id=1169580793]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel12" type="Panel" parent="." unique_id=1147990165]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel13" type="Panel" parent="." unique_id=1873354655]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel14" type="Panel" parent="." unique_id=1182568750]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel15" type="Panel" parent="." unique_id=1998474372]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel16" type="Panel" parent="." unique_id=603788977]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel17" type="Panel" parent="." unique_id=1936423391]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel18" type="Panel" parent="." unique_id=1195997700]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel19" type="Panel" parent="." unique_id=1611768547]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel20" type="Panel" parent="." unique_id=1909437352]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel21" type="Panel" parent="." unique_id=1539099295]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel22" type="Panel" parent="." unique_id=601644525]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel23" type="Panel" parent="." unique_id=1841009087]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel24" type="Panel" parent="." unique_id=1340030507]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel25" type="Panel" parent="." unique_id=808299341]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel26" type="Panel" parent="." unique_id=2041870166]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel27" type="Panel" parent="." unique_id=1702609303]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel28" type="Panel" parent="." unique_id=24359401]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel29" type="Panel" parent="." unique_id=1722228187]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel30" type="Panel" parent="." unique_id=988525212]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel31" type="Panel" parent="." unique_id=712545910]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel32" type="Panel" parent="." unique_id=267721534]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel33" type="Panel" parent="." unique_id=218321152]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel34" type="Panel" parent="." unique_id=1443093314]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel35" type="Panel" parent="." unique_id=1291543333]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel36" type="Panel" parent="." unique_id=1292636191]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel37" type="Panel" parent="." unique_id=1453421374]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel38" type="Panel" parent="." unique_id=1387307331]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel39" type="Panel" parent="." unique_id=624307651]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Panel40" type="Panel" parent="." unique_id=2080445416]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2

@@ -6,9 +6,11 @@
 [resource]
 script = ExtResource("1_ukkyd")
 id = &"foe_kite"
-visual = 4
+visual = 103
+color = Color(1, 0.19215687, 0.19215687, 1)
 base_speed = 352.0
 score_value = 350
 sound_profile = ExtResource("2_h65c1")
+tilt_enabled = true
 fire_pulse_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

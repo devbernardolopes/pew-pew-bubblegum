@@ -6,8 +6,10 @@
 [resource]
 script = ExtResource("1_m5att")
 id = &"foe_bow_tie"
-visual = 7
+visual = 106
+color = Color(1, 0.37254903, 0.12156863, 1)
 max_health = 2
 score_value = 1250
 sound_profile = ExtResource("2_ov2ad")
+tilt_enabled = true
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

@@ -147,6 +147,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LightweightCrt" type="ColorRect" parent="Filters" unique_id=845367261]
+visible = false
 material = SubResource("ShaderMaterial_7tiev")
 anchors_preset = 15
 anchor_right = 1.0

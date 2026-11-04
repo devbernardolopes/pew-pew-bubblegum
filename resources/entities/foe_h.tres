@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://ba4d3n41cdll7"]
+
+[ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_xey27"]
+[ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="2_7qewd"]
+
+[resource]
+script = ExtResource("1_xey27")
+id = &"foe_h"
+visual = 108
+color = Color(1, 0, 1, 1)
+sound_profile = ExtResource("2_7qewd")
+tilt_enabled = true
+fire_pulse_enabled = true
+metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

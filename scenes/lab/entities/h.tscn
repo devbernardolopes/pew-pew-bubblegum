@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bwbaclwiarxgq"]
+
+[ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_jjxke"]
+
+[node name="H" type="Polygon2D" unique_id=343860181]
+color = Color(1, 0, 1, 1)
+polygon = PackedVector2Array(24, 8, 0, 128, 40, 128, 40, 88, 88, 88, 88, 128, 128, 128, 104, 8, 88, 0, 88, 48, 40, 48, 40, 0)
+script = ExtResource("1_jjxke")

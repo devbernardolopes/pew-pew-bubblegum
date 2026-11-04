@@ -11,7 +11,6 @@
 collision_layer = 4
 collision_mask = 2
 data = ExtResource("2_nr8vs")
-color = Color(0.54901963, 0.92156863, 0.22745098, 1)
 
 [node name="FoeBrain" type="Node" parent="." index="0" unique_id=1225320927]
 script = ExtResource("3_ota3q")
