@@ -16,5 +16,6 @@ trail_enabled = true
 fire_pulse_enabled = true
 tractor_beam_enabled = true
 tractor_beam_height = 192.0
-trail_spacing = 4.0
+trail_lifetime = 0.15000000000000002
+trail_alpha = 0.15
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"
