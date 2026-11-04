@@ -60,14 +60,14 @@ func _on_dive_finished() -> void:
 	set_physics_process(false)
 
 
-## Fires at the hero when it is in the line of sight. Returns false when
-## nothing was fired, so the caller retries on the next frame.
+## Fires at the nearest ship in play when it is in the line of sight. Returns
+## false when nothing was fired, so the caller retries on the next frame.
 func _try_fire() -> bool:
 	# The Entity finds its Weapon in its own _ready(), which runs after the
 	# children, so the weapon is read here instead of being cached in _ready().
 	var weapon: Weapon = _entity.weapon
-	var hero: Entity = get_tree().get_first_node_in_group(&"friend") as Entity
-	if weapon == null or hero == null or hero.is_dead:
+	var hero: Entity = _find_target()
+	if weapon == null or hero == null:
 		return false
 	if _brain != null and _brain.state == FoeBrain.State.TRACTOR_BEAM:
 		return false
@@ -78,6 +78,23 @@ func _try_fire() -> bool:
 	var max_angle: float = deg_to_rad(max_aim_angle_deg)
 	var angle: float = clampf(Vector2.DOWN.angle_to(to_hero), -max_angle, max_angle)
 	return weapon.fire(Vector2.DOWN.rotated(angle))
+
+
+## The closest friend that is in play: a returning or captured ship is not a
+## target, because it is not where the player is.
+func _find_target() -> Entity:
+	var target: Entity = null
+	var best_distance: float = INF
+	var origin: Vector2 = _entity.global_position
+	for node: Node in get_tree().get_nodes_in_group(&"friend"):
+		var hero: Entity = node as Entity
+		if hero == null or not hero.is_capturable():
+			continue
+		var distance: float = origin.distance_squared_to(hero.global_position)
+		if distance < best_distance:
+			best_distance = distance
+			target = hero
+	return target
 
 
 func _random_delay() -> float:

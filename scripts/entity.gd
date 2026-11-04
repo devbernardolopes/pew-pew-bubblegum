@@ -47,10 +47,10 @@ var shots_hit: int = 0
 var is_dead: bool = false
 ## Whether this entity is currently captured by a tractor beam.
 var capture_active: bool = false
-## Whether this hero is descending back to its home y after being released.
-var auto_descending: bool = false
-## The y position where the hero should return after release.
-var home_y: float = 0.0
+## Whether this ship is flying back to its fleet after being freed.
+var returning: bool = false
+## Whether another node (the [Fleet]) owns this entity's position and firing.
+var externally_driven: bool = false
 ## Score multiplier (e.g. 2 while a foe is diving). Set by the brain.
 var score_multiplier: int = 1
 var _trail_timer: float = 0.0
@@ -79,11 +79,8 @@ func _physics_process(delta: float) -> void:
 		return
 	if is_dead:
 		return
-	if capture_active:
-		# During capture the hero is frozen; position is controlled by the foe brain.
-		return
-	if auto_descending:
-		# Descending after release; ignore input and stay non-monitorable.
+	if capture_active or returning or externally_driven:
+		# Another node owns this entity's position (a capture, the fleet, a brain).
 		return
 	var dir: float = 0.0
 	if controller != null:
@@ -95,18 +92,26 @@ func _physics_process(delta: float) -> void:
 	else:
 		# Foes and other entities without a controller derive tilt direction from rotation
 		dir = cos(rotation - PI / 2.0)
+	drive(dir, controller != null and controller.wants_fire(), delta)
+
+
+## Applies this frame's facing feedback and firing. [Fleet] calls it for the
+## ships it owns, which have no controller of their own.
+func drive(dir: float, wants_fire: bool, delta: float) -> void:
+	if data == null or visual == null:
+		return
 	# Update tilt shader uniform based on horizontal direction
-	if data.tilt_enabled and visual != null and visual.material != null:
+	if data.tilt_enabled and visual.material != null:
 		var mat: ShaderMaterial = visual.material as ShaderMaterial
 		if mat != null:
 			mat.set_shader_parameter("tilt_amount", dir)
-			mat.set_shader_parameter("glow_amount", clampf(abs(dir) * 2.0, 0.0, 1.0))
+			mat.set_shader_parameter("glow_amount", clampf(absf(dir) * 2.0, 0.0, 1.0))
 	if data.trail_enabled:
 		_trail_timer -= delta
-		if abs(dir) > 0.01 and _trail_timer <= 0.0:
+		if absf(dir) > 0.01 and _trail_timer <= 0.0:
 			_trail_timer = 0.06
 			_spawn_trail()
-	if weapon != null and controller != null and controller.wants_fire() and not capture_active:
+	if wants_fire and weapon != null:
 		weapon.fire()
 
 
@@ -132,7 +137,7 @@ func take_damage(amount: int) -> void:
 		return
 	if is_dead:
 		return
-	if capture_active or auto_descending:
+	if capture_active or returning:
 		return
 	health -= amount
 	# Non-lethal hit: white flash for ~0.08 s
@@ -166,9 +171,6 @@ func die() -> void:
 	if data != null and data.score_value > 0:
 		EffectsScript.score_popup(global_position, data.score_value * score_multiplier, score_multiplier > 1)
 		GameManager.add_score(get_score_value())
-	# Screen shake only when hero dies
-	if data != null and data.team == Helpers.TEAM.FRIEND:
-		EffectsScript.screen_shake(1.0, 0.3)
 	set_deferred(&"monitorable", false)
 	set_deferred(&"monitoring", false)
 	died.emit(self)
@@ -193,29 +195,24 @@ func commit_capture() -> void:
 	capture_committed.emit(self)
 
 
-## Releases the hero with no life cost: shows it at the given world position
-## and starts an automatic descent to [member home_y].
-func release_from_capture(world_position: Vector2) -> void:
-	global_position = world_position
-	rotation = 0
+## Releases the hero with no life cost: shows it again and flags it as flying
+## back to its fleet. The [Fleet] owns its position until it docks.
+func begin_return() -> void:
+	rotation = 0.0
 	visible = true
 	capture_active = false
-	auto_descending = true
+	returning = true
 	set_deferred(&"monitorable", false)
-	var target_y: float = home_y
-	var dist: float = absf(world_position.y - target_y)
-	if dist < 1.0:
-		auto_descending = false
-		set_deferred(&"monitorable", true)
-		capture_released.emit(self)
-		return
-	var tween: Tween = create_tween()
-	tween.tween_property(self, ^"global_position:y", target_y, dist / 400.0)
-	tween.tween_callback(func() -> void:
-		auto_descending = false
-		set_deferred(&"monitorable", true)
-		capture_released.emit(self)
-	)
+	capture_released.emit(self)
+
+
+## Whether a tractor beam may grab this entity: a live friend that is in play.
+func is_capturable() -> bool:
+	if data == null or data.team != Helpers.TEAM.FRIEND:
+		return false
+	if is_dead or is_queued_for_deletion():
+		return false
+	return not capture_active and not returning
 
 
 ## Plays a sound profile stream by key.

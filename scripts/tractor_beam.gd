@@ -82,8 +82,7 @@ func is_fully_extended() -> bool:
 func is_retracted() -> bool:
 	return _phase == "retracted"
 
-## Returns the first overlapping Entity that is a live friend, not dead,
-## not already captured, and not auto-descending.
+## Returns the first overlapping Entity that is a live, capturable friend.
 func get_touching_hero() -> Entity:
 	if not is_fully_extended():
 		return null
@@ -93,17 +92,8 @@ func get_touching_hero() -> Entity:
 			var ent: Entity = area as Entity
 			if ent == null or not is_instance_valid(ent):
 				continue
-			if ent.data == null:
-				continue
-			if ent.data.team != Helpers.TEAM.FRIEND:
-				continue
-			if ent.is_dead:
-				continue
-			if ent.capture_active:
-				continue
-			if ent.auto_descending:
-				continue
-			return ent
+			if ent.is_capturable():
+				return ent
 	return null
 
 func _process(delta: float) -> void:

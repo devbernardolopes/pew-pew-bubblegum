@@ -8,8 +8,6 @@ extends Node
 signal entered_formation
 signal dive_started
 signal dive_finished
-## Emitted when a carried hero's carrier is killed after the ship was committed.
-signal captured_ship_rescued(world_position: Vector2)
 
 enum State { WAITING, ENTERING, SETTLING, FORMATION, DIVING, TRACTOR_BEAM }
 
@@ -207,11 +205,8 @@ func _get_capturable_hero() -> Entity:
 		var hero: Entity = node as Entity
 		if hero == null or not is_instance_valid(hero):
 			continue
-		if hero.is_dead or hero.is_queued_for_deletion():
-			continue
-		if hero.capture_active or hero.auto_descending:
-			continue
-		return hero
+		if hero.is_capturable():
+			return hero
 	return null
 
 
@@ -465,33 +460,50 @@ func _on_entity_died(_entity_arg: Entity) -> void:
 		_capturer = null
 
 	if _carry == Carry.PENDING:
-		# Carrier killed before commit: release the hero where it is, no life cost.
+		# Carrier killed before commit: send the hero home, no life cost.
 		if _captured_hero != null and is_instance_valid(_captured_hero):
 			var release_pos: Vector2 = _captured_hero.global_position
 			if _rider != null:
 				release_pos = _rider.global_position
-			_captured_hero.release_from_capture(release_pos)
+			_captured_hero.begin_return()
+			_return_ship(_captured_hero, release_pos)
 		_carry = Carry.NONE
 		_captured_hero = null
 		_free_rider()
 
 	if _carry == Carry.COMMITTED:
-		# Carrier killed after commit: award rescue bonus and emit signal.
+		# Carrier killed after commit: pay the rescue bonus and fly a fresh ship
+		# home. The captured one was already freed when the capture committed.
 		if _entity != null and _entity.data != null:
 			GameManager.add_score(int(_entity.data.tractor_beam_rescue_bonus))
-			var rider_world_pos: Vector2 = Vector2.ZERO
+			var rider_world_pos: Vector2 = _entity.global_position
 			if _rider != null:
 				rider_world_pos = _rider.global_position
-			else:
-				rider_world_pos = _entity.global_position
 			EffectsScript.score_popup(rider_world_pos, int(_entity.data.tractor_beam_rescue_bonus), true)
-			# Pop effect on rider.
-			if _entity.data != null:
-				EffectsScript.explode(_entity.data.visual, _entity.scale_aux, rider_world_pos, TractorBeam.CAPTURED_SHIP_COLOR, 0.3)
-			captured_ship_rescued.emit(rider_world_pos)
+			_return_new_ship(rider_world_pos)
 		_carry = Carry.NONE
 		_captured_hero = null
 		_free_rider()
+
+
+## Hands a freed ship to the fleet so it flies back to its docking slot.
+func _return_ship(ship: Entity, from: Vector2) -> void:
+	var fleet: Fleet = get_tree().get_first_node_in_group(&"fleet") as Fleet
+	if fleet == null:
+		# No fleet in this scene: leave the ship playable where it was freed.
+		ship.global_position = from
+		ship.returning = false
+		ship.monitorable = true
+		return
+	fleet.recruit(ship, from)
+
+
+## Spawns the ship rescued from a committed capture and sends it home.
+func _return_new_ship(from: Vector2) -> void:
+	var fleet: Fleet = get_tree().get_first_node_in_group(&"fleet") as Fleet
+	if fleet == null:
+		return
+	fleet.recruit_new(from)
 
 
 func _create_rider() -> void:
