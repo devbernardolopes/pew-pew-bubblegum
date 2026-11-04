@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bbx4tenuqjgph"]
+
+[ext_resource type="Curve2D" uid="uid://bmg55vgjji6bm" path="res://resources/curves/dives/dive_left_05.tres" id="1_ppkkg"]
+
+[node name="DiveLeft05" type="Path2D" unique_id=1182542904]
+curve = ExtResource("1_ppkkg")

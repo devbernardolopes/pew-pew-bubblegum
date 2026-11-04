@@ -13,7 +13,7 @@
 [ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entries/entry_left_01.tres" id="9_4au0i"]
 [ext_resource type="Curve2D" uid="uid://dusssoaxmjkhi" path="res://resources/curves/dives/dive_left_02.tres" id="12_6w387"]
 [ext_resource type="PackedScene" uid="uid://bknqqg57gbsuc" path="res://scenes/entities/foe_turret.tscn" id="12_hgqyw"]
-[ext_resource type="Resource" uid="uid://yx23sfb2klah" path="res://resources/formations/formation_10c_2r_wide.tres" id="13_4au0i"]
+[ext_resource type="Resource" uid="uid://yx23sfb2klah" path="res://resources/formations/formation_10c_6r_wide.tres" id="13_4au0i"]
 [ext_resource type="Curve2D" uid="uid://c4rkkg4tjg22b" path="res://resources/curves/dives/dive_left_03.tres" id="13_e2y6g"]
 
 [sub_resource type="Resource" id="1_wave01"]

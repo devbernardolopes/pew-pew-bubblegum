@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_gfcdi")
 id = &"hero_bullet"
-base_speed = 480.0
+base_speed = 560.0
 metadata/_custom_type_script = "uid://txnc58qwywfs"

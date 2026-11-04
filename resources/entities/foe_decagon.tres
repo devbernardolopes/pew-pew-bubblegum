@@ -15,6 +15,6 @@ tilt_enabled = true
 trail_enabled = true
 fire_pulse_enabled = true
 tractor_beam_enabled = true
-tractor_beam_chance = 0.1
 tractor_beam_height = 192.0
+trail_spacing = 4.0
 metadata/_custom_type_script = "uid://cnpcyvxb0l32y"

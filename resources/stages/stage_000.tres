@@ -11,7 +11,11 @@
 [ext_resource type="Curve2D" uid="uid://c4rkkg4tjg22b" path="res://resources/curves/dives/dive_left_03.tres" id="9_b7c4x"]
 [ext_resource type="Curve2D" uid="uid://dxft2kb7iox5" path="res://resources/curves/dives/dive_left_04.tres" id="10_qgtb8"]
 [ext_resource type="PackedScene" uid="uid://blsbojqh2ahho" path="res://scenes/entities/foe_h.tscn" id="11_g7dv8"]
-[ext_resource type="Resource" uid="uid://yx23sfb2klah" path="res://resources/formations/formation_10c_2r_wide.tres" id="12_f14dk"]
+[ext_resource type="Resource" uid="uid://yx23sfb2klah" path="res://resources/formations/formation_10c_6r_wide.tres" id="12_qgtb8"]
+[ext_resource type="PackedScene" uid="uid://bknqqg57gbsuc" path="res://scenes/entities/foe_turret.tscn" id="13_b7c4x"]
+[ext_resource type="Curve2D" uid="uid://bmg55vgjji6bm" path="res://resources/curves/dives/dive_left_05.tres" id="13_f14dk"]
+[ext_resource type="Curve2D" uid="uid://dq5ta4b4jxfrh" path="res://resources/curves/entries/entry_left_05.tres" id="13_g7dv8"]
+[ext_resource type="PackedScene" uid="uid://cenl65vkdikgc" path="res://scenes/entities/foe_double_square.tscn" id="16_t4y3q"]
 
 [sub_resource type="Resource" id="Resource_b4rij"]
 script = ExtResource("2_qtocs")
@@ -26,13 +30,35 @@ script = ExtResource("2_qtocs")
 foe_scene = ExtResource("11_g7dv8")
 entry_curve = ExtResource("4_repld")
 row = 3
-formation = ExtResource("12_f14dk")
+formation = ExtResource("12_qgtb8")
 dive_curves = Array[Curve2D]([ExtResource("3_itcs8"), ExtResource("8_v1lkm"), ExtResource("9_b7c4x"), ExtResource("10_qgtb8")])
 delay = 3.33
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 
+[sub_resource type="Resource" id="Resource_7f6e7"]
+script = ExtResource("2_qtocs")
+foe_scene = ExtResource("13_b7c4x")
+entry_curve = ExtResource("13_g7dv8")
+row = 1
+spacing = 0.75
+formation = ExtResource("12_qgtb8")
+dive_curves = Array[Curve2D]([ExtResource("13_f14dk")])
+delay = 1.75
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_ue0r0"]
+script = ExtResource("2_qtocs")
+foe_scene = ExtResource("16_t4y3q")
+entry_curve = ExtResource("13_g7dv8")
+row = 2
+spacing = 1.25
+formation = ExtResource("12_qgtb8")
+dive_curves = Array[Curve2D]([ExtResource("13_f14dk")])
+delay = 4.75
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
 [resource]
 script = ExtResource("1_pfgux")
-waves = Array[ExtResource("2_qtocs")]([SubResource("Resource_b4rij"), SubResource("Resource_124qe")])
+waves = Array[ExtResource("2_qtocs")]([SubResource("Resource_b4rij"), SubResource("Resource_124qe"), SubResource("Resource_7f6e7"), SubResource("Resource_ue0r0")])
 music_stream = ExtResource("1_repld")
 metadata/_custom_type_script = "uid://cfqxmshih2ed7"

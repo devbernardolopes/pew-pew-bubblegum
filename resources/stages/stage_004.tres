@@ -7,7 +7,7 @@
 [ext_resource type="Curve2D" uid="uid://dusssoaxmjkhi" path="res://resources/curves/dives/dive_left_02.tres" id="5_epvnf"]
 [ext_resource type="Curve2D" uid="uid://bothmpxl7w34p" path="res://resources/curves/entries/entry_left_04.tres" id="6_y20an"]
 [ext_resource type="PackedScene" uid="uid://4veql8t8duff" path="res://scenes/entities/foe_triangle.tscn" id="7_sb5rj"]
-[ext_resource type="Resource" uid="uid://yx23sfb2klah" path="res://resources/formations/formation_10c_2r_wide.tres" id="8_ojyar"]
+[ext_resource type="Resource" uid="uid://yx23sfb2klah" path="res://resources/formations/formation_10c_6r_wide.tres" id="8_ojyar"]
 [ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entries/entry_left_01.tres" id="9_f3ji2"]
 [ext_resource type="PackedScene" uid="uid://cenl65vkdikgc" path="res://scenes/entities/foe_double_square.tscn" id="10_c2ij1"]
 
