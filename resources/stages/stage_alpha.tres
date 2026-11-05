@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="StageData" format=3 uid="uid://cp4hp6a0pqbli"]
 
-[ext_resource type="AudioStream" uid="uid://bs5ys7j42nn1" path="res://assets/musics/endless_cyber_runner.ogg" id="1_w7tw3"]
+[ext_resource type="AudioStream" uid="uid://hlmeuo7si7qs" path="res://assets/musics/One_Credit_Run.mp3" id="1_w7tw3"]
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="1_xwt4h"]
 [ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="2_1efdm"]
 [ext_resource type="PackedScene" uid="uid://db6w567pp7o3t" path="res://scenes/entities/foe_decagon.tscn" id="3_w5sue"]
