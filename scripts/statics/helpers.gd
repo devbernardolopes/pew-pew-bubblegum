@@ -180,6 +180,19 @@ const BULLET_POLYGON: PackedVector2Array = [
 	]
 
 
+## Center of the bounding box of [param points], in the same space as them.
+## Used to pivot shapes that do not live in the 128 x 128 box, like bosses.
+static func get_points_center(points: PackedVector2Array) -> Vector2:
+	if points.is_empty():
+		return Vector2.ZERO
+	var min_point: Vector2 = points[0]
+	var max_point: Vector2 = points[0]
+	for point: Vector2 in points:
+		min_point = min_point.min(point)
+		max_point = max_point.max(point)
+	return (min_point + max_point) / 2.0
+
+
 static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array:
 	var result: PackedVector2Array = [Vector2.ZERO]
 	match _visual:

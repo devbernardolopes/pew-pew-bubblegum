@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="JourneyData" format=3 uid="uid://dtanc0fi24y6f"]
+
+[ext_resource type="Script" uid="uid://wa8mc2v1ds4i" path="res://resources/journey_data.gd" id="1_i2413"]
+[ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="2_6x1hj"]
+[ext_resource type="Resource" uid="uid://cnv7c7j1w8bpw" path="res://resources/stages/stage_beta.tres" id="3_24jfn"]
+[ext_resource type="Resource" uid="uid://cp4hp6a0pqbli" path="res://resources/stages/stage_alpha.tres" id="4_x718h"]
+[ext_resource type="Resource" uid="uid://dyhvx11vswr2s" path="res://resources/stages/stage_000.tres" id="5_q5lhy"]
+[ext_resource type="Resource" uid="uid://bv7lmw5x1q3t8" path="res://resources/stages/stage_001.tres" id="6_vqltm"]
+[ext_resource type="Resource" uid="uid://c5krmfh35fnn8" path="res://resources/stages/stage_002.tres" id="7_8wran"]
+[ext_resource type="Resource" uid="uid://doyg4wjpqbbh2" path="res://resources/stages/stage_003.tres" id="8_c1uwa"]
+[ext_resource type="Resource" uid="uid://r12gefnka2ch" path="res://resources/stages/stage_004.tres" id="9_rtavv"]
+
+[resource]
+script = ExtResource("1_i2413")
+id = &"balanced_journey"
+name = "Balanced Journey"
+stages = Array[ExtResource("2_6x1hj")]([ExtResource("3_24jfn"), ExtResource("4_x718h"), ExtResource("5_q5lhy"), ExtResource("6_vqltm"), ExtResource("7_8wran"), ExtResource("8_c1uwa"), ExtResource("9_rtavv")])
+metadata/_custom_type_script = "uid://wa8mc2v1ds4i"

@@ -43,7 +43,8 @@ func _validate_formations() -> PackedStringArray:
 
 
 ## Reports waves that would share a slot, or that would visually overlap
-## because their formations sit too close together.
+## because their formations sit too close together. Boss footprints are checked
+## separately, since they claim a rectangle of cells instead of a row.
 func _validate_overlaps(path: String, foe_cache: Dictionary) -> PackedStringArray:
 	var issues: PackedStringArray = []
 	for i: int in waves.size():
@@ -53,6 +54,8 @@ func _validate_overlaps(path: String, foe_cache: Dictionary) -> PackedStringArra
 		for j: int in range(i + 1, waves.size()):
 			var b: WaveData = waves[j]
 			if b == null or b.formation == null:
+				continue
+			if a is BossWaveData or b is BossWaveData:
 				continue
 			if a.formation == b.formation:
 				if a.row == b.row:
@@ -71,7 +74,52 @@ func _validate_overlaps(path: String, foe_cache: Dictionary) -> PackedStringArra
 				continue
 			issues.append("[warning] %s: waves %d (row %d) and %d (row %d) are %.1f px apart vertically, less than the %.1f px foe size." % [
 					path, i, a.row, j, b.row, distance, foe_size])
+	issues.append_array(_validate_boss_overlaps(path))
 	return issues
+
+
+## Reports regular waves that fill cells inside a boss footprint, and boss
+## footprints that intersect each other, within the same formation.
+func _validate_boss_overlaps(path: String) -> PackedStringArray:
+	var issues: PackedStringArray = []
+	for i: int in waves.size():
+		var boss: BossWaveData = waves[i] as BossWaveData
+		if boss == null or boss.formation == null:
+			continue
+		for j: int in waves.size():
+			if i == j:
+				continue
+			var other: WaveData = waves[j]
+			if other == null or other.formation != boss.formation:
+				continue
+			var other_boss: BossWaveData = other as BossWaveData
+			if other_boss != null:
+				if j > i and _boss_footprints_intersect(boss, other_boss):
+					issues.append("[warning] %s: bosses of waves %d and %d claim overlapping cells of formation %s." % [
+							path, i, j, WaveData.describe(boss.formation)])
+				continue
+			if other.row < boss.row or other.row >= boss.row + boss.row_span:
+				continue
+			var clash: int = _first_column_in_span(other.formation, other.row, boss.col, boss.col_span)
+			if clash >= 0:
+				issues.append("[warning] %s: wave %d fills row %d (column %d) of formation %s inside the footprint of boss wave %d." % [
+						path, j, other.row, clash, WaveData.describe(boss.formation), i])
+	return issues
+
+
+## The first occupied column of [param row] that lies in the span, or -1.
+func _first_column_in_span(formation: FormationData, row: int, col: int, col_span: int) -> int:
+	for column: int in formation.get_row_columns(row):
+		if column >= col and column < col + col_span:
+			return column
+	return -1
+
+
+## Whether two boss footprints share at least one cell.
+func _boss_footprints_intersect(a: BossWaveData, b: BossWaveData) -> bool:
+	var rows_overlap: bool = a.row < b.row + b.row_span and b.row < a.row + a.row_span
+	var cols_overlap: bool = a.col < b.col + b.col_span and b.col < a.col + a.col_span
+	return rows_overlap and cols_overlap
 
 
 ## Returns the foe size factor of [param wave]'s scene, or 0.0 when the scene

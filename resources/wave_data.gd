@@ -97,7 +97,9 @@ static func describe(resource: Resource) -> String:
 ## The dictionary it returns has the keys [code]is_entity[/code],
 ## [code]has_brain[/code], [code]data[/code], [code]scale_aux[/code] and
 ## [code]speed_multiplier[/code], plus [code]has_shooter[/code] and
-## [code]has_weapon[/code], which describe the firing setup.
+## [code]has_weapon[/code], which describe the firing setup, and
+## [code]has_boss_pattern[/code] and [code]muzzle_count[/code], which describe
+## the boss setup.
 static func get_foe_info(scene: PackedScene, cache: Dictionary) -> Dictionary:
 	if cache.has(scene):
 		return cache[scene]
@@ -106,6 +108,8 @@ static func get_foe_info(scene: PackedScene, cache: Dictionary) -> Dictionary:
 		"has_brain": false,
 		"has_shooter": false,
 		"has_weapon": false,
+		"has_boss_pattern": false,
+		"muzzle_count": 0,
 		"data": null,
 		"scale_aux": 1.0,
 		"speed_multiplier": 1.0,
@@ -116,6 +120,12 @@ static func get_foe_info(scene: PackedScene, cache: Dictionary) -> Dictionary:
 		info.is_entity = true
 		info.has_brain = entity.get_node_or_null("FoeBrain") is FoeBrain
 		info.has_shooter = entity.get_node_or_null("FoeShooter") is FoeShooter
+		info.has_boss_pattern = entity.get_node_or_null("BossPattern") is BossPattern
+		var muzzles: Node = entity.get_node_or_null("Muzzles")
+		if muzzles != null:
+			for child: Node in muzzles.get_children():
+				if child is Marker2D:
+					info.muzzle_count += 1
 		var weapon: Weapon = entity.get_node_or_null("Weapon") as Weapon
 		info.has_weapon = weapon != null and weapon.projectile_data != null
 		info.data = entity.data

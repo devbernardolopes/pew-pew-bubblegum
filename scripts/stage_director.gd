@@ -155,6 +155,10 @@ func _spawn_current_wave() -> void:
 	if formation == null:
 		push_warning("StageDirector: wave %d has no formation; skipping." % _wave_index)
 		return
+	# Bosses claim a rectangle of cells instead of filling a row.
+	if wave is BossWaveData:
+		_spawn_boss(wave as BossWaveData, formation)
+		return
 
 	# Spawn one foe per column in the wave's row, mirrored from the right.
 	var row: int = wave.row
@@ -177,6 +181,24 @@ func _spawn_current_wave() -> void:
 		brain.entered_formation.connect(_on_formation_entered)
 		_total_foes_spawned += 1
 		slot_index += 1
+
+
+## Spawns a boss on its own anchor: the [FoeBrain] settles it like any foe and
+## the [BossPattern] moves the anchor (and fires) once it is in formation.
+func _spawn_boss(wave: BossWaveData, formation: Formation) -> void:
+	var boss: Entity = wave.foe_scene.instantiate() as Entity
+	entities.add_child(boss)
+	var anchor: Marker2D = formation.create_anchor(wave.row, wave.col, wave.row_span, wave.col_span)
+	var brain: FoeBrain = boss.get_node_or_null(^"FoeBrain") as FoeBrain
+	var pattern: BossPattern = boss.get_node_or_null(^"BossPattern") as BossPattern
+	if brain == null or pattern == null:
+		push_error("StageDirector._spawn_boss(): the boss scene needs both a FoeBrain and a BossPattern child.")
+		boss.queue_free()
+		return
+	brain.setup(wave.entry_curve, wave.mirror_entry, anchor, 0.0, [])
+	pattern.setup(anchor)
+	brain.entered_formation.connect(_on_formation_entered)
+	_total_foes_spawned += 1
 
 
 ## Returns the [Formation] of [param data] for the current stage, building it on

@@ -217,7 +217,8 @@ func die() -> void:
 	var explosion_scale: float = 1.0
 	if data != null:
 		explosion_scale = data.explosion_scale
-	EffectsScript.explode(data.visual, scale_aux, global_position, data.color, explosion_scale)
+	EffectsScript.explode(data.visual, scale_aux, global_position, data.color, explosion_scale,
+			data.center_on_bounds)
 	# The popup and the score are awarded here so that every way of dying pays
 	# out once: bullets, ramming, or anything added later.
 	if data != null and data.score_value > 0:
@@ -290,9 +291,13 @@ func _refresh_shape() -> void:
 	collision.scale = Vector2.ONE * scale_aux
 	visual.scale = Vector2.ONE * scale_aux
 	# Center the collision and the polygon in the Area2D on both axes, so that
-	# the Entity pivots around the center of its shape.
-	collision.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0
-	visual.position = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * scale_aux * -1.0
+	# the Entity pivots around the center of its shape. Shapes larger than the
+	# 128 x 128 box (bosses) are centered on their own bounding box instead.
+	var pivot: Vector2 = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH
+	if data.center_on_bounds:
+		pivot = Helpers.get_points_center(points)
+	collision.position = -pivot * scale_aux
+	visual.position = -pivot * scale_aux
 	visual.color = data.color
 	if data.tilt_enabled:
 		_apply_tilt(true)
@@ -350,7 +355,8 @@ func _on_area_entered(area: Area2D) -> void:
 	if other == null or is_dead or other.is_dead:
 		return
 	other.take_damage(data.contact_damage)
-	die()
+	if data.dies_on_contact:
+		die()
 
 
 func _find_controller() -> EntityController:

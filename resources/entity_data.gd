@@ -21,6 +21,12 @@ extends Resource
 ## Whether firing also shakes the camera. It only has an effect when
 ## [member fire_pulse_enabled] is on too.
 @export var shake_on_fire_enabled: bool = false
+## Whether touching an opposing Entity destroys this one. Bosses turn it off.
+@export var dies_on_contact: bool = true
+## Center the polygon by its bounding box instead of assuming the 128 x 128
+## box. Needed by shapes larger than that box, like bosses. Tilt is not
+## supported together with this, because the roll assumes the 128 box.
+@export var center_on_bounds: bool = false
 @export var god_mode: bool = false
 @export var god_mode_effect: bool = false
 

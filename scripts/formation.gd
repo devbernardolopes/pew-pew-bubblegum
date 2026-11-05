@@ -48,6 +48,27 @@ func get_slot(row: int, col: int) -> Marker2D:
 	return _slots[row * columns + col]
 
 
+## Creates a [Marker2D] at the center of a rectangle of cells, for a boss
+## footprint. It is not a slot, so [method get_slot] is unaffected, but it is a
+## child of the formation and therefore sways with it.
+## Returns null when there is no [member data] or the span is invalid.
+func create_anchor(row: int, col: int, row_span: int, col_span: int) -> Marker2D:
+	if data == null:
+		push_error("Formation.create_anchor(): data is null.")
+		return null
+	if row_span < 1 or col_span < 1:
+		push_error("Formation.create_anchor(): the spans must be at least 1.")
+		return null
+	var anchor: Marker2D = Marker2D.new()
+	anchor.name = "Anchor_%d_%d" % [row, col]
+	var half_width: float = data.get_half_width()
+	anchor.position = Vector2(
+			(float(col) + (float(col_span) - 1.0) / 2.0) * data.spacing.x - half_width,
+			(float(row) + (float(row_span) - 1.0) / 2.0) * data.spacing.y)
+	add_child(anchor)
+	return anchor
+
+
 func _create_slots() -> void:
 	var half_width: float = data.get_half_width()
 	for row: int in rows:

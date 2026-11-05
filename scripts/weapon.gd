@@ -26,6 +26,24 @@ func _ready() -> void:
 ## and used instead.
 ## Returns false when the weapon is out of bullets or misconfigured.
 func fire(direction: Vector2 = Vector2.ZERO) -> bool:
+	if _entity == null:
+		return false
+	var nose: Vector2 = _entity.to_global(
+			Vector2.UP * Helpers.ENTITY_HALF_WIDTH * _entity.scale_aux + muzzle_offset)
+	return _launch(nose, direction)
+
+
+## Fires one projectile from [param global_origin] along [param direction].
+## Bosses use it to shoot from each of their muzzles; the shots still share this
+## weapon's [member max_in_flight] pool.
+## Returns false when the weapon is out of bullets or misconfigured.
+func fire_from(global_origin: Vector2, direction: Vector2) -> bool:
+	return _launch(global_origin, direction)
+
+
+## Shared body of [method fire] and [method fire_from]. [param direction] is
+## already in world space; a zero one falls back to the shooter's nose.
+func _launch(global_origin: Vector2, direction: Vector2) -> bool:
 	if projectile_data == null or _in_flight >= max_in_flight:
 		return false
 	if _entity == null or _entity.data == null:
@@ -36,11 +54,10 @@ func fire(direction: Vector2 = Vector2.ZERO) -> bool:
 		return false
 	var projectile: Projectile = Projectile.new()
 	container.add_child(projectile)
-	var nose: Vector2 = _entity.to_global(Vector2.UP * Helpers.ENTITY_HALF_WIDTH * _entity.scale_aux + muzzle_offset)
 	var shot_direction: Vector2 = Vector2.UP.rotated(_entity.global_rotation)
 	if direction != Vector2.ZERO:
 		shot_direction = direction.normalized()
-	projectile.launch(projectile_data, _entity.data.team, _entity, nose, shot_direction)
+	projectile.launch(projectile_data, _entity.data.team, _entity, global_origin, shot_direction)
 	projectile.set_color(_entity.data.color)
 	_entity.play_fire_feedback()
 	_in_flight += 1

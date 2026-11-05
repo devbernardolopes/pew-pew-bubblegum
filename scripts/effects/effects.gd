@@ -12,13 +12,13 @@ static func _find_container() -> Node:
 		return null
 	return nodes[0] as Node
 
-static func explode(visual: Helpers.VISUAL, entity_scale: float, position: Vector2, color: Color, scale: float = 1.0) -> void:
+static func explode(visual: Helpers.VISUAL, entity_scale: float, position: Vector2, color: Color, scale: float = 1.0, center_on_bounds: bool = false) -> void:
 	var container: Node = _find_container()
 	if container == null:
 		return
 	var explosion: Node2D = ExplosionScript.new() as Node2D
 	container.add_child(explosion)
-	explosion.setup(visual, entity_scale, position, color, scale)
+	explosion.setup(visual, entity_scale, position, color, scale, center_on_bounds)
 
 static func hit_spark(position: Vector2, direction: Vector2 = Vector2.UP, scale: float = 0.2) -> void:
 	var container: Node = _find_container()

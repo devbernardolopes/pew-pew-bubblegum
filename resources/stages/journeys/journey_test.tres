@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="JourneyData" format=3 uid="uid://bu8kytjl2ul0e"]
+
+[ext_resource type="Script" uid="uid://wa8mc2v1ds4i" path="res://resources/journey_data.gd" id="1_lpaww"]
+[ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="2_ht4ql"]
+[ext_resource type="Resource" uid="uid://cdqqxe2mu5n1" path="res://resources/stages/stage_boss_demo.tres" id="3_ht4ql"]
+
+[resource]
+script = ExtResource("1_lpaww")
+id = &"test_journey"
+name = "Test Journey"
+stages = Array[ExtResource("2_ht4ql")]([ExtResource("3_ht4ql")])
+metadata/_custom_type_script = "uid://wa8mc2v1ds4i"
