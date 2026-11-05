@@ -7,8 +7,8 @@ extends Node
 ## [FormationData], built when the first wave needs it and freed only when the
 ## next stage begins, so no foe ever loses the slot it was given.
 
-## The stage definitions (ordered list for cycling).
-@export var stages: Array[StageData] = []
+## An array of [StageData]. 
+@export var journey: JourneyData = null
 ## Node that holds one [Formation] child per distinct [FormationData].
 @export var formations_root: Node2D = null
 ## Entities container where foes are spawned.
@@ -38,6 +38,9 @@ const FIRE_BULLETS_PER_STAGE: int = 1
 ## Maximum foe bullets the fire director allows at any stage.
 const MAX_FOE_BULLETS_CAP: int = 12
 
+## The stage definitions (ordered list for cycling).
+var stages: Array[StageData] = []
+
 var _base_max_divers: int = 2
 var _base_interval_min: float = 1.5
 var _base_interval_max: float = 3.0
@@ -66,6 +69,11 @@ func _ready() -> void:
 		dive_director = get_parent().get_node_or_null("DiveDirector") as DiveDirector
 	if fire_director == null:
 		fire_director = get_parent().get_node_or_null("FireDirector") as FireDirector
+	if not journey:
+		push_error("StageDirector: journey is empty.")
+		_state = 4
+		return
+	stages = journey.stages
 	if stages.is_empty():
 		push_error("StageDirector: stages is empty.")
 		_state = 4

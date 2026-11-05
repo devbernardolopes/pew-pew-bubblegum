@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dfwdtqy2wna0s"]
+
+[ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_2fbk1"]
+
+[node name="Shuriken" type="Polygon2D" unique_id=30402552]
+color = Color(0.8, 1, 0.6745098, 0.80784315)
+polygon = PackedVector2Array(0, 0, 32, 40, 24, 0, 48, 40, 48, 0, 56, 40, 72, 0, 80, 40, 128, 0, 96, 40, 128, 32, 104, 56, 128, 64, 104, 80, 128, 128, 88, 104, 96, 128, 72, 104, 64, 128, 48, 104, 32, 128, 32, 104, 0, 128, 24, 96, 0, 88, 24, 80, 0, 64, 24, 56)
+script = ExtResource("1_2fbk1")

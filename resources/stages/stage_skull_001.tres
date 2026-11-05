@@ -1,0 +1,88 @@
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://dycfk7tt2h6pj"]
+
+[ext_resource type="AudioStream" uid="uid://22tns1bjinoi" path="res://assets/musics/neon_drive_-_retro_synth_game_music.ogg" id="1_r133u"]
+[ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="2_olcbm"]
+[ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="3_g10qf"]
+[ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dives/dive_left_01.tres" id="4_6wj3q"]
+[ext_resource type="Resource" uid="uid://bla7f6v60np7u" path="res://resources/stages/waves/wave_data_001.tres" id="4_olcbm"]
+[ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entries/entry_left_01.tres" id="5_wpeb0"]
+[ext_resource type="PackedScene" uid="uid://c10qeb5dlolpm" path="res://scenes/entities/foe_shuriken.tscn" id="6_lwpaq"]
+[ext_resource type="Resource" uid="uid://dhjks5bu1ilta" path="res://resources/formations/formation_skull.tres" id="7_1hg4i"]
+
+[sub_resource type="Resource" id="Resource_g10qf"]
+script = ExtResource("3_g10qf")
+foe_scene = ExtResource("6_lwpaq")
+entry_curve = ExtResource("5_wpeb0")
+row = 1
+formation = ExtResource("7_1hg4i")
+dive_curves = Array[Curve2D]([ExtResource("4_6wj3q")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_6wj3q"]
+script = ExtResource("3_g10qf")
+foe_scene = ExtResource("6_lwpaq")
+entry_curve = ExtResource("5_wpeb0")
+row = 2
+formation = ExtResource("7_1hg4i")
+dive_curves = Array[Curve2D]([ExtResource("4_6wj3q")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_wpeb0"]
+script = ExtResource("3_g10qf")
+foe_scene = ExtResource("6_lwpaq")
+entry_curve = ExtResource("5_wpeb0")
+row = 3
+formation = ExtResource("7_1hg4i")
+dive_curves = Array[Curve2D]([ExtResource("4_6wj3q")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_lwpaq"]
+script = ExtResource("3_g10qf")
+foe_scene = ExtResource("6_lwpaq")
+entry_curve = ExtResource("5_wpeb0")
+row = 4
+formation = ExtResource("7_1hg4i")
+dive_curves = Array[Curve2D]([ExtResource("4_6wj3q")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_1hg4i"]
+script = ExtResource("3_g10qf")
+foe_scene = ExtResource("6_lwpaq")
+entry_curve = ExtResource("5_wpeb0")
+row = 5
+formation = ExtResource("7_1hg4i")
+dive_curves = Array[Curve2D]([ExtResource("4_6wj3q")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_kjj3e"]
+script = ExtResource("3_g10qf")
+foe_scene = ExtResource("6_lwpaq")
+entry_curve = ExtResource("5_wpeb0")
+row = 6
+formation = ExtResource("7_1hg4i")
+dive_curves = Array[Curve2D]([ExtResource("4_6wj3q")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_cavao"]
+script = ExtResource("3_g10qf")
+foe_scene = ExtResource("6_lwpaq")
+entry_curve = ExtResource("5_wpeb0")
+row = 7
+formation = ExtResource("7_1hg4i")
+dive_curves = Array[Curve2D]([ExtResource("4_6wj3q")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_olcbm"]
+script = ExtResource("3_g10qf")
+foe_scene = ExtResource("6_lwpaq")
+entry_curve = ExtResource("5_wpeb0")
+row = 8
+formation = ExtResource("7_1hg4i")
+dive_curves = Array[Curve2D]([ExtResource("4_6wj3q")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[resource]
+script = ExtResource("2_olcbm")
+waves = Array[ExtResource("3_g10qf")]([ExtResource("4_olcbm"), SubResource("Resource_g10qf"), SubResource("Resource_6wj3q"), SubResource("Resource_wpeb0"), SubResource("Resource_lwpaq"), SubResource("Resource_1hg4i"), SubResource("Resource_kjj3e"), SubResource("Resource_cavao"), SubResource("Resource_olcbm")])
+music_stream = ExtResource("1_r133u")
+metadata/_custom_type_script = "uid://cfqxmshih2ed7"

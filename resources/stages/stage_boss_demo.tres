@@ -2,7 +2,7 @@
 
 [ext_resource type="AudioStream" uid="uid://22tns1bjinoi" path="res://assets/musics/neon_drive_-_retro_synth_game_music.ogg" id="1_e2wfk"]
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="1_stage"]
-[ext_resource type="PackedScene" uid="uid://c1ewkyvrgrwb" path="res://scenes/entities/boss_01.tscn" id="2_boss"]
+[ext_resource type="PackedScene" uid="uid://c1ewkyvrgrwb" path="res://scenes/entities/foe_boss_01.tscn" id="2_boss"]
 [ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entries/entry_left_01.tres" id="3_entry"]
 [ext_resource type="Resource" uid="uid://ci55jfki5o7r7" path="res://resources/formations/formation_boss_arena.tres" id="4_arena"]
 [ext_resource type="Script" uid="uid://bfmqu6f78vl2e" path="res://resources/boss_wave_data.gd" id="5_bosswave"]

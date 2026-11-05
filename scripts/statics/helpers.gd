@@ -11,6 +11,7 @@ enum VISUAL {
 	BOW_TIE = 106,
 	TURRET = 107,
 	H = 108,
+	SHURIKEN = 109,
 	BOSS_01 = 200,
 }
 
@@ -131,6 +132,37 @@ const H_POLYGON: PackedVector2Array = [
 	Vector2(40.0, 0.0),
 ]
 
+const SHURIKEN_POLYGON: PackedVector2Array = [
+	Vector2(0.0, 0.0),
+	Vector2(32.0, 40.0),
+	Vector2(24.0, 0.0),
+	Vector2(48.0, 40.0),
+	Vector2(48.0, 0.0),
+	Vector2(56.0, 40.0),
+	Vector2(72.0, 0.0),
+	Vector2(80.0, 40.0),
+	Vector2(128.0, 0.0),
+	Vector2(96.0, 40.0),
+	Vector2(128.0, 32.0),
+	Vector2(104.0, 56.0),
+	Vector2(128.0, 64.0),
+	Vector2(104.0, 80.0),
+	Vector2(128.0, 128.0),
+	Vector2(88.0, 104.0),
+	Vector2(96.0, 128.0),
+	Vector2(72.0, 104.0),
+	Vector2(64.0, 128.0),
+	Vector2(48.0, 104.0),
+	Vector2(32.0, 128.0),
+	Vector2(32.0, 104.0),
+	Vector2(0.0, 128.0),
+	Vector2(24.0, 96.0),
+	Vector2(0.0, 88.0),
+	Vector2(24.0, 80.0),
+	Vector2(0.0, 64.0),
+	Vector2(24.0, 56.0),
+]
+
 const BOSS_01_POLYGON: PackedVector2Array = [
 	Vector2(24.0, 64.0),
 	Vector2(72.0, 0.0),
@@ -216,6 +248,8 @@ static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array
 			return TURRET_POLYGON.duplicate()
 		VISUAL.H:
 			return H_POLYGON.duplicate()
+		VISUAL.SHURIKEN:
+			return SHURIKEN_POLYGON.duplicate()
 		VISUAL.BOSS_01:
 			return BOSS_01_POLYGON.duplicate()
 	return result
