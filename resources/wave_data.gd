@@ -18,6 +18,16 @@ extends Resource
 ## Seconds after the previous wave started before this one begins.
 @export var delay: float = 0.0
 
+@export_group("Firing")
+## Foes of this wave may shoot while flying their entry curve, until their first
+## arrival in formation. Foes settling back after a dive never shoot for this reason.
+@export var fire_on_entry: bool = false
+## Foes of this wave join the pool the [FireDirector] picks shooters from while
+## they sit in formation.
+@export var fire_in_formation: bool = false
+## Shots each foe may fire during its entry. Unspent shots are dropped on arrival.
+@export_range(1, 8) var entry_shots: int = 1
+
 
 ## Returns the problems found in this wave, each prefixed with [code][error][/code]
 ## or [code][warning][/code] and naming [param stage_path] and [param wave_index].
@@ -35,6 +45,13 @@ func validate(stage_path: String = "", wave_index: int = -1, foe_cache: Dictiona
 			issues.append("[error] %s: the root of %s is not an Entity." % [where, describe(foe_scene)])
 		elif not foe_info.has_brain:
 			issues.append("[error] %s: the root of %s has no FoeBrain child." % [where, describe(foe_scene)])
+		if foe_info.is_entity and (fire_on_entry or fire_in_formation):
+			if not foe_info.has_shooter:
+				issues.append("[warning] %s: the root of %s has no FoeShooter child, so the firing flags do nothing." % [
+						where, describe(foe_scene)])
+			if not foe_info.has_weapon:
+				issues.append("[warning] %s: the root of %s has no armed Weapon child, so it cannot fire." % [
+						where, describe(foe_scene)])
 	if formation == null:
 		issues.append("[error] %s: formation is null." % where)
 	else:
@@ -76,13 +93,16 @@ static func describe(resource: Resource) -> String:
 ## needs and frees it right away, so no foe is ever added to the tree here.
 ## The dictionary it returns has the keys [code]is_entity[/code],
 ## [code]has_brain[/code], [code]data[/code], [code]scale_aux[/code] and
-## [code]speed_multiplier[/code].
+## [code]speed_multiplier[/code], plus [code]has_shooter[/code] and
+## [code]has_weapon[/code], which describe the firing setup.
 static func get_foe_info(scene: PackedScene, cache: Dictionary) -> Dictionary:
 	if cache.has(scene):
 		return cache[scene]
 	var info: Dictionary = {
 		"is_entity": false,
 		"has_brain": false,
+		"has_shooter": false,
+		"has_weapon": false,
 		"data": null,
 		"scale_aux": 1.0,
 		"speed_multiplier": 1.0,
@@ -92,6 +112,9 @@ static func get_foe_info(scene: PackedScene, cache: Dictionary) -> Dictionary:
 	if entity != null:
 		info.is_entity = true
 		info.has_brain = entity.get_node_or_null("FoeBrain") is FoeBrain
+		info.has_shooter = entity.get_node_or_null("FoeShooter") is FoeShooter
+		var weapon: Weapon = entity.get_node_or_null("Weapon") as Weapon
+		info.has_weapon = weapon != null and weapon.projectile_data != null
 		info.data = entity.data
 		info.scale_aux = entity.scale_aux
 		info.speed_multiplier = entity.speed_multiplier

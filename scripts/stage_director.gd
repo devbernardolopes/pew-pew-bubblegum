@@ -15,6 +15,8 @@ extends Node
 @export var entities: Node2D = null
 ## Dive director to adjust difficulty and disable dives on game over.
 @export var dive_director: DiveDirector = null
+## Fire director to adjust the formation fire difficulty.
+@export var fire_director: FireDirector = null
 
 ## Emitted when the stage is cleared without any foe reaching formation.
 signal flawless_victory
@@ -31,10 +33,17 @@ const STAGES_PER_EXTRA_DIVER: int = 2
 const INTERVAL_SHRINK_PER_STAGE: float = 0.1
 ## Minimum factor applied to the base interval range (stops shrinking here).
 const INTERVAL_MIN_FACTOR: float = 0.5
+## Extra foe bullets the fire director allows per stage.
+const FIRE_BULLETS_PER_STAGE: int = 1
+## Maximum foe bullets the fire director allows at any stage.
+const MAX_FOE_BULLETS_CAP: int = 12
 
 var _base_max_divers: int = 2
 var _base_interval_min: float = 1.5
 var _base_interval_max: float = 3.0
+var _base_fire_interval_min: float = 1.0
+var _base_fire_interval_max: float = 2.5
+var _base_max_foe_bullets: int = 6
 
 var _state: int = 0  # 0=INTRO, 1=SPAWNING, 2=PLAYING, 3=CLEARED, 4=STOPPED
 var _wave_index: int = 0
@@ -55,6 +64,8 @@ func _ready() -> void:
 		entities = get_parent().get_node_or_null("Entities") as Node2D
 	if dive_director == null:
 		dive_director = get_parent().get_node_or_null("DiveDirector") as DiveDirector
+	if fire_director == null:
+		fire_director = get_parent().get_node_or_null("FireDirector") as FireDirector
 	if stages.is_empty():
 		push_error("StageDirector: stages is empty.")
 		_state = 4
@@ -70,6 +81,12 @@ func _ready() -> void:
 		_base_max_divers = dive_director.max_divers
 		_base_interval_min = dive_director.interval_min
 		_base_interval_max = dive_director.interval_max
+	if fire_director == null:
+		push_warning("StageDirector: fire_director not set; formation fire stays unscaled.")
+	else:
+		_base_fire_interval_min = fire_director.interval_min
+		_base_fire_interval_max = fire_director.interval_max
+		_base_max_foe_bullets = fire_director.max_foe_bullets
 	if OS.is_debug_build() and _validate_stages():
 		_state = 4
 		return
@@ -154,6 +171,9 @@ func _spawn_current_wave() -> void:
 		entities.add_child(foe)
 		var brain: FoeBrain = foe.get_node("FoeBrain") as FoeBrain
 		brain.setup(wave.entry_curve, mirror, slot, slot_index * wave.spacing, wave.dive_curves)
+		var shooter: FoeShooter = foe.get_node_or_null(^"FoeShooter") as FoeShooter
+		if shooter != null:
+			shooter.configure(wave)
 		brain.entered_formation.connect(_on_formation_entered)
 		_total_foes_spawned += 1
 		slot_index += 1
@@ -222,15 +242,19 @@ func _count_live_foes() -> int:
 
 
 func _apply_difficulty() -> void:
-	if dive_director == null:
-		return
 	var s: int = max(0, GameManager.stage - 1)
-	var extra_divers: int = floori(float(s) / float(STAGES_PER_EXTRA_DIVER))
-	var new_max: int = mini(_base_max_divers + extra_divers, MAX_DIVERS_CAP)
-	dive_director.max_divers = new_max
 	var factor: float = maxf(1.0 - INTERVAL_SHRINK_PER_STAGE * float(s), INTERVAL_MIN_FACTOR)
-	dive_director.interval_min = _base_interval_min * factor
-	dive_director.interval_max = _base_interval_max * factor
+	if dive_director != null:
+		var extra_divers: int = floori(float(s) / float(STAGES_PER_EXTRA_DIVER))
+		var new_max: int = mini(_base_max_divers + extra_divers, MAX_DIVERS_CAP)
+		dive_director.max_divers = new_max
+		dive_director.interval_min = _base_interval_min * factor
+		dive_director.interval_max = _base_interval_max * factor
+	if fire_director != null:
+		fire_director.interval_min = _base_fire_interval_min * factor
+		fire_director.interval_max = _base_fire_interval_max * factor
+		fire_director.max_foe_bullets = mini(
+				_base_max_foe_bullets + s * FIRE_BULLETS_PER_STAGE, MAX_FOE_BULLETS_CAP)
 
 
 func _on_formation_entered() -> void:

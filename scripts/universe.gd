@@ -136,7 +136,7 @@ func _set_action_frozen(frozen: bool) -> void:
 	var mode: Node.ProcessMode = (
 		Node.PROCESS_MODE_DISABLED if frozen else Node.PROCESS_MODE_INHERIT
 	)
-	for node: Node in [$Entities, $Projectiles, $Formations, $DiveDirector, $StageDirector]:
+	for node: Node in [$Entities, $Projectiles, $Formations, $DiveDirector, $FireDirector, $StageDirector]:
 		node.set_deferred("process_mode", mode)
 
 
