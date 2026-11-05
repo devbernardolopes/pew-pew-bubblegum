@@ -14,6 +14,8 @@ foe_scene = ExtResource("3_w5sue")
 entry_curve = ExtResource("4_1bhm3")
 formation = ExtResource("4_w7tw3")
 dive_curves = Array[Curve2D]([ExtResource("3_w7tw3")])
+fire_on_entry = true
+fire_in_formation = true
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 
 [resource]

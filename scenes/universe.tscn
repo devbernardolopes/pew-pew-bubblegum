@@ -29,8 +29,8 @@ shader_parameter/depth_gradient = 5.0
 shader_parameter/v_line_density = 140.0
 shader_parameter/v_line_sin_cutoff = 0.88999995775472
 shader_parameter/h_line_density = 50.0
-shader_parameter/h_line_sin_cutoff = 0.9299999568606401
-shader_parameter/h_line_scroll_rate = -0.11480000513578999
+shader_parameter/h_line_sin_cutoff = 0.92999995686064
+shader_parameter/h_line_scroll_rate = -0.11480000513579
 shader_parameter/horizon_y_uv = 0.43999999016512
 shader_parameter/fade_horizon_y_uv = 0.90999997965968
 
