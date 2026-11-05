@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="BossPhaseData" format=3 uid="uid://vk03ehj6tp6o"]
+
+[ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="1_7q6wm"]
+
+[resource]
+script = ExtResource("1_7q6wm")
+fire_interval = 1.8

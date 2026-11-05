@@ -1,22 +1,20 @@
 [gd_resource type="Resource" script_class="BossData" format=3 uid="uid://07temj6m8ufj"]
 
-[ext_resource type="Script" path="res://resources/boss_phase_data.gd" id="1_11svq"]
-[ext_resource type="Script" path="res://resources/boss_piece_data.gd" id="2_rh10h"]
-[ext_resource type="Script" path="res://resources/boss_data.gd" id="3_1yyj8"]
-[ext_resource type="Resource" path="res://resources/sound_profiles/sound_profile_001.tres" id="4_igd6w"]
+[ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="1_11svq"]
+[ext_resource type="Script" uid="uid://bx6juvdroac4" path="res://resources/boss_piece_data.gd" id="2_rh10h"]
+[ext_resource type="Script" uid="uid://db3gvgn86afji" path="res://resources/boss_data.gd" id="3_1yyj8"]
+[ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="4_igd6w"]
 
 [sub_resource type="Resource" id="Resource_nh5ql"]
 script = ExtResource("1_11svq")
 fire_pattern = 2
 fire_interval = 1.4
-muzzle_indices = PackedInt32Array()
 
 [sub_resource type="Resource" id="Resource_vab8l"]
 script = ExtResource("1_11svq")
 health_below = 0.5
 offset = Vector2(0, 30)
 fire_interval = 1.4
-muzzle_indices = PackedInt32Array()
 
 [resource]
 script = ExtResource("3_1yyj8")

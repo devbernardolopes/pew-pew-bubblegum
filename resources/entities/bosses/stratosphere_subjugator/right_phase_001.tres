@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="BossPhaseData" format=3 uid="uid://dywix4u2xdqe7"]
+
+[ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="1_jahhi"]
+
+[resource]
+script = ExtResource("1_jahhi")
+spread_count = 1
+metadata/_custom_type_script = "uid://tth0jpkdi8oe"

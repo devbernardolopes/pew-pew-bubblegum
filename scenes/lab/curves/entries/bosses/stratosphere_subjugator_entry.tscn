@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d0tq8f8xg0x0d"]
+
+[ext_resource type="Curve2D" uid="uid://ctrnk4rhow2pw" path="res://resources/entities/bosses/stratosphere_subjugator/stratosphere_subjugator_entry.tres" id="1_vmu8l"]
+
+[node name="StratosphereSubjugatorEntry" type="Path2D" unique_id=1504203096]
+curve = ExtResource("1_vmu8l")

@@ -3,23 +3,21 @@
 [ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_27vci"]
 
 [node name="Node2D" type="Node2D" unique_id=711540235]
+script = ExtResource("1_27vci")
 
 [node name="BossStratosphereSubjugator" type="Polygon2D" parent="." unique_id=1366596495]
 color = Color(0, 0, 0.3137255, 1)
 polygon = PackedVector2Array(128, 0, 64, 64, 64, 128, 0, 128, 64, 320, 128, 384, 192, 384, 192, 448, 256, 448, 256, 384, 448, 384, 448, 448, 512, 448, 512, 384, 576, 384, 640, 320, 704, 128, 640, 128, 640, 64, 576, 0, 448, 0, 384, 64, 320, 64, 256, 0)
-script = ExtResource("1_27vci")
 
 [node name="BossStratosphereSubjugatorLeft" type="Polygon2D" parent="." unique_id=2129917001]
 position = Vector2(0, 512)
 color = Color(0.16181883, 0.030538037, 0.03563266, 1)
 polygon = PackedVector2Array(128, 0, 64, 64, 64, 128, 0, 128, 64, 320, 128, 384, 192, 384, 192, 448, 256, 448, 256, 384, 256, 192, 319.905, 128.095, 320, 64, 256, 0)
-script = ExtResource("1_27vci")
 
 [node name="BossStratosphereSubjugatorRight" type="Polygon2D" parent="." unique_id=769686736]
 position = Vector2(0, 512)
 color = Color(0, 0, 0.3137255, 1)
 polygon = PackedVector2Array(448, 384, 448, 448, 512, 448, 512, 384, 576, 384, 640, 320, 704, 128, 640, 128, 640, 64, 576, 0, 448, 0, 384, 64, 384, 128, 448, 192)
-script = ExtResource("1_27vci")
 
 [node name="BossStratosphereSubjugatorCenter" type="Polygon2D" parent="." unique_id=1832463534]
 color = Color(0.101960786, 0.29411766, 0.078431375, 1)

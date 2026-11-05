@@ -2,59 +2,22 @@
 
 [ext_resource type="AudioStream" uid="uid://22tns1bjinoi" path="res://assets/musics/neon_drive_-_retro_synth_game_music.ogg" id="1_e2wfk"]
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="1_stage"]
-[ext_resource type="PackedScene" uid="uid://clocu82ct25d0" path="res://scenes/entities/boss_01_lego.tscn" id="2_boss"]
-[ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entries/entry_left_01.tres" id="3_entry"]
 [ext_resource type="Resource" uid="uid://ci55jfki5o7r7" path="res://resources/formations/formation_boss_arena.tres" id="4_arena"]
+[ext_resource type="Curve2D" uid="uid://ctrnk4rhow2pw" path="res://resources/entities/bosses/stratosphere_subjugator/stratosphere_subjugator_entry.tres" id="4_guv7e"]
+[ext_resource type="PackedScene" uid="uid://crdw1lby6obf2" path="res://scenes/entities/bosses/stratosphere_subjugator/boss_stratosphere_subjugator.tscn" id="5_5u0iw"]
 [ext_resource type="Script" uid="uid://bfmqu6f78vl2e" path="res://resources/boss_wave_data.gd" id="5_bosswave"]
 [ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="6_wave"]
-[ext_resource type="PackedScene" uid="uid://s7pipqm2lc1g" path="res://scenes/entities/foe_star.tscn" id="7_star"]
-[ext_resource type="Curve2D" uid="uid://rhy0fy3n10j3" path="res://resources/curves/entries/entry_left_02.tres" id="8_entry2"]
-[ext_resource type="Curve2D" uid="uid://c4rkkg4tjg22b" path="res://resources/curves/dives/dive_left_03.tres" id="9_dive"]
-[ext_resource type="PackedScene" uid="uid://db6w567pp7o3t" path="res://scenes/entities/foe_decagon.tscn" id="10_decagon"]
-[ext_resource type="Curve2D" uid="uid://bothmpxl7w34p" path="res://resources/curves/entries/entry_left_04.tres" id="11_entry4"]
-[ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dives/dive_left_01.tres" id="12_dive1"]
-[ext_resource type="PackedScene" uid="uid://blsbojqh2ahho" path="res://scenes/entities/foe_h.tscn" id="13_h"]
-[ext_resource type="Curve2D" uid="uid://bmg55vgjji6bm" path="res://resources/curves/dives/dive_left_05.tres" id="14_dive5"]
 
 [sub_resource type="Resource" id="Resource_boss"]
 script = ExtResource("5_bosswave")
 col = 4
-foe_scene = ExtResource("2_boss")
-entry_curve = ExtResource("3_entry")
+foe_scene = ExtResource("5_5u0iw")
+entry_curve = ExtResource("4_guv7e")
 formation = ExtResource("4_arena")
 metadata/_custom_type_script = "uid://bfmqu6f78vl2e"
 
-[sub_resource type="Resource" id="Resource_guard"]
-script = ExtResource("6_wave")
-foe_scene = ExtResource("7_star")
-entry_curve = ExtResource("8_entry2")
-formation = ExtResource("4_arena")
-dive_curves = Array[Curve2D]([ExtResource("9_dive")])
-delay = 3.0
-metadata/_custom_type_script = "uid://c775yud1oetrm"
-
-[sub_resource type="Resource" id="Resource_row3"]
-script = ExtResource("6_wave")
-foe_scene = ExtResource("10_decagon")
-entry_curve = ExtResource("11_entry4")
-row = 3
-formation = ExtResource("4_arena")
-dive_curves = Array[Curve2D]([ExtResource("12_dive1")])
-delay = 3.0
-metadata/_custom_type_script = "uid://c775yud1oetrm"
-
-[sub_resource type="Resource" id="Resource_row4"]
-script = ExtResource("6_wave")
-foe_scene = ExtResource("13_h")
-entry_curve = ExtResource("11_entry4")
-row = 4
-formation = ExtResource("4_arena")
-dive_curves = Array[Curve2D]([ExtResource("14_dive5")])
-delay = 3.0
-metadata/_custom_type_script = "uid://c775yud1oetrm"
-
 [resource]
 script = ExtResource("1_stage")
-waves = Array[ExtResource("6_wave")]([SubResource("Resource_boss"), SubResource("Resource_guard"), SubResource("Resource_row3"), SubResource("Resource_row4")])
+waves = Array[ExtResource("6_wave")]([SubResource("Resource_boss")])
 music_stream = ExtResource("1_e2wfk")
 metadata/_custom_type_script = "uid://cfqxmshih2ed7"

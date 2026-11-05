@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BossData" format=3 uid="uid://cfym3wwpbq1lx"]
+
+[ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="1_3heks"]
+[ext_resource type="Resource" uid="uid://cds2jfs170uue" path="res://resources/entities/bosses/stratosphere_subjugator/left_phase_001.tres" id="2_jwv61"]
+[ext_resource type="Script" uid="uid://bx6juvdroac4" path="res://resources/boss_piece_data.gd" id="2_x0f8f"]
+[ext_resource type="Script" uid="uid://db3gvgn86afji" path="res://resources/boss_data.gd" id="3_jwv61"]
+[ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="4_x0f8f"]
+
+[resource]
+script = ExtResource("3_jwv61")
+phases = Array[ExtResource("1_3heks")]([ExtResource("2_jwv61")])
+id = &"stratosphere_subjugator_left"
+visual = 205
+color = Color(0, 0, 0.3137255, 1)
+max_health = 20
+score_value = 3000
+sound_profile = ExtResource("4_x0f8f")
+dies_on_contact = false
+center_on_bounds = true
+metadata/_custom_type_script = "uid://db3gvgn86afji"

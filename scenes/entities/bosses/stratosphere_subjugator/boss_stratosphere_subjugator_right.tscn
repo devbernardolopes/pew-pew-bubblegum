@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dhdjrfwuxox5j"]
+
+[ext_resource type="PackedScene" uid="uid://c1vb7q75v7fvt" path="res://scenes/entity.tscn" id="1_7ikse"]
+[ext_resource type="Resource" uid="uid://cuu0vmyfvwf61" path="res://resources/entities/bosses/stratosphere_subjugator/stratosphere_subjugator_right.tres" id="2_7ikse"]
+[ext_resource type="Script" uid="uid://cxx0a7y036em" path="res://scripts/foe_brain.gd" id="3_nkcyd"]
+[ext_resource type="Script" uid="uid://6442sewjldwo" path="res://scripts/boss_pattern.gd" id="4_xr0pg"]
+[ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="5_3tnv5"]
+[ext_resource type="Resource" uid="uid://55xw6trbqqk8" path="res://resources/projectiles/foe_bullet_1_480.tres" id="6_2pkpp"]
+
+[node name="Boss" unique_id=1920000001 instance=ExtResource("1_7ikse")]
+collision_layer = 4
+collision_mask = 2
+data = ExtResource("2_7ikse")
+scale_aux = 0.4
+
+[node name="FoeBrain" type="Node" parent="." index="0" unique_id=1920000002]
+script = ExtResource("3_nkcyd")
+
+[node name="BossPattern" type="Node" parent="." index="1" unique_id=1920000003]
+script = ExtResource("4_xr0pg")
+
+[node name="Weapon" type="Node" parent="." index="2" unique_id=1920000004]
+script = ExtResource("5_3tnv5")
+projectile_data = ExtResource("6_2pkpp")
+
+[node name="Muzzles" type="Node2D" parent="." index="3" unique_id=1920000005]
+
+[node name="Muzzle1" type="Marker2D" parent="Muzzles" index="0" unique_id=1920000006]
+position = Vector2(24, 0)

@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="BossData" format=3 uid="uid://bo28wn7pbs6op"]
+
+[ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="1_84vk3"]
+[ext_resource type="Resource" uid="uid://vk03ehj6tp6o" path="res://resources/entities/bosses/phases/phase_001.tres" id="2_4gvu6"]
+[ext_resource type="Resource" uid="uid://cjycv5uy3cgif" path="res://resources/entities/bosses/phases/phase_002.tres" id="3_k44np"]
+[ext_resource type="Resource" uid="uid://cdiayaopa7e5f" path="res://resources/entities/bosses/phases/phase_003.tres" id="4_ww1kg"]
+[ext_resource type="Script" uid="uid://bx6juvdroac4" path="res://resources/boss_piece_data.gd" id="5_3nvuu"]
+[ext_resource type="PackedScene" uid="uid://dtkqf3gdo3x5l" path="res://scenes/entities/bosses/stratosphere_subjugator/boss_stratosphere_subjugator_left.tscn" id="6_hcwrb"]
+[ext_resource type="PackedScene" uid="uid://cuwolebq3j2us" path="res://scenes/entities/bosses/stratosphere_subjugator/boss_stratosphere_subjugator_center.tscn" id="7_yg5dp"]
+[ext_resource type="PackedScene" uid="uid://dhdjrfwuxox5j" path="res://scenes/entities/bosses/stratosphere_subjugator/boss_stratosphere_subjugator_right.tscn" id="8_lb0ue"]
+[ext_resource type="Script" uid="uid://db3gvgn86afji" path="res://resources/boss_data.gd" id="9_1tygl"]
+[ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="10_5x7ko"]
+
+[sub_resource type="Resource" id="Resource_6a3e0"]
+script = ExtResource("5_3nvuu")
+scene = ExtResource("6_hcwrb")
+row = 2
+metadata/_custom_type_script = "uid://bx6juvdroac4"
+
+[sub_resource type="Resource" id="Resource_q8ymk"]
+script = ExtResource("5_3nvuu")
+scene = ExtResource("7_yg5dp")
+col = 1
+metadata/_custom_type_script = "uid://bx6juvdroac4"
+
+[sub_resource type="Resource" id="Resource_vfut7"]
+script = ExtResource("5_3nvuu")
+scene = ExtResource("8_lb0ue")
+col = 2
+row = 2
+metadata/_custom_type_script = "uid://bx6juvdroac4"
+
+[resource]
+script = ExtResource("9_1tygl")
+phases = Array[ExtResource("1_84vk3")]([ExtResource("2_4gvu6"), ExtResource("3_k44np"), ExtResource("4_ww1kg")])
+pieces = Array[ExtResource("5_3nvuu")]([SubResource("Resource_6a3e0"), SubResource("Resource_q8ymk"), SubResource("Resource_vfut7")])
+id = &"stratosphere_subjugator"
+visual = 204
+color = Color(0, 0, 0.3137255, 1)
+max_health = 30
+base_speed = 220.0
+score_value = 9000
+explosion_scale = 1.5
+sound_profile = ExtResource("10_5x7ko")
+dies_on_contact = false
+metadata/_custom_type_script = "uid://db3gvgn86afji"

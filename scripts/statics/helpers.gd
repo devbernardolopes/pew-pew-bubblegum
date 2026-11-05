@@ -287,6 +287,51 @@ const BOSS_STRATOSPHERE_SUBJUGATOR_POLYGON: PackedVector2Array = [
 	Vector2(256.0, 0.0),
 ]
 
+const BOSS_STRATOSPHERE_SUBJUGATOR_LEFT_POLYGON: PackedVector2Array = [
+	Vector2(128.0, 0.0),
+	Vector2(64.0, 64.0),
+	Vector2(64.0, 128.0),
+	Vector2(0.0, 128.0),
+	Vector2(64.0, 320.0),
+	Vector2(128.0, 384.0),
+	Vector2(192.0, 384.0),
+	Vector2(192.0, 448.0),
+	Vector2(256.0, 448.0),
+	Vector2(256.0, 384.0),
+	Vector2(256.0, 192.0),
+	Vector2(319.905, 128.095),
+	Vector2(320.0, 64.0),
+	Vector2(256.0, 0.0),
+]
+
+const BOSS_STRATOSPHERE_SUBJUGATOR_RIGHT_POLYGON: PackedVector2Array = [
+	Vector2(448.0, 384.0),
+	Vector2(448.0, 448.0),
+	Vector2(512.0, 448.0),
+	Vector2(512.0, 384.0),
+	Vector2(576.0, 384.0),
+	Vector2(640.0, 320.0),
+	Vector2(704.0, 128.0),
+	Vector2(640.0, 128.0),
+	Vector2(640.0, 64.0),
+	Vector2(576.0, 0.0),
+	Vector2(448.0, 0.0),
+	Vector2(384.0, 64.0),
+	Vector2(384.0, 128.0),
+	Vector2(448.0, 192.0),
+]
+
+const BOSS_STRATOSPHERE_SUBJUGATOR_CENTER_POLYGON: PackedVector2Array = [
+	Vector2(256.0, 896.0),
+	Vector2(448.0, 896.0),
+	Vector2(448.0, 704.0),
+	Vector2(384.0, 640.0),
+	Vector2(384.0, 576.0),
+	Vector2(320.0, 576.0),
+	Vector2(320.0, 640.0),
+	Vector2(256.0, 704.0),
+]
+
 const ENTITY_WIDTH: float = 128.0
 const ENTITY_HALF_WIDTH: float = ENTITY_WIDTH / 2.0
 
@@ -344,6 +389,14 @@ static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array
 			return BOSS_01_CENTER_POLYGON.duplicate()
 		VISUAL.BOSS_01_RIGHT:
 			return BOSS_01_RIGHT_POLYGON.duplicate()
+		VISUAL.BOSS_STRATOSPHERE_SUBJUGATOR:
+			return BOSS_STRATOSPHERE_SUBJUGATOR_POLYGON.duplicate()
+		VISUAL.BOSS_STRATOSPHERE_SUBJUGATOR_LEFT:
+			return BOSS_STRATOSPHERE_SUBJUGATOR_LEFT_POLYGON.duplicate()
+		VISUAL.BOSS_STRATOSPHERE_SUBJUGATOR_CENTER:
+			return BOSS_STRATOSPHERE_SUBJUGATOR_CENTER_POLYGON.duplicate()
+		VISUAL.BOSS_STRATOSPHERE_SUBJUGATOR_RIGHT:
+			return BOSS_STRATOSPHERE_SUBJUGATOR_RIGHT_POLYGON.duplicate()
 	return result
 
 

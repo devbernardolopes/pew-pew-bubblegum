@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://b1ossarena12x6a"]
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://ci55jfki5o7r7"]
 
 [ext_resource type="Texture2D" uid="uid://dgc6toemdk187" path="res://resources/formations/layouts/boss_arena_12x6.png" id="1_layout"]
 [ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="2_script"]
@@ -7,6 +7,5 @@
 script = ExtResource("2_script")
 layout = ExtResource("1_layout")
 spacing = Vector2(64, 44)
-sway_amplitude = 40.0
 sway_speed = 1.0
 metadata/_custom_type_script = "uid://cspnel4tvson"

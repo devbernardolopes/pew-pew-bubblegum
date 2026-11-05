@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BossPhaseData" format=3 uid="uid://cdiayaopa7e5f"]
+
+[ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="1_sl57e"]
+
+[resource]
+script = ExtResource("1_sl57e")
+health_below = 0.33
+offset = Vector2(0, 88)
+fire_pattern = 3
+fire_interval = 1.4
