@@ -16,20 +16,41 @@
 [ext_resource type="Script" uid="uid://dug6ksugj1bnx" path="res://scripts/stage_director.gd" id="13_stage_dir"]
 [ext_resource type="Shader" uid="uid://bfqoilw60w5vk" path="res://shaders/vhs_and_crt_monitor.gdshader" id="13_yanup"]
 [ext_resource type="Script" uid="uid://d4bwsg2t7ggi8" path="res://scripts/starfield_layer.gd" id="14_starfield"]
+[ext_resource type="Shader" uid="uid://baqk30xhnw5lo" path="res://shaders/manga_style_speedlines.gdshader" id="14_tqeu6"]
 [ext_resource type="Shader" uid="uid://bocf4h02wlgl2" path="res://shaders/synthwave_grid.gdshader" id="16_fbuf2"]
+[ext_resource type="Shader" uid="uid://14oyx6i6vv66" path="res://shaders/anime_style_speedlines.gdshader" id="18_3kwp1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qvluj"]
 shader = ExtResource("16_fbuf2")
-shader_parameter/line_color = Color(0.039, 0.071, 0.961, 1)
-shader_parameter/vanishing_point = Vector2(0.5, 0.15)
+shader_parameter/line_color = Color(0.858, 0, 5.06, 0.522)
+shader_parameter/vanishing_point = Vector2(0.1, 0.5)
 shader_parameter/depth_gradient = 5.0
-shader_parameter/v_line_density = 50.0
-shader_parameter/v_line_sin_cutoff = 0.9
+shader_parameter/v_line_density = 140.0
+shader_parameter/v_line_sin_cutoff = 0.88999995775472
 shader_parameter/h_line_density = 50.0
-shader_parameter/h_line_sin_cutoff = 0.9
-shader_parameter/h_line_scroll_rate = -0.02
-shader_parameter/horizon_y_uv = 0.25
-shader_parameter/fade_horizon_y_uv = 0.75
+shader_parameter/h_line_sin_cutoff = 0.9299999568606401
+shader_parameter/h_line_scroll_rate = -0.11480000513578999
+shader_parameter/horizon_y_uv = 0.43999999016512
+shader_parameter/fade_horizon_y_uv = 0.90999997965968
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_yy6t4"]
+noise_type = 0
+frequency = 0.09
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hp6ol"]
+noise = SubResource("FastNoiseLite_yy6t4")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aqutj"]
+shader = ExtResource("14_tqeu6")
+shader_parameter/noise = SubResource("NoiseTexture2D_hp6ol")
+shader_parameter/line_color_a = Color(2, 0, 0, 1)
+shader_parameter/line_color_b = Color(1, 1, 0, 1)
+shader_parameter/back_color = Color(0, 0, 0.12941177, 0.3137255)
+shader_parameter/line_threshold = 0.8
+shader_parameter/speed = 0.03
+shader_parameter/line_length = 1000.0
+shader_parameter/angle = 60.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m7uww"]
 shader = ExtResource("11_7viwd")
@@ -72,6 +93,24 @@ shader_parameter/warp_amount = 1.0
 shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.5
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_hp6ol"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wsqxv"]
+shader = ExtResource("18_3kwp1")
+shader_parameter/noise_tex = SubResource("CurveXYZTexture_hp6ol")
+shader_parameter/line_color = Color(0, 0, 1, 1)
+shader_parameter/line_opacity = 1.0
+shader_parameter/color_levels = 2.0
+shader_parameter/power = 1.5
+shader_parameter/speed_v = 0.1
+shader_parameter/radial_center = Vector2(0.5, 0.5)
+shader_parameter/radial_zoom = 0.01
+shader_parameter/radial_repeat = 10.0
+shader_parameter/radial_min = 0.05
+shader_parameter/radial_max = 0.50000002375
+shader_parameter/dist_strength = 1.0
+shader_parameter/dist_power = 4.0
 
 [node name="Universe" type="Node2D" unique_id=2088113174]
 script = ExtResource("5_univ")
@@ -164,8 +203,16 @@ vertical_alignment = 1
 
 [node name="Filters" type="CanvasLayer" parent="." unique_id=1375779924]
 
-[node name="SimpleCrtVhs" type="ColorRect" parent="Filters" unique_id=2135814922]
+[node name="FantasySky" type="ColorRect" parent="Filters" unique_id=627534721]
 visible = false
+material = SubResource("ShaderMaterial_aqutj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SimpleCrtVhs" type="ColorRect" parent="Filters" unique_id=2135814922]
 material = SubResource("ShaderMaterial_m7uww")
 anchors_preset = 15
 anchor_right = 1.0
@@ -185,6 +232,15 @@ grow_vertical = 2
 [node name="VhsCrtMonitor" type="ColorRect" parent="Filters" unique_id=277403897]
 visible = false
 material = SubResource("ShaderMaterial_4y28s")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Speedlines" type="ColorRect" parent="Filters" unique_id=1637345295]
+visible = false
+material = SubResource("ShaderMaterial_wsqxv")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
