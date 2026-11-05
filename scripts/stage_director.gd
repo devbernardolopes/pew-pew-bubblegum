@@ -139,6 +139,7 @@ func _current_stage() -> StageData:
 
 func _begin_stage() -> void:
 	_free_formations()
+	BossSpawner.pending_pieces = 0
 	_formation_entries = 0
 	_total_foes_spawned = 0
 	_apply_difficulty()
@@ -194,19 +195,12 @@ func _spawn_current_wave() -> void:
 ## Spawns a boss on its own anchor: the [FoeBrain] settles it like any foe and
 ## the [BossPattern] moves the anchor (and fires) once it is in formation.
 func _spawn_boss(wave: BossWaveData, formation: Formation) -> void:
-	var boss: Entity = wave.foe_scene.instantiate() as Entity
-	entities.add_child(boss)
-	var anchor: Marker2D = formation.create_anchor(wave.row, wave.col, wave.row_span, wave.col_span)
-	var brain: FoeBrain = boss.get_node_or_null(^"FoeBrain") as FoeBrain
-	var pattern: BossPattern = boss.get_node_or_null(^"BossPattern") as BossPattern
-	if brain == null or pattern == null:
-		push_error("StageDirector._spawn_boss(): the boss scene needs both a FoeBrain and a BossPattern child.")
-		boss.queue_free()
-		return
-	brain.setup(wave.entry_curve, wave.mirror_entry, anchor, 0.0, [])
-	pattern.setup(anchor)
-	brain.entered_formation.connect(_on_formation_entered)
-	_total_foes_spawned += 1
+	var boss: Entity = BossSpawner.spawn(
+			wave.foe_scene, entities, formation,
+			Rect2i(wave.col, wave.row, wave.col_span, wave.row_span),
+			_on_formation_entered, wave.entry_curve, wave.mirror_entry)
+	if boss != null:
+		_total_foes_spawned += 1
 
 
 ## Returns the [Formation] of [param data] for the current stage, building it on
@@ -268,7 +262,9 @@ func _count_live_foes() -> int:
 		if parent_foe.is_dead or parent_foe.is_queued_for_deletion():
 			continue
 		count += 1
-	return count
+	# A dying boss with pieces counts until its deferred pieces are spawned,
+	# so the stage cannot clear in the gap (hazard 1 of the Lego-boss plan).
+	return count + BossSpawner.pending_pieces
 
 
 func _apply_difficulty() -> void:

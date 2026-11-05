@@ -147,6 +147,26 @@ func setup(curve: Curve2D, mirror: bool, slot: Marker2D, entry_delay: float, div
 	_entity.global_position = _xform * _curve.sample_baked(0.0, true)
 
 
+## Like [method setup] for a foe that already is where it should start: it goes
+## straight to [code]SETTLING[/code] towards [param slot] without a curve and
+## without the null-curve [method push_error]. Used for boss pieces, which spawn
+## inside their parent's shape and fly to their anchors.
+func setup_settle(slot: Marker2D) -> void:
+	_curve = null
+	_slot = slot
+	_entry_delay = 0.0
+	_dive_curves = []
+	_distance = 0.0
+	_xform = Transform2D.IDENTITY
+	state = State.WAITING
+	if _entity == null:
+		return
+	if _slot == null:
+		push_error("FoeBrain.setup_settle(): slot is null, the foe will wait forever.")
+		return
+	state = State.SETTLING
+
+
 func dive(mirror: bool) -> bool:
 	if state != State.FORMATION or _slot == null or _entity == null:
 		return false

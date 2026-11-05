@@ -11,6 +11,9 @@ var _entity: Entity = null
 var _brain: FoeBrain = null
 var _anchor: Marker2D = null
 var _home: Vector2 = Vector2.ZERO
+var _formation: Formation = null
+var _footprint: Rect2i = Rect2i()
+var _entered: Callable = Callable()
 var _muzzles: Array[Marker2D] = []
 var _phase_index: int = -1
 var _fire_timer: float = 0.0
@@ -37,13 +40,34 @@ func _ready() -> void:
 				_muzzles.append(muzzle)
 	if _muzzles.is_empty():
 		push_error("BossPattern found no Marker2D under Muzzles; it will never fire.")
+	_entity.died.connect(_on_entity_died)
 
 
-## Stores the anchor the boss follows and the position it sways around.
-## [StageDirector] calls it once, right after [method FoeBrain.setup].
-func setup(anchor: Marker2D) -> void:
+## Stores the anchor the boss follows and the position it sways around, plus
+## the split context: the [param formation] and [param footprint] a piece of
+## this boss settles into, and the [param entered] callback of
+## [signal FoeBrain.entered_formation] passed down to every piece so the
+## flawless-victory bookkeeping keeps counting. [StageDirector] (through
+## [BossSpawner]) calls it once, right after [method FoeBrain.setup].
+func setup(anchor: Marker2D, formation: Formation, footprint: Rect2i, entered: Callable) -> void:
 	_anchor = anchor
 	_home = anchor.position if anchor != null else Vector2.ZERO
+	_formation = formation
+	_footprint = footprint
+	_entered = entered
+
+
+## Requests the split of this boss, if it has pieces. Runs synchronously inside
+## [signal Entity.died], before [method BossSpawner.request_split] defers the
+## spawn, so the pending-piece counter covers the gap (hazard 1); it never
+## adds nodes itself.
+func _on_entity_died(entity: Entity) -> void:
+	var data: BossData = entity.data as BossData
+	if data == null or data.pieces.is_empty():
+		return
+	if _formation == null or not is_instance_valid(_formation):
+		return
+	BossSpawner.request_split(entity, data, entity.get_parent(), _formation, _footprint, _entered)
 
 
 func _physics_process(delta: float) -> void:

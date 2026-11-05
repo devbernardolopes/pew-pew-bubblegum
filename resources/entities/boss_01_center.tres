@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="BossData" format=3 uid="uid://07temj6m8ufj"]
+
+[ext_resource type="Script" path="res://resources/boss_phase_data.gd" id="1_11svq"]
+[ext_resource type="Script" path="res://resources/boss_piece_data.gd" id="2_rh10h"]
+[ext_resource type="Script" path="res://resources/boss_data.gd" id="3_1yyj8"]
+[ext_resource type="Resource" path="res://resources/sound_profiles/sound_profile_001.tres" id="4_igd6w"]
+
+[sub_resource type="Resource" id="Resource_nh5ql"]
+script = ExtResource("1_11svq")
+fire_pattern = 2
+fire_interval = 1.4
+muzzle_indices = PackedInt32Array()
+
+[sub_resource type="Resource" id="Resource_vab8l"]
+script = ExtResource("1_11svq")
+health_below = 0.5
+offset = Vector2(0, 30)
+fire_interval = 1.4
+muzzle_indices = PackedInt32Array()
+
+[resource]
+script = ExtResource("3_1yyj8")
+phases = Array[ExtResource("1_11svq")]([SubResource("Resource_nh5ql"), SubResource("Resource_vab8l")])
+id = &"boss_01_center"
+visual = 202
+color = Color(0.8611975, 0.112640165, 0.25397617, 1)
+max_health = 24
+base_speed = 220.0
+score_value = 1500
+explosion_scale = 1.0
+sound_profile = ExtResource("4_igd6w")
+dies_on_contact = false
+center_on_bounds = true

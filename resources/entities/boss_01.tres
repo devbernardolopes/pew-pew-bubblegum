@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="BossData" format=3 uid="uid://c1etpu1q8roa"]
 
 [ext_resource type="Script" uid="uid://db3gvgn86afji" path="res://resources/boss_data.gd" id="1_boss"]
+[ext_resource type="Script" uid="uid://bx6juvdroac4" path="res://resources/boss_piece_data.gd" id="2_fvwai"]
 [ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="2_phase"]
 [ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="3_sound"]
 

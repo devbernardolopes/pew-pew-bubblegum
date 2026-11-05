@@ -5,6 +5,8 @@ extends EntityData
 
 ## Health phases, from full health down. The first one should start at 1.0.
 @export var phases: Array[BossPhaseData] = []
+## Pieces the boss splits into when it dies.
+@export var pieces: Array[BossPieceData] = []
 
 
 func _init() -> void:
@@ -51,4 +53,34 @@ func validate(where: String, muzzle_count: int) -> PackedStringArray:
 	if max_health <= 1:
 		issues.append("[warning] %s: max_health is %d, so the boss has no health to phase through." % [
 				where, max_health])
+	for i: int in pieces.size():
+		var piece: BossPieceData = pieces[i]
+		if piece == null:
+			issues.append("[error] %s piece %d: the piece is null." % [where, i])
+			continue
+		if piece.scene == null:
+			issues.append("[error] %s piece %d: the piece scene is null." % [where, i])
+	for i: int in pieces.size():
+		var first: BossPieceData = pieces[i]
+		if first == null:
+			continue
+		for j: int in range(i + 1, pieces.size()):
+			var second: BossPieceData = pieces[j]
+			if second == null:
+				continue
+			if _rectangles_overlap(first, second):
+				issues.append("[warning] %s: pieces %d and %d overlap." % [where, i, j])
 	return issues
+
+
+## Whether the footprints of two pieces (in parent-relative cells) intersect.
+func _rectangles_overlap(first: BossPieceData, second: BossPieceData) -> bool:
+	var ax1: int = first.col
+	var ay1: int = first.row
+	var ax2: int = first.col + first.col_span
+	var ay2: int = first.row + first.row_span
+	var bx1: int = second.col
+	var by1: int = second.row
+	var bx2: int = second.col + second.col_span
+	var by2: int = second.row + second.row_span
+	return ax1 < bx2 and bx1 < ax2 and ay1 < by2 and by1 < ay2

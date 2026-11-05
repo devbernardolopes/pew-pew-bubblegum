@@ -65,7 +65,7 @@ func create_anchor(row: int, col: int, row_span: int, col_span: int) -> Marker2D
 	anchor.position = Vector2(
 			(float(col) + (float(col_span) - 1.0) / 2.0) * data.spacing.x - half_width,
 			(float(row) + (float(row_span) - 1.0) / 2.0) * data.spacing.y)
-	add_child(anchor)
+	add_child(anchor, true)
 	return anchor
 
 

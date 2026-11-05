@@ -6,6 +6,9 @@ extends WaveData
 ## [member spacing], [member dive_curves] and the firing flags are ignored: a
 ## boss never dives, never fills a row and fires through its own [BossPattern].
 
+## How deep a boss may split into pieces (piece of a piece of ... counts).
+const MAX_SPLIT_DEPTH: int = 3
+
 @export_group("Boss")
 ## First column of the boss footprint.
 @export var col: int = 0
@@ -64,6 +67,8 @@ func validate(stage_path: String = "", wave_index: int = -1, foe_cache: Dictiona
 	var data: BossData = foe_info.get("data") as BossData
 	if data != null:
 		issues.append_array(data.validate(where, int(foe_info.get("muzzle_count", 0))))
+		if not data.pieces.is_empty() and foe_scene != null:
+			issues.append_array(_validate_pieces(data, Vector2i(col_span, row_span), where, foe_cache, 0, [foe_scene]))
 	return issues
 
 
@@ -77,3 +82,48 @@ func _find_occupied_cell(_formation: FormationData) -> Vector2i:
 			if _formation.has_cell(footprint_row, footprint_col):
 				return Vector2i(footprint_col, footprint_row)
 	return Vector2i(-1, -1)
+
+
+## Validates the split tree of [param boss] below [param where]: every piece
+## must be a boss that fits inside [param spans] (the parent's footprint, in
+## cells), with no cycles and at most [member MAX_SPLIT_DEPTH] levels of
+## splitting. [param visited] holds the scenes on the path down to [param boss]
+## (the root boss scene is already in it); [param depth] is the depth of
+## [param boss] itself.
+func _validate_pieces(boss: BossData, spans: Vector2i, where: String, foe_cache: Dictionary, depth: int, visited: Array) -> PackedStringArray:
+	var issues: PackedStringArray = []
+	for i: int in boss.pieces.size():
+		var piece: BossPieceData = boss.pieces[i]
+		if piece == null or piece.scene == null:
+			continue
+		var piece_where: String = "%s piece %d" % [where, i]
+		if depth + 1 > MAX_SPLIT_DEPTH:
+			issues.append("[error] %s: splits more than %d levels deep." % [piece_where, MAX_SPLIT_DEPTH])
+			continue
+		if visited.has(piece.scene):
+			issues.append("[error] %s: the piece scene %s splits into itself (a cycle)." % [
+					piece_where, describe(piece.scene)])
+			continue
+		if piece.col < 0 or piece.row < 0 \
+				or piece.col + piece.col_span > spans.x or piece.row + piece.row_span > spans.y:
+			issues.append("[error] %s: the %dx%d footprint at col %d, row %d does not fit in the parent's %dx%d footprint." % [
+					piece_where, piece.col_span, piece.row_span, piece.col, piece.row, spans.x, spans.y])
+		var info: Dictionary = get_foe_info(piece.scene, foe_cache)
+		if not info.is_entity:
+			issues.append("[error] %s: the root of %s is not an Entity." % [piece_where, describe(piece.scene)])
+		else:
+			if not info.has_brain:
+				issues.append("[error] %s: the root of %s has no FoeBrain child." % [piece_where, describe(piece.scene)])
+			if not info.has_boss_pattern:
+				issues.append("[error] %s: the root of %s has no BossPattern child." % [piece_where, describe(piece.scene)])
+		var piece_data: BossData = info.get("data") as BossData
+		if piece_data == null:
+			issues.append("[error] %s: the data of %s is not a BossData." % [piece_where, describe(piece.scene)])
+			continue
+		issues.append_array(piece_data.validate(piece_where, int(info.get("muzzle_count", 0))))
+		if not piece_data.pieces.is_empty():
+			var deeper: Array = visited + [piece.scene]
+			issues.append_array(_validate_pieces(
+					piece_data, Vector2i(piece.col_span, piece.row_span),
+					piece_where, foe_cache, depth + 1, deeper))
+	return issues
