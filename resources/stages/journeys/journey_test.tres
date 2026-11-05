@@ -10,5 +10,5 @@
 script = ExtResource("1_lpaww")
 id = &"test_journey"
 name = "Test Journey"
-stages = Array[ExtResource("2_ht4ql")]([ExtResource("3_fpq5c"), ExtResource("4_378p2"), ExtResource("3_ht4ql")])
+stages = Array[ExtResource("2_ht4ql")]([ExtResource("4_378p2"), ExtResource("3_fpq5c"), ExtResource("3_ht4ql")])
 metadata/_custom_type_script = "uid://wa8mc2v1ds4i"

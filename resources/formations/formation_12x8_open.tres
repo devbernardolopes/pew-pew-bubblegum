@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://chxyv0axqjbje"]
+
+[ext_resource type="Texture2D" uid="uid://caukii1kc4ou4" path="res://resources/formations/layouts/boss_arena_12x8_open.png" id="1_bqoey"]
+[ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="1_pyro1"]
+
+[resource]
+script = ExtResource("1_pyro1")
+columns = 12
+rows = 8
+layout = ExtResource("1_bqoey")
+metadata/_custom_type_script = "uid://cspnel4tvson"

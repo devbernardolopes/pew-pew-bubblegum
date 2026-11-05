@@ -2,10 +2,10 @@
 
 [ext_resource type="AudioStream" uid="uid://22tns1bjinoi" path="res://assets/musics/neon_drive_-_retro_synth_game_music.ogg" id="1_e2wfk"]
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="1_stage"]
-[ext_resource type="Resource" uid="uid://ci55jfki5o7r7" path="res://resources/formations/formation_boss_arena.tres" id="4_arena"]
 [ext_resource type="Curve2D" uid="uid://ctrnk4rhow2pw" path="res://resources/entities/bosses/stratosphere_subjugator/stratosphere_subjugator_entry.tres" id="4_guv7e"]
 [ext_resource type="PackedScene" uid="uid://crdw1lby6obf2" path="res://scenes/entities/bosses/stratosphere_subjugator/boss_stratosphere_subjugator.tscn" id="5_5u0iw"]
 [ext_resource type="Script" uid="uid://bfmqu6f78vl2e" path="res://resources/boss_wave_data.gd" id="5_bosswave"]
+[ext_resource type="Resource" uid="uid://b0016tte8sbsa" path="res://resources/formations/formation_12x8_full.tres" id="6_guv7e"]
 [ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="6_wave"]
 
 [sub_resource type="Resource" id="Resource_boss"]
@@ -13,7 +13,7 @@ script = ExtResource("5_bosswave")
 col = 4
 foe_scene = ExtResource("5_5u0iw")
 entry_curve = ExtResource("4_guv7e")
-formation = ExtResource("4_arena")
+formation = ExtResource("6_guv7e")
 metadata/_custom_type_script = "uid://bfmqu6f78vl2e"
 
 [resource]

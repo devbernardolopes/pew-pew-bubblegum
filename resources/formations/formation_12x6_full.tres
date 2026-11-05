@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://dbyxewc1t8g6f"]
+
+[ext_resource type="Texture2D" uid="uid://dg08knjotavcl" path="res://resources/formations/layouts/boss_arena_12x6_full.png" id="1_1574r"]
+[ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="1_p1q6d"]
+
+[resource]
+script = ExtResource("1_p1q6d")
+columns = 12
+rows = 6
+layout = ExtResource("1_1574r")
+sway_amplitude = 72.0
+sway_speed = 1.6
+metadata/_custom_type_script = "uid://cspnel4tvson"

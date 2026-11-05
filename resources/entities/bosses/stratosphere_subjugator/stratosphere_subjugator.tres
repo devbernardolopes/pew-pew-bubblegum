@@ -26,7 +26,7 @@ metadata/_custom_type_script = "uid://bx6juvdroac4"
 [sub_resource type="Resource" id="Resource_vfut7"]
 script = ExtResource("5_3nvuu")
 scene = ExtResource("8_lb0ue")
-col = 2
+col = 3
 row = 2
 metadata/_custom_type_script = "uid://bx6juvdroac4"
 
@@ -37,10 +37,11 @@ pieces = Array[ExtResource("5_3nvuu")]([SubResource("Resource_6a3e0"), SubResour
 id = &"stratosphere_subjugator"
 visual = 204
 color = Color(0, 0, 0.3137255, 1)
-max_health = 30
+max_health = 12
 base_speed = 220.0
 score_value = 9000
 explosion_scale = 1.5
 sound_profile = ExtResource("10_5x7ko")
 dies_on_contact = false
+center_on_bounds = true
 metadata/_custom_type_script = "uid://db3gvgn86afji"
