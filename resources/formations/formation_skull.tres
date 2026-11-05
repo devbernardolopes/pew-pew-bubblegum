@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://dhjks5bu1ilta"]
+
+[ext_resource type="Texture2D" uid="uid://dainb4yo8kwvu" path="res://resources/formations/layouts/skull_11x9.png" id="1_layout"]
+[ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+layout = ExtResource("1_layout")
+spacing = Vector2(64, 40)
+sway_speed = 1.0

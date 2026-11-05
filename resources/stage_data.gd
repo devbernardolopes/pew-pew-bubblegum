@@ -24,7 +24,21 @@ func validate() -> PackedStringArray:
 			issues.append("[error] %s wave %d: the wave is null." % [path, i])
 			continue
 		issues.append_array(wave.validate(path, i, foe_cache))
+	issues.append_array(_validate_formations())
 	issues.append_array(_validate_overlaps(path, foe_cache))
+	return issues
+
+
+## Validates every distinct formation of the stage once, so a formation shared
+## by several waves is not reported several times.
+func _validate_formations() -> PackedStringArray:
+	var issues: PackedStringArray = []
+	var formations: Dictionary = {}
+	for wave: WaveData in waves:
+		if wave != null and wave.formation != null:
+			formations[wave.formation] = true
+	for formation: FormationData in formations:
+		issues.append_array(formation.validate())
 	return issues
 
 

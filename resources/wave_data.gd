@@ -55,9 +55,12 @@ func validate(stage_path: String = "", wave_index: int = -1, foe_cache: Dictiona
 	if formation == null:
 		issues.append("[error] %s: formation is null." % where)
 	else:
-		if row < 0 or row >= formation.rows:
+		if row < 0 or row >= formation.get_row_count():
 			issues.append("[error] %s: row %d is outside formation %s, which has %d rows." % [
-					where, row, describe(formation), formation.rows])
+					where, row, describe(formation), formation.get_row_count()])
+		elif formation.get_row_columns(row).is_empty():
+			issues.append("[error] %s: row %d of formation %s has no slots (every cell is a hole)." % [
+					where, row, describe(formation)])
 		if foe_info.get("data") != null:
 			var foe_speed: float = foe_info.data.base_speed * foe_info.speed_multiplier
 			var peak: float = formation.get_peak_slot_speed()

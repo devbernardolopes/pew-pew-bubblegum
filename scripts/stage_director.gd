@@ -165,7 +165,7 @@ func _spawn_current_wave() -> void:
 		var mirror: bool = col >= left_n
 		var slot: Marker2D = formation.get_slot(row, col)
 		if slot == null:
-			push_warning("StageDirector: slot (%d, %d) is null; skipping." % [row, col])
+			# Holes are expected; an all-hole row is caught by validation at startup.
 			continue
 		var foe: Entity = wave.foe_scene.instantiate() as Entity
 		entities.add_child(foe)

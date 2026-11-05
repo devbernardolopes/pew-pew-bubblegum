@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="7_5fwve"]
 [ext_resource type="Resource" uid="uid://dyhvx11vswr2s" path="res://resources/stages/stage_000.tres" id="7_7f6e7"]
 [ext_resource type="Resource" uid="uid://cp4hp6a0pqbli" path="res://resources/stages/stage_alpha.tres" id="7_kk3rw"]
+[ext_resource type="Resource" uid="uid://cnv7c7j1w8bpw" path="res://resources/stages/stage_beta.tres" id="8_4yhaq"]
 [ext_resource type="Resource" uid="uid://c5krmfh35fnn8" path="res://resources/stages/stage_002.tres" id="9_yb76g"]
 [ext_resource type="Resource" uid="uid://r12gefnka2ch" path="res://resources/stages/stage_004.tres" id="10_7f6e7"]
 [ext_resource type="Resource" uid="uid://doyg4wjpqbbh2" path="res://resources/stages/stage_003.tres" id="10_h8wxb"]
@@ -170,7 +171,7 @@ metadata/_edit_lock_ = true
 
 [node name="StageDirector" type="Node" parent="." unique_id=258270816]
 script = ExtResource("13_stage_dir")
-stages = Array[ExtResource("7_5fwve")]([ExtResource("7_kk3rw"), ExtResource("7_7f6e7"), ExtResource("12_stage"), ExtResource("9_yb76g"), ExtResource("10_h8wxb"), ExtResource("10_7f6e7")])
+stages = Array[ExtResource("7_5fwve")]([ExtResource("8_4yhaq"), ExtResource("7_kk3rw"), ExtResource("7_7f6e7"), ExtResource("12_stage"), ExtResource("9_yb76g"), ExtResource("10_h8wxb"), ExtResource("10_7f6e7")])
 
 [node name="HeroSpawn" type="Marker2D" parent="." unique_id=258270815]
 position = Vector2(576, 576)

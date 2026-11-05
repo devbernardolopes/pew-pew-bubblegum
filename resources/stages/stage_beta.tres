@@ -1,0 +1,111 @@
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://cnv7c7j1w8bpw"]
+
+[ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="1_g8ac7"]
+[ext_resource type="AudioStream" uid="uid://bs5ys7j42nn1" path="res://assets/musics/endless_cyber_runner.ogg" id="1_ggsid"]
+[ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="2_384ij"]
+[ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dives/dive_left_01.tres" id="4_b66rg"]
+[ext_resource type="Curve2D" uid="uid://dusssoaxmjkhi" path="res://resources/curves/dives/dive_left_02.tres" id="5_b44q6"]
+[ext_resource type="Curve2D" uid="uid://c4rkkg4tjg22b" path="res://resources/curves/dives/dive_left_03.tres" id="6_0rc7s"]
+[ext_resource type="Curve2D" uid="uid://dxft2kb7iox5" path="res://resources/curves/dives/dive_left_04.tres" id="7_0vmst"]
+[ext_resource type="Curve2D" uid="uid://bmg55vgjji6bm" path="res://resources/curves/dives/dive_left_05.tres" id="8_7l482"]
+[ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entries/entry_left_01.tres" id="9_vmjk3"]
+[ext_resource type="PackedScene" uid="uid://bknqqg57gbsuc" path="res://scenes/entities/foe_turret.tscn" id="10_22xoj"]
+[ext_resource type="Resource" uid="uid://dhjks5bu1ilta" path="res://resources/formations/formation_skull.tres" id="11_xspk2"]
+[ext_resource type="Curve2D" uid="uid://rhy0fy3n10j3" path="res://resources/curves/entries/entry_left_02.tres" id="12_mxbpq"]
+[ext_resource type="Curve2D" uid="uid://dgywtmoou6akn" path="res://resources/curves/entries/entry_left_03.tres" id="13_ao8dd"]
+[ext_resource type="Curve2D" uid="uid://bothmpxl7w34p" path="res://resources/curves/entries/entry_left_04.tres" id="14_r6a0g"]
+[ext_resource type="Curve2D" uid="uid://dq5ta4b4jxfrh" path="res://resources/curves/entries/entry_left_05.tres" id="15_wsc43"]
+
+[sub_resource type="Resource" id="Resource_1mvvu"]
+script = ExtResource("2_384ij")
+foe_scene = ExtResource("10_22xoj")
+entry_curve = ExtResource("9_vmjk3")
+formation = ExtResource("11_xspk2")
+dive_curves = Array[Curve2D]([ExtResource("4_b66rg"), ExtResource("5_b44q6"), ExtResource("6_0rc7s"), ExtResource("7_0vmst"), ExtResource("8_7l482")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_f4pmu"]
+script = ExtResource("2_384ij")
+foe_scene = ExtResource("10_22xoj")
+entry_curve = ExtResource("12_mxbpq")
+row = 1
+formation = ExtResource("11_xspk2")
+dive_curves = Array[Curve2D]([ExtResource("4_b66rg"), ExtResource("5_b44q6"), ExtResource("6_0rc7s"), ExtResource("7_0vmst"), ExtResource("8_7l482")])
+delay = 0.25
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_oihm7"]
+script = ExtResource("2_384ij")
+foe_scene = ExtResource("10_22xoj")
+entry_curve = ExtResource("13_ao8dd")
+row = 2
+formation = ExtResource("11_xspk2")
+dive_curves = Array[Curve2D]([ExtResource("4_b66rg"), ExtResource("5_b44q6"), ExtResource("6_0rc7s"), ExtResource("7_0vmst"), ExtResource("8_7l482")])
+delay = 0.5
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_x4hqr"]
+script = ExtResource("2_384ij")
+foe_scene = ExtResource("10_22xoj")
+entry_curve = ExtResource("14_r6a0g")
+row = 3
+formation = ExtResource("11_xspk2")
+dive_curves = Array[Curve2D]([ExtResource("4_b66rg"), ExtResource("5_b44q6"), ExtResource("6_0rc7s"), ExtResource("7_0vmst"), ExtResource("8_7l482")])
+delay = 0.75
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_8mr2i"]
+script = ExtResource("2_384ij")
+foe_scene = ExtResource("10_22xoj")
+entry_curve = ExtResource("15_wsc43")
+row = 4
+formation = ExtResource("11_xspk2")
+dive_curves = Array[Curve2D]([ExtResource("4_b66rg"), ExtResource("5_b44q6"), ExtResource("6_0rc7s"), ExtResource("7_0vmst"), ExtResource("8_7l482")])
+delay = 1.0
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_w41sw"]
+script = ExtResource("2_384ij")
+foe_scene = ExtResource("10_22xoj")
+entry_curve = ExtResource("9_vmjk3")
+row = 5
+formation = ExtResource("11_xspk2")
+dive_curves = Array[Curve2D]([ExtResource("4_b66rg"), ExtResource("5_b44q6"), ExtResource("6_0rc7s"), ExtResource("7_0vmst"), ExtResource("8_7l482")])
+delay = 1.25
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_8am24"]
+script = ExtResource("2_384ij")
+foe_scene = ExtResource("10_22xoj")
+entry_curve = ExtResource("12_mxbpq")
+row = 6
+formation = ExtResource("11_xspk2")
+dive_curves = Array[Curve2D]([ExtResource("4_b66rg"), ExtResource("5_b44q6"), ExtResource("6_0rc7s"), ExtResource("7_0vmst"), ExtResource("8_7l482")])
+delay = 1.5
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_rcauw"]
+script = ExtResource("2_384ij")
+foe_scene = ExtResource("10_22xoj")
+entry_curve = ExtResource("13_ao8dd")
+row = 7
+formation = ExtResource("11_xspk2")
+dive_curves = Array[Curve2D]([ExtResource("4_b66rg"), ExtResource("5_b44q6"), ExtResource("6_0rc7s"), ExtResource("7_0vmst"), ExtResource("8_7l482")])
+delay = 1.75
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_ggsid"]
+script = ExtResource("2_384ij")
+foe_scene = ExtResource("10_22xoj")
+entry_curve = ExtResource("14_r6a0g")
+row = 8
+formation = ExtResource("11_xspk2")
+dive_curves = Array[Curve2D]([ExtResource("4_b66rg"), ExtResource("6_0rc7s"), ExtResource("8_7l482")])
+delay = 2.0
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[resource]
+script = ExtResource("1_g8ac7")
+waves = Array[ExtResource("2_384ij")]([SubResource("Resource_1mvvu"), SubResource("Resource_f4pmu"), SubResource("Resource_oihm7"), SubResource("Resource_x4hqr"), SubResource("Resource_8mr2i"), SubResource("Resource_w41sw"), SubResource("Resource_8am24"), SubResource("Resource_rcauw"), SubResource("Resource_ggsid")])
+music_stream = ExtResource("1_ggsid")
+metadata/_custom_type_script = "uid://cfqxmshih2ed7"
