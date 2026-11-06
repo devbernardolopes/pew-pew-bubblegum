@@ -23,7 +23,7 @@ signal return_started
 signal return_finished
 
 ## Most ships the fleet can hold at once.
-const MAX_SHIPS: int = 3
+const MAX_SHIPS: int = 4
 ## Seconds a freed ship takes to fly back to its docking slot.
 const RETURN_DURATION: float = 1.0
 

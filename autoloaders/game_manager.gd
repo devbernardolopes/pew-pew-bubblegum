@@ -14,7 +14,7 @@ signal high_score_changed(high_score: int)
 signal stage_changed(stage: int)
 
 ## Ships per run: one in play plus the rest in reserve.
-const STARTING_SHIPS: int = 3
+const STARTING_SHIPS: int = 4
 ## Time after game over before the fire button restarts the run, in seconds.
 const RESTART_DELAY: float = 1.0
 ## Default file path for the persistent high score.
