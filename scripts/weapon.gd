@@ -25,6 +25,10 @@ func _ready() -> void:
 	_entity = get_parent() as Entity
 	if _entity == null:
 		push_error("Weapon must be a child of an Entity; firing disabled.")
+	if projectile_data != null:
+		var owner_name: String = _entity.name if _entity != null else &"(orphan weapon)"
+		for issue: String in projectile_data.validate("Weapon %s of Entity %s" % [weapon_id, owner_name]):
+			push_warning(issue)
 
 
 ## Fires one projectile from the nose of the shooter.

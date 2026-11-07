@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WaveData" format=3 uid="uid://6xfu8c13u6dh"]
+
+[ext_resource type="Curve2D" uid="uid://clnl3v08pswx3" path="res://resources/curves/dives/dive_left_06.tres" id="1_ts72x"]
+[ext_resource type="Curve2D" uid="uid://f1oil2xjtlcn" path="res://resources/curves/entries/entry_left_06.tres" id="2_o4rwv"]
+[ext_resource type="PackedScene" uid="uid://s7pipqm2lc1g" path="res://scenes/entities/foe_star.tscn" id="3_2vl66"]
+[ext_resource type="Resource" uid="uid://dm6vthkg53vrd" path="res://resources/formations/formation_infinity.tres" id="4_yjcrl"]
+[ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="5_e6y2s"]
+
+[resource]
+script = ExtResource("5_e6y2s")
+foe_scene = ExtResource("3_2vl66")
+entry_curve = ExtResource("2_o4rwv")
+formation = ExtResource("4_yjcrl")
+dive_curves = Array[Curve2D]([ExtResource("1_ts72x")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"

@@ -14,6 +14,10 @@ var _data: ProjectileData = null
 var _direction: Vector2 = Vector2.UP
 var _shooter: Entity = null
 var _spent: bool = false
+## Damage of the next hit; falls off per [member ProjectileData.pierce_count].
+var _damage: int = 0
+var _pierce_left: int = 0
+var _hit_counted: bool = false
 ## The shooter's team, set when [method launch] is called.
 var team: Helpers.TEAM = Helpers.TEAM.NEUTRAL
 
@@ -36,6 +40,8 @@ func launch(data: ProjectileData, _team: Helpers.TEAM, shooter: Entity, spawn_po
 	_shooter = shooter
 	self.team = _team
 	_direction = direction.normalized()
+	_damage = data.base_damage
+	_pierce_left = 0 if data.explode_on_contact else data.pierce_count
 	_build_shapes()
 	global_position = spawn_position
 	rotation = _direction.angle() + PI / 2.0
@@ -56,13 +62,94 @@ func _on_area_entered(area: Area2D) -> void:
 	# it; that small grace is accepted.
 	if target.invulnerable:
 		return
-	_spent = true
 	# Spark streak at impact point
 	EffectsScript.hit_spark(global_position, _direction, 0.2)
-	target.take_damage(_data.base_damage)
-	if is_instance_valid(_shooter):
+	if _data.explode_on_contact:
+		_spent = true
+		var center: Vector2 = global_position
+		var direct: Entity = target
+		var data: ProjectileData = _data
+		var shooter: Entity = _shooter
+		var projectile_team: Helpers.TEAM = team
+		call_deferred("_explode", center, direct, data, shooter, projectile_team)
+		return
+	target.take_damage(_damage)
+	if not _hit_counted and is_instance_valid(_shooter):
 		_shooter.shots_hit += 1
+		_hit_counted = true
+	if target.is_dead and _pierce_left > 0:
+		_pierce_left -= 1
+		_damage = maxi(_damage - _data.pierce_damage_falloff, _data.pierce_min_damage)
+		return
+	_spent = true
 	queue_free()
+
+
+## Applies the direct damage and blast of an exploding projectile. Runs deferred
+## so the physics space can be queried outside the area_entered callback, and
+## frees this projectile at the end.
+func _explode(center: Vector2, direct: Entity, data: ProjectileData, shooter: Entity, projectile_team: Helpers.TEAM) -> void:
+	if is_instance_valid(direct) and not direct.is_dead:
+		direct.take_damage(data.base_damage)
+	if not _hit_counted and is_instance_valid(shooter):
+		shooter.shots_hit += 1
+		_hit_counted = true
+	# Blast query against the opposing team's Entity layer only.
+	var space: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
+	var shape: CircleShape2D = CircleShape2D.new()
+	shape.radius = data.explosion_radius
+	var params: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
+	params.shape = shape
+	params.transform = Transform2D(0.0, center)
+	match projectile_team:
+		Helpers.TEAM.FRIEND:
+			params.collision_mask = PhysicsLayers.FOE
+		Helpers.TEAM.FOE:
+			params.collision_mask = PhysicsLayers.FRIEND
+		_:
+			params.collision_mask = 0
+	params.collide_with_areas = true
+	params.collide_with_bodies = false
+	var seen: Array[Entity] = []
+	for hit: Dictionary in space.intersect_shape(params, 64):
+		var collider: Object = hit.get("collider")
+		var target: Entity = collider as Entity
+		if target == null or seen.has(target):
+			continue
+		seen.append(target)
+		if target.is_dead or target.invulnerable:
+			continue
+		if target == direct and not data.explosion_hits_direct_target:
+			continue
+		var distance: float = _distance_to_entity_shape(center, target)
+		var t: float = clampf(distance / data.explosion_radius, 0.0, 1.0) if data.explosion_radius > 0.0 else 1.0
+		var damage: int = roundi(lerpf(float(data.explosion_damage), float(data.explosion_edge_damage), t))
+		if damage < 1:
+			continue
+		target.take_damage(damage)
+	EffectsScript.blast_ring(center, data.explosion_radius, data.color)
+	EffectsScript.screen_shake(0.4, 0.2)
+	queue_free()
+
+
+## Distance from [param center] to the nearest point of [param entity]'s
+## collision polygon; 0 when the center is inside it. Falls back to the
+## entity's origin when it has no usable polygon.
+static func _distance_to_entity_shape(center: Vector2, entity: Entity) -> float:
+	var collision: CollisionPolygon2D = entity.collision
+	if collision == null or collision.polygon.is_empty():
+		return center.distance_to(entity.global_position)
+	var global_points: PackedVector2Array = []
+	for point: Vector2 in collision.polygon:
+		global_points.append(collision.global_transform * point)
+	if Geometry2D.is_point_in_polygon(center, global_points):
+		return 0.0
+	var best: float = INF
+	for i: int in global_points.size():
+		var a: Vector2 = global_points[i]
+		var b: Vector2 = global_points[(i + 1) % global_points.size()]
+		best = minf(best, center.distance_to(Geometry2D.get_closest_point_to_segment(center, a, b)))
+	return best
 
 
 ## Assigns the physics layers of this Projectile according to the shooter's team.

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://d0vd7bvxvgjuq"]
+
+[ext_resource type="Texture2D" uid="uid://ciugbvk232j8e" path="res://resources/formations/layouts/crab.png" id="1_73ibr"]
+[ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="1_337gk"]
+
+[resource]
+script = ExtResource("1_337gk")
+layout = ExtResource("1_73ibr")
+metadata/_custom_type_script = "uid://cspnel4tvson"
