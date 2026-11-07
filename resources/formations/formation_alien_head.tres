@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="FormationData" format=3 uid="uid://df537qi0f6kc1"]
+
+[ext_resource type="Texture2D" uid="uid://wvoljmrlirb5" path="res://resources/formations/layouts/alien_head.png" id="1_2kw2w"]
+[ext_resource type="Script" uid="uid://cspnel4tvson" path="res://resources/formation_data.gd" id="1_4t6ws"]
+
+[resource]
+script = ExtResource("1_4t6ws")
+layout = ExtResource("1_2kw2w")
+metadata/_custom_type_script = "uid://cspnel4tvson"

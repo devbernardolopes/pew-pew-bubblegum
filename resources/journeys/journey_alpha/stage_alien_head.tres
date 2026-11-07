@@ -1,0 +1,84 @@
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://cdwla5lrbsdtp"]
+
+[ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="1_scfy8"]
+[ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="2_ipir4"]
+[ext_resource type="Curve2D" uid="uid://clnl3v08pswx3" path="res://resources/curves/dives/dive_left_06.tres" id="3_ylqij"]
+[ext_resource type="Curve2D" uid="uid://f1oil2xjtlcn" path="res://resources/curves/entries/entry_left_06.tres" id="4_mapco"]
+[ext_resource type="PackedScene" uid="uid://c10qeb5dlolpm" path="res://scenes/entities/foe_shuriken.tscn" id="5_o31n4"]
+[ext_resource type="Resource" uid="uid://df537qi0f6kc1" path="res://resources/formations/formation_alien_head.tres" id="6_5stwp"]
+
+[sub_resource type="Resource" id="Resource_ac82p"]
+script = ExtResource("2_ipir4")
+foe_scene = ExtResource("5_o31n4")
+entry_curve = ExtResource("4_mapco")
+formation = ExtResource("6_5stwp")
+dive_curves = Array[Curve2D]([ExtResource("3_ylqij")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_7lqqc"]
+script = ExtResource("2_ipir4")
+foe_scene = ExtResource("5_o31n4")
+entry_curve = ExtResource("4_mapco")
+row = 1
+formation = ExtResource("6_5stwp")
+dive_curves = Array[Curve2D]([ExtResource("3_ylqij")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_xmvpp"]
+script = ExtResource("2_ipir4")
+foe_scene = ExtResource("5_o31n4")
+entry_curve = ExtResource("4_mapco")
+row = 2
+formation = ExtResource("6_5stwp")
+dive_curves = Array[Curve2D]([ExtResource("3_ylqij")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_u0b2i"]
+script = ExtResource("2_ipir4")
+foe_scene = ExtResource("5_o31n4")
+entry_curve = ExtResource("4_mapco")
+row = 3
+formation = ExtResource("6_5stwp")
+dive_curves = Array[Curve2D]([ExtResource("3_ylqij")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_8qxlh"]
+script = ExtResource("2_ipir4")
+foe_scene = ExtResource("5_o31n4")
+entry_curve = ExtResource("4_mapco")
+row = 4
+formation = ExtResource("6_5stwp")
+dive_curves = Array[Curve2D]([ExtResource("3_ylqij")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_nee0f"]
+script = ExtResource("2_ipir4")
+foe_scene = ExtResource("5_o31n4")
+entry_curve = ExtResource("4_mapco")
+row = 5
+formation = ExtResource("6_5stwp")
+dive_curves = Array[Curve2D]([ExtResource("3_ylqij")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_tuv82"]
+script = ExtResource("2_ipir4")
+foe_scene = ExtResource("5_o31n4")
+entry_curve = ExtResource("4_mapco")
+row = 6
+formation = ExtResource("6_5stwp")
+dive_curves = Array[Curve2D]([ExtResource("3_ylqij")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_q6fo6"]
+script = ExtResource("2_ipir4")
+foe_scene = ExtResource("5_o31n4")
+entry_curve = ExtResource("4_mapco")
+row = 7
+formation = ExtResource("6_5stwp")
+dive_curves = Array[Curve2D]([ExtResource("3_ylqij")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[resource]
+script = ExtResource("1_scfy8")
+waves = Array[ExtResource("2_ipir4")]([SubResource("Resource_ac82p"), SubResource("Resource_7lqqc"), SubResource("Resource_xmvpp"), SubResource("Resource_u0b2i"), SubResource("Resource_8qxlh"), SubResource("Resource_nee0f"), SubResource("Resource_tuv82"), SubResource("Resource_q6fo6")])
+metadata/_custom_type_script = "uid://cfqxmshih2ed7"

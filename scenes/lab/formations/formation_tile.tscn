@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://b1r0glg3gw0w8"]
+
+[node name="FormationTile" type="Polygon2D" unique_id=146044490]
+color = Color(0.4506483, 0.4506483, 0.45064825, 1)
+polygon = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)

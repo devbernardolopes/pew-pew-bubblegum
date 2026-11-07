@@ -3,13 +3,97 @@
 [ext_resource type="Script" uid="uid://wa8mc2v1ds4i" path="res://resources/journey_data.gd" id="1_34s6t"]
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="2_xr762"]
 [ext_resource type="Resource" uid="uid://b1ypo7sog5ntl" path="res://resources/journeys/journey_alpha/alpha_stage_001.tres" id="3_0dopk"]
+[ext_resource type="Resource" uid="uid://cdwla5lrbsdtp" path="res://resources/journeys/journey_alpha/stage_alien_head.tres" id="3_0wuh1"]
+[ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="3_xiejf"]
 [ext_resource type="Resource" uid="uid://cqea4ppoiif1i" path="res://resources/journeys/journey_alpha/alpha_skull_stage.tres" id="4_0dopk"]
+[ext_resource type="Resource" uid="uid://ctat05cteigm6" path="res://resources/stages/waves/wave_skull_template.tres" id="4_0wuh1"]
 [ext_resource type="Resource" uid="uid://bvuou0l53lrs1" path="res://resources/journeys/journey_alpha/alpha_boss_stage_001.tres" id="4_xr762"]
+[ext_resource type="Curve2D" uid="uid://clnl3v08pswx3" path="res://resources/curves/dives/dive_left_06.tres" id="5_oyuvk"]
 [ext_resource type="Resource" uid="uid://wvfxfovec45y" path="res://resources/journeys/journey_alpha/alpha_stage_002.tres" id="5_x00pw"]
+[ext_resource type="Curve2D" uid="uid://f1oil2xjtlcn" path="res://resources/curves/entries/entry_left_06.tres" id="6_qj7sh"]
+[ext_resource type="PackedScene" uid="uid://cenl65vkdikgc" path="res://scenes/entities/foe_double_square.tscn" id="7_xpdc8"]
+[ext_resource type="Resource" uid="uid://drwswh8bvff3s" path="res://resources/formations/formation_skull_16x11.tres" id="8_dvc38"]
+
+[sub_resource type="Resource" id="Resource_v18h8"]
+script = ExtResource("3_xiejf")
+foe_scene = ExtResource("7_xpdc8")
+entry_curve = ExtResource("6_qj7sh")
+row = 1
+formation = ExtResource("8_dvc38")
+dive_curves = Array[Curve2D]([ExtResource("5_oyuvk")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_7jaoa"]
+script = ExtResource("3_xiejf")
+foe_scene = ExtResource("7_xpdc8")
+entry_curve = ExtResource("6_qj7sh")
+row = 2
+formation = ExtResource("8_dvc38")
+dive_curves = Array[Curve2D]([ExtResource("5_oyuvk")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_t3rd4"]
+script = ExtResource("3_xiejf")
+foe_scene = ExtResource("7_xpdc8")
+entry_curve = ExtResource("6_qj7sh")
+row = 3
+formation = ExtResource("8_dvc38")
+dive_curves = Array[Curve2D]([ExtResource("5_oyuvk")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_vw1c4"]
+script = ExtResource("3_xiejf")
+foe_scene = ExtResource("7_xpdc8")
+entry_curve = ExtResource("6_qj7sh")
+row = 4
+formation = ExtResource("8_dvc38")
+dive_curves = Array[Curve2D]([ExtResource("5_oyuvk")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_jgkpr"]
+script = ExtResource("3_xiejf")
+foe_scene = ExtResource("7_xpdc8")
+entry_curve = ExtResource("6_qj7sh")
+row = 5
+formation = ExtResource("8_dvc38")
+dive_curves = Array[Curve2D]([ExtResource("5_oyuvk")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_w5rp7"]
+script = ExtResource("3_xiejf")
+foe_scene = ExtResource("7_xpdc8")
+entry_curve = ExtResource("6_qj7sh")
+row = 6
+formation = ExtResource("8_dvc38")
+dive_curves = Array[Curve2D]([ExtResource("5_oyuvk")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_4mly0"]
+script = ExtResource("3_xiejf")
+foe_scene = ExtResource("7_xpdc8")
+entry_curve = ExtResource("6_qj7sh")
+row = 7
+formation = ExtResource("8_dvc38")
+dive_curves = Array[Curve2D]([ExtResource("5_oyuvk")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_j5xmc"]
+script = ExtResource("3_xiejf")
+foe_scene = ExtResource("7_xpdc8")
+entry_curve = ExtResource("6_qj7sh")
+row = 8
+formation = ExtResource("8_dvc38")
+dive_curves = Array[Curve2D]([ExtResource("5_oyuvk")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_oxad1"]
+script = ExtResource("2_xr762")
+waves = Array[ExtResource("3_xiejf")]([ExtResource("4_0wuh1"), SubResource("Resource_v18h8"), SubResource("Resource_7jaoa"), SubResource("Resource_t3rd4"), SubResource("Resource_vw1c4"), SubResource("Resource_jgkpr"), SubResource("Resource_w5rp7"), SubResource("Resource_4mly0"), SubResource("Resource_j5xmc")])
+metadata/_custom_type_script = "uid://cfqxmshih2ed7"
 
 [resource]
 script = ExtResource("1_34s6t")
 id = &"journey_alpha"
 name = "Alpha Journey"
-stages = Array[ExtResource("2_xr762")]([ExtResource("3_0dopk"), ExtResource("4_0dopk"), ExtResource("5_x00pw"), ExtResource("4_xr762")])
+stages = Array[ExtResource("2_xr762")]([ExtResource("3_0wuh1"), SubResource("Resource_oxad1"), ExtResource("3_0dopk"), ExtResource("4_0dopk"), ExtResource("5_x00pw"), ExtResource("4_xr762")])
 metadata/_custom_type_script = "uid://wa8mc2v1ds4i"
