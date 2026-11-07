@@ -5,4 +5,5 @@
 [resource]
 script = ExtResource("1_dnnnt")
 id = &"bullet_01"
+base_speed = 512.0
 metadata/_custom_type_script = "uid://txnc58qwywfs"

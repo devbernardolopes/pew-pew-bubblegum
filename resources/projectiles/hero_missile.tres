@@ -7,6 +7,7 @@ script = ExtResource("1_3w3y4")
 id = &"hero_missile_2_300"
 visual = 11
 visual_scale = 0.35
+color = Color(0.8117647, 0.2509804, 0.02745098, 1)
 base_speed = 768.0
 base_damage = 4
 metadata/_custom_type_script = "uid://txnc58qwywfs"

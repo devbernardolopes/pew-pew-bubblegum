@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WaveData" format=3 uid="uid://cvyrnya21huch"]
+
+[ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dives/dive_left_01.tres" id="1_ff00p"]
+[ext_resource type="Curve2D" uid="uid://bothmpxl7w34p" path="res://resources/curves/entries/entry_left_04.tres" id="1_ivc3q"]
+[ext_resource type="Curve2D" uid="uid://dusssoaxmjkhi" path="res://resources/curves/dives/dive_left_02.tres" id="2_4akwo"]
+[ext_resource type="PackedScene" uid="uid://bknqqg57gbsuc" path="res://scenes/entities/foe_turret.tscn" id="2_f45uv"]
+[ext_resource type="Resource" uid="uid://dhjks5bu1ilta" path="res://resources/formations/formation_skull.tres" id="3_kg4u4"]
+[ext_resource type="Curve2D" uid="uid://c4rkkg4tjg22b" path="res://resources/curves/dives/dive_left_03.tres" id="3_ws4s6"]
+[ext_resource type="Curve2D" uid="uid://dxft2kb7iox5" path="res://resources/curves/dives/dive_left_04.tres" id="4_p1u5f"]
+[ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="4_t5vx1"]
+[ext_resource type="Curve2D" uid="uid://bmg55vgjji6bm" path="res://resources/curves/dives/dive_left_05.tres" id="5_r18ja"]
+
+[resource]
+script = ExtResource("4_t5vx1")
+foe_scene = ExtResource("2_f45uv")
+entry_curve = ExtResource("1_ivc3q")
+formation = ExtResource("3_kg4u4")
+dive_curves = Array[Curve2D]([ExtResource("1_ff00p"), ExtResource("2_4akwo"), ExtResource("3_ws4s6"), ExtResource("4_p1u5f"), ExtResource("5_r18ja")])
+metadata/_custom_type_script = "uid://c775yud1oetrm"

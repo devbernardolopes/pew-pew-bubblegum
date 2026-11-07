@@ -21,6 +21,7 @@ script = ExtResource("3_ctrl")
 [node name="Weapon" type="Node" parent="." index="1" unique_id=1697356829]
 script = ExtResource("4_weapon")
 projectile_data = ExtResource("5_0skjh")
+max_in_flight = 8
 
 [node name="ChargedWeapon" type="Node" parent="." index="2" unique_id=1697356830]
 script = ExtResource("4_weapon")

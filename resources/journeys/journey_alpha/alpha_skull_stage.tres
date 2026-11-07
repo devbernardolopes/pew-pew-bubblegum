@@ -1,0 +1,120 @@
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://cqea4ppoiif1i"]
+
+[ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="1_ane02"]
+[ext_resource type="AudioStream" uid="uid://bs5ys7j42nn1" path="res://assets/musics/endless_cyber_runner.ogg" id="1_jtsyd"]
+[ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="2_jhuhh"]
+[ext_resource type="Resource" uid="uid://cvyrnya21huch" path="res://resources/stages/waves/skull_wave.tres" id="3_sbkd6"]
+[ext_resource type="Curve2D" uid="uid://bothmpxl7w34p" path="res://resources/curves/entries/entry_left_04.tres" id="4_junvf"]
+[ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dives/dive_left_01.tres" id="5_5wroe"]
+[ext_resource type="PackedScene" uid="uid://bknqqg57gbsuc" path="res://scenes/entities/foe_turret.tscn" id="5_tbji1"]
+[ext_resource type="Resource" uid="uid://dhjks5bu1ilta" path="res://resources/formations/formation_skull.tres" id="6_fvrac"]
+[ext_resource type="Curve2D" uid="uid://dusssoaxmjkhi" path="res://resources/curves/dives/dive_left_02.tres" id="6_seqao"]
+[ext_resource type="Curve2D" uid="uid://c4rkkg4tjg22b" path="res://resources/curves/dives/dive_left_03.tres" id="7_gqciy"]
+[ext_resource type="Curve2D" uid="uid://dxft2kb7iox5" path="res://resources/curves/dives/dive_left_04.tres" id="8_fen4j"]
+[ext_resource type="Curve2D" uid="uid://bmg55vgjji6bm" path="res://resources/curves/dives/dive_left_05.tres" id="9_wmnxs"]
+
+[sub_resource type="Resource" id="Resource_texm1"]
+script = ExtResource("2_jhuhh")
+foe_scene = ExtResource("5_tbji1")
+entry_curve = ExtResource("4_junvf")
+row = 1
+formation = ExtResource("6_fvrac")
+dive_curves = Array[Curve2D]([ExtResource("5_5wroe"), ExtResource("6_seqao"), ExtResource("7_gqciy"), ExtResource("8_fen4j"), ExtResource("9_wmnxs")])
+delay = 0.25
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_stxec"]
+script = ExtResource("2_jhuhh")
+foe_scene = ExtResource("5_tbji1")
+entry_curve = ExtResource("4_junvf")
+row = 2
+formation = ExtResource("6_fvrac")
+dive_curves = Array[Curve2D]([ExtResource("5_5wroe"), ExtResource("6_seqao"), ExtResource("7_gqciy"), ExtResource("8_fen4j"), ExtResource("9_wmnxs")])
+delay = 0.5
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_jtsyd"]
+script = ExtResource("2_jhuhh")
+foe_scene = ExtResource("5_tbji1")
+entry_curve = ExtResource("4_junvf")
+row = 3
+formation = ExtResource("6_fvrac")
+dive_curves = Array[Curve2D]([ExtResource("5_5wroe"), ExtResource("6_seqao"), ExtResource("7_gqciy"), ExtResource("8_fen4j"), ExtResource("9_wmnxs")])
+delay = 0.75
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_5wroe"]
+script = ExtResource("2_jhuhh")
+foe_scene = ExtResource("5_tbji1")
+entry_curve = ExtResource("4_junvf")
+row = 4
+formation = ExtResource("6_fvrac")
+dive_curves = Array[Curve2D]([ExtResource("5_5wroe"), ExtResource("6_seqao"), ExtResource("7_gqciy"), ExtResource("8_fen4j"), ExtResource("9_wmnxs")])
+delay = 1.0
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_seqao"]
+script = ExtResource("2_jhuhh")
+foe_scene = ExtResource("5_tbji1")
+entry_curve = ExtResource("4_junvf")
+row = 5
+formation = ExtResource("6_fvrac")
+dive_curves = Array[Curve2D]([ExtResource("5_5wroe"), ExtResource("6_seqao"), ExtResource("7_gqciy"), ExtResource("8_fen4j"), ExtResource("9_wmnxs")])
+delay = 1.25
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_gqciy"]
+script = ExtResource("2_jhuhh")
+foe_scene = ExtResource("5_tbji1")
+entry_curve = ExtResource("4_junvf")
+row = 6
+formation = ExtResource("6_fvrac")
+dive_curves = Array[Curve2D]([ExtResource("5_5wroe"), ExtResource("6_seqao"), ExtResource("7_gqciy"), ExtResource("8_fen4j"), ExtResource("9_wmnxs")])
+delay = 1.5
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_fen4j"]
+script = ExtResource("2_jhuhh")
+foe_scene = ExtResource("5_tbji1")
+entry_curve = ExtResource("4_junvf")
+row = 7
+formation = ExtResource("6_fvrac")
+dive_curves = Array[Curve2D]([ExtResource("5_5wroe"), ExtResource("6_seqao"), ExtResource("7_gqciy"), ExtResource("8_fen4j"), ExtResource("9_wmnxs")])
+delay = 1.75
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_wmnxs"]
+script = ExtResource("2_jhuhh")
+foe_scene = ExtResource("5_tbji1")
+entry_curve = ExtResource("4_junvf")
+row = 8
+formation = ExtResource("6_fvrac")
+dive_curves = Array[Curve2D]([ExtResource("5_5wroe"), ExtResource("6_seqao"), ExtResource("7_gqciy"), ExtResource("8_fen4j"), ExtResource("9_wmnxs")])
+delay = 2.0
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_8f0c2"]
+script = ExtResource("2_jhuhh")
+foe_scene = ExtResource("5_tbji1")
+entry_curve = ExtResource("4_junvf")
+row = 9
+formation = ExtResource("6_fvrac")
+dive_curves = Array[Curve2D]([ExtResource("5_5wroe"), ExtResource("6_seqao"), ExtResource("7_gqciy"), ExtResource("8_fen4j"), ExtResource("9_wmnxs")])
+delay = 2.25
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_wn0o3"]
+script = ExtResource("2_jhuhh")
+foe_scene = ExtResource("5_tbji1")
+entry_curve = ExtResource("4_junvf")
+row = 10
+formation = ExtResource("6_fvrac")
+dive_curves = Array[Curve2D]([ExtResource("5_5wroe"), ExtResource("6_seqao"), ExtResource("7_gqciy"), ExtResource("8_fen4j"), ExtResource("9_wmnxs")])
+delay = 2.5
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[resource]
+script = ExtResource("1_ane02")
+waves = Array[ExtResource("2_jhuhh")]([ExtResource("3_sbkd6"), SubResource("Resource_texm1"), SubResource("Resource_stxec"), SubResource("Resource_jtsyd"), SubResource("Resource_5wroe"), SubResource("Resource_seqao"), SubResource("Resource_gqciy"), SubResource("Resource_fen4j"), SubResource("Resource_wmnxs"), SubResource("Resource_8f0c2"), SubResource("Resource_wn0o3")])
+music_stream = ExtResource("1_jtsyd")
+metadata/_custom_type_script = "uid://cfqxmshih2ed7"
