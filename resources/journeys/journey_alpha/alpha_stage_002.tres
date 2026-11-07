@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="StageData" format=3 uid="uid://wvfxfovec45y"]
+
+[ext_resource type="AudioStream" uid="uid://bs5ys7j42nn1" path="res://assets/musics/endless_cyber_runner.ogg" id="1_pvn62"]
+[ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="2_bw7xm"]
+[ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="3_kjptv"]
+[ext_resource type="Resource" uid="uid://bauxe5m4ofedg" path="res://resources/stages/waves/wave_template.tres" id="4_hpdjw"]
+[ext_resource type="Curve2D" uid="uid://clnl3v08pswx3" path="res://resources/curves/dives/dive_left_06.tres" id="5_2dba3"]
+[ext_resource type="Curve2D" uid="uid://f1oil2xjtlcn" path="res://resources/curves/entries/entry_left_06.tres" id="6_xh2pj"]
+[ext_resource type="PackedScene" uid="uid://db6w567pp7o3t" path="res://scenes/entities/foe_decagon.tscn" id="7_bw7xm"]
+[ext_resource type="PackedScene" uid="uid://cenl65vkdikgc" path="res://scenes/entities/foe_double_square.tscn" id="7_owbqg"]
+[ext_resource type="Resource" uid="uid://b0016tte8sbsa" path="res://resources/formations/formation_12x8_full.tres" id="8_epstw"]
+[ext_resource type="PackedScene" uid="uid://dxubr4abeow0f" path="res://scenes/entities/foe_bow_tie.tscn" id="9_kjptv"]
+
+[sub_resource type="Resource" id="Resource_uhiel"]
+script = ExtResource("3_kjptv")
+foe_scene = ExtResource("7_bw7xm")
+entry_curve = ExtResource("6_xh2pj")
+spacing = 0.5
+formation = ExtResource("8_epstw")
+dive_curves = Array[Curve2D]([ExtResource("5_2dba3")])
+delay = 0.25
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_uxrux"]
+script = ExtResource("3_kjptv")
+foe_scene = ExtResource("9_kjptv")
+entry_curve = ExtResource("6_xh2pj")
+row = 1
+formation = ExtResource("8_epstw")
+sway_start_phase_deg = 90.0
+dive_curves = Array[Curve2D]([ExtResource("5_2dba3")])
+delay = 1.25
+fire_in_formation = true
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[sub_resource type="Resource" id="Resource_8271e"]
+script = ExtResource("3_kjptv")
+foe_scene = ExtResource("7_owbqg")
+entry_curve = ExtResource("6_xh2pj")
+row = 2
+spacing = 0.3
+formation = ExtResource("8_epstw")
+sway_start_phase_deg = 180.0
+dive_curves = Array[Curve2D]([ExtResource("5_2dba3")])
+delay = 0.75
+fire_on_entry = true
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
+[resource]
+script = ExtResource("2_bw7xm")
+waves = Array[ExtResource("3_kjptv")]([ExtResource("4_hpdjw"), SubResource("Resource_uhiel"), SubResource("Resource_uxrux"), SubResource("Resource_8271e")])
+music_stream = ExtResource("1_pvn62")
+metadata/_custom_type_script = "uid://cfqxmshih2ed7"

@@ -11,6 +11,7 @@
 collision_layer = 4
 collision_mask = 2
 data = ExtResource("2_g1th8")
+scale_aux = 0.2
 speed_multiplier = 1.35
 
 [node name="FoeBrain" type="Node" parent="." index="0" unique_id=1225320927]

@@ -5,10 +5,11 @@
 [ext_resource type="Resource" uid="uid://b1ypo7sog5ntl" path="res://resources/journeys/journey_alpha/alpha_stage_001.tres" id="3_0dopk"]
 [ext_resource type="Resource" uid="uid://cqea4ppoiif1i" path="res://resources/journeys/journey_alpha/alpha_skull_stage.tres" id="4_0dopk"]
 [ext_resource type="Resource" uid="uid://bvuou0l53lrs1" path="res://resources/journeys/journey_alpha/alpha_boss_stage_001.tres" id="4_xr762"]
+[ext_resource type="Resource" uid="uid://wvfxfovec45y" path="res://resources/journeys/journey_alpha/alpha_stage_002.tres" id="5_x00pw"]
 
 [resource]
 script = ExtResource("1_34s6t")
 id = &"journey_alpha"
 name = "Alpha Journey"
-stages = Array[ExtResource("2_xr762")]([ExtResource("3_0dopk"), ExtResource("4_0dopk"), ExtResource("4_xr762")])
+stages = Array[ExtResource("2_xr762")]([ExtResource("3_0dopk"), ExtResource("4_0dopk"), ExtResource("5_x00pw"), ExtResource("4_xr762")])
 metadata/_custom_type_script = "uid://wa8mc2v1ds4i"

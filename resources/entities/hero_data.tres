@@ -19,7 +19,6 @@ tilt_enabled = true
 trail_enabled = true
 fire_pulse_enabled = true
 god_mode = true
-god_mode_effect = true
 dash_enabled = true
 drift_enabled = true
 charge_enabled = true
