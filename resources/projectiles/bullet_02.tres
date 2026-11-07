@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ProjectileData" format=3 uid="uid://dnmowp4t5bu7l"]
+
+[ext_resource type="Script" uid="uid://txnc58qwywfs" path="res://resources/projectile_data.gd" id="1_uhr07"]
+
+[resource]
+script = ExtResource("1_uhr07")
+id = &"bullet_02"
+visual_scale = 0.3
+base_speed = 448.0
+base_damage = 2
+metadata/_custom_type_script = "uid://txnc58qwywfs"

@@ -2,6 +2,7 @@ class_name Helpers
 
 enum VISUAL {
 	BULLET = 10,
+	MISSILE_01 = 11,
 	TRIANGLE = 100,
 	DOUBLE_SQUARE = 101,
 	DECAGON = 102,
@@ -363,6 +364,23 @@ const BULLET_POLYGON: PackedVector2Array = [
 	Vector2(52, 128),
 	]
 
+const MISSILE_01_POLYGON: PackedVector2Array = [
+	Vector2(52.0, 12.0),
+	Vector2(61.0, 0.0),
+	Vector2(67.0, 0.0),
+	Vector2(76.0, 12.0),
+	Vector2(76.0, 117.4003),
+	Vector2(80.0, 122.0),
+	Vector2(76.0, 128.0),
+	Vector2(72.0, 124.0),
+	Vector2(68.0, 128.0),
+	Vector2(60.0, 128.0),
+	Vector2(56.0, 124.0),
+	Vector2(52.0, 128.0),
+	Vector2(48.0, 122.0),
+	Vector2(52.0, 117.0851),
+]
+
 
 ## Center of the bounding box of [param points], in the same space as them.
 ## Used to pivot shapes that do not live in the 128 x 128 box, like bosses.
@@ -382,6 +400,8 @@ static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array
 	match _visual:
 		VISUAL.BULLET:
 			return BULLET_POLYGON.duplicate()
+		VISUAL.MISSILE_01:
+			return MISSILE_01_POLYGON.duplicate()
 		VISUAL.TRIANGLE:
 			return TRIANGLE_POLYGON.duplicate()
 		VISUAL.DOUBLE_SQUARE:

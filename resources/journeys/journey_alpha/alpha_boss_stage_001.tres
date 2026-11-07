@@ -7,16 +7,29 @@
 [ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="3_ab0lw"]
 [ext_resource type="Script" uid="uid://bfmqu6f78vl2e" path="res://resources/boss_wave_data.gd" id="4_ostoy"]
 [ext_resource type="Resource" uid="uid://dbyxewc1t8g6f" path="res://resources/formations/formation_12x6_full.tres" id="6_ostoy"]
+[ext_resource type="PackedScene" uid="uid://crdw1lby6obf2" path="res://scenes/entities/bosses/stratosphere_subjugator/boss_stratosphere_subjugator.tscn" id="8_eyadj"]
 
 [sub_resource type="Resource" id="Resource_eyadj"]
 script = ExtResource("4_ostoy")
+col = 3
+row_span = 2
+col_span = 2
+mirror_entry = true
 foe_scene = ExtResource("2_5dnsg")
+entry_curve = ExtResource("1_uxlnj")
+formation = ExtResource("6_ostoy")
+metadata/_custom_type_script = "uid://bfmqu6f78vl2e"
+
+[sub_resource type="Resource" id="Resource_h8wxb"]
+script = ExtResource("4_ostoy")
+col = 6
+foe_scene = ExtResource("8_eyadj")
 entry_curve = ExtResource("1_uxlnj")
 formation = ExtResource("6_ostoy")
 metadata/_custom_type_script = "uid://bfmqu6f78vl2e"
 
 [resource]
 script = ExtResource("2_eyadj")
-waves = Array[ExtResource("3_ab0lw")]([SubResource("Resource_eyadj")])
+waves = Array[ExtResource("3_ab0lw")]([SubResource("Resource_eyadj"), SubResource("Resource_h8wxb")])
 music_stream = ExtResource("1_ostoy")
 metadata/_custom_type_script = "uid://cfqxmshih2ed7"

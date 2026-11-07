@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ProjectileData" format=3 uid="uid://chjbpqj05soja"]
+
+[ext_resource type="Script" uid="uid://txnc58qwywfs" path="res://resources/projectile_data.gd" id="1_dnnnt"]
+
+[resource]
+script = ExtResource("1_dnnnt")
+id = &"bullet_01"
+metadata/_custom_type_script = "uid://txnc58qwywfs"

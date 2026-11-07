@@ -5,5 +5,5 @@ extends Resource
 @export var visual: Helpers.VISUAL = Helpers.VISUAL.BULLET
 @export var visual_scale: float = 0.25
 @export var color: Color = Color.WHITE
-@export var base_speed: float = 256.0
+@export var base_speed: float = 384.0
 @export var base_damage: int = 1

@@ -15,8 +15,10 @@ signal capture_committed(entity: Entity)
 ## Emitted when the captured hero is released (no life cost).
 signal capture_released(entity: Entity)
 ## Emitted when a dash starts, with its locked direction (-1 left, 1 right).
+@warning_ignore("unused_signal")
 signal dash_started(direction: int)
 ## Emitted when a dash ends, however it ends.
+@warning_ignore("unused_signal")
 signal dash_ended
 
 @export var data: EntityData = null:

@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://c7jxc7x1acuns" path="res://resources/entities/hero_data.tres" id="2_data"]
 [ext_resource type="Script" uid="uid://bxu46k5dlad5m" path="res://scripts/player_controller.gd" id="3_ctrl"]
 [ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="4_weapon"]
-[ext_resource type="Resource" uid="uid://chjbpqj05soja" path="res://resources/projectiles/hero_bullet.tres" id="5_bullet"]
+[ext_resource type="Resource" uid="uid://chjbpqj05soja" path="res://resources/projectiles/bullet_01.tres" id="5_0skjh"]
 
 [node name="Hero" unique_id=927296478 instance=ExtResource("1_entity")]
 collision_layer = 2
@@ -18,5 +18,5 @@ script = ExtResource("3_ctrl")
 
 [node name="Weapon" type="Node" parent="." index="1" unique_id=1697356829]
 script = ExtResource("4_weapon")
-projectile_data = ExtResource("5_bullet")
-max_in_flight = 8
+projectile_data = ExtResource("5_0skjh")
+max_in_flight = 2

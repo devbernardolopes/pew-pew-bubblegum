@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dpqulmwltv511"]
+
+[ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_rqvq4"]
+
+[node name="Missile01" type="Polygon2D" unique_id=1764634512]
+polygon = PackedVector2Array(52, 12, 61, 0, 67, 0, 76, 12, 76, 117.40025, 80, 122, 76, 128, 72, 124, 68, 128, 60, 128, 56, 124, 52, 128, 48, 122, 52, 117.08506)
+script = ExtResource("1_rqvq4")

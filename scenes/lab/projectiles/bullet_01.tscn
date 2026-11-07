@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://dd7fvhanylfca"]
+
+[node name="Bullet01" type="Polygon2D" unique_id=1906785581]
+polygon = PackedVector2Array(52, 0, 76, 0, 76, 128, 52, 128)

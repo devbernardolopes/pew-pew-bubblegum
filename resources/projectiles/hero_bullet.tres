@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="ProjectileData" format=3 uid="uid://chjbpqj05soja"]
-
-[ext_resource type="Script" uid="uid://txnc58qwywfs" path="res://resources/projectile_data.gd" id="1_gfcdi"]
-
-[resource]
-script = ExtResource("1_gfcdi")
-id = &"hero_bullet"
-base_speed = 560.0
-metadata/_custom_type_script = "uid://txnc58qwywfs"

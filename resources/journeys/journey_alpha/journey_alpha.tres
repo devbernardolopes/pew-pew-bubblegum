@@ -9,5 +9,5 @@
 script = ExtResource("1_34s6t")
 id = &"journey_alpha"
 name = "Alpha Journey"
-stages = Array[ExtResource("2_xr762")]([ExtResource("3_0dopk"), ExtResource("4_xr762")])
+stages = Array[ExtResource("2_xr762")]([ExtResource("4_xr762"), ExtResource("3_0dopk")])
 metadata/_custom_type_script = "uid://wa8mc2v1ds4i"
