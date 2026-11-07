@@ -15,10 +15,12 @@
 [ext_resource type="Curve2D" uid="uid://e73jc7qpl2mv" path="res://resources/curves/dives/dive_left_01.tres" id="12_dive1"]
 [ext_resource type="PackedScene" uid="uid://blsbojqh2ahho" path="res://scenes/entities/foe_h.tscn" id="13_h"]
 [ext_resource type="Curve2D" uid="uid://bmg55vgjji6bm" path="res://resources/curves/dives/dive_left_05.tres" id="14_dive5"]
+[ext_resource type="Resource" uid="uid://y010htvkpoxy" path="res://resources/cinematics/boss_entrance.tres" id="15_cine"]
 
 [sub_resource type="Resource" id="Resource_boss"]
 script = ExtResource("5_bosswave")
 col = 4
+cinematic = ExtResource("15_cine")
 foe_scene = ExtResource("2_boss")
 entry_curve = ExtResource("3_entry")
 formation = ExtResource("4_arena")

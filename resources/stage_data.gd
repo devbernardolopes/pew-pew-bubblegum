@@ -26,6 +26,32 @@ func validate() -> PackedStringArray:
 		issues.append_array(wave.validate(path, i, foe_cache))
 	issues.append_array(_validate_formations())
 	issues.append_array(_validate_overlaps(path, foe_cache))
+	issues.append_array(_validate_cinematic(path))
+	return issues
+
+
+## Warns about stages with more than one boss cinematic (only the first is
+## used) and checks every wave's entry curve against the revealed area of the
+## stage's boss cinematic.
+func _validate_cinematic(path: String) -> PackedStringArray:
+	var issues: PackedStringArray = []
+	var cinematic: CinematicData = null
+	var cinematic_wave: int = -1
+	for i: int in waves.size():
+		var boss: BossWaveData = waves[i] as BossWaveData
+		if boss != null and boss.cinematic != null:
+			if cinematic == null:
+				cinematic = boss.cinematic
+				cinematic_wave = i
+			else:
+				issues.append("[warning] %s: more than one boss wave has a cinematic (waves %d and %d); only the first is used." % [
+						path, cinematic_wave, i])
+	if cinematic == null:
+		return issues
+	for i: int in waves.size():
+		var wave: WaveData = waves[i]
+		if wave != null:
+			issues.append_array(cinematic.validate_entry_reveal(wave, i, path))
 	return issues
 
 

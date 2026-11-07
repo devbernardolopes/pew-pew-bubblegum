@@ -19,6 +19,10 @@ const MAX_SPLIT_DEPTH: int = 3
 ## Enter along the entry curve mirrored (from the right side).
 @export var mirror_entry: bool = false
 
+@export_group("Cinematic")
+## The entrance cinematic for this boss wave; null means none.
+@export var cinematic: CinematicData = null
+
 
 ## Returns the problems found in this boss wave, each prefixed with
 ## [code][error][/code] or [code][warning][/code] and naming [param stage_path]
@@ -71,6 +75,9 @@ func validate(stage_path: String = "", wave_index: int = -1, foe_cache: Dictiona
 		issues.append_array(data.validate(where, int(foe_info.get("muzzle_count", 0))))
 		if not data.pieces.is_empty() and foe_scene != null:
 			issues.append_array(_validate_pieces(data, Vector2i(col_span, row_span), where, foe_cache, 0, [foe_scene]))
+	if cinematic != null:
+		issues.append_array(cinematic.validate(where))
+		issues.append_array(cinematic.validate_entry_reveal(self, wave_index, stage_path))
 	return issues
 
 

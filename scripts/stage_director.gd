@@ -60,6 +60,11 @@ var _total_foes_spawned: int = 0
 ## it during the current stage.
 var _formations: Dictionary = {}
 var _formation_serial: int = 0
+## The running boss entrance cinematic of the current stage, if any, and the
+## wave whose boss it waits for. Aborted by the next [_begin_stage] or by the
+## stage reaching CLEARED/STOPPED (see StageCinematic).
+var _cinematic: StageCinematic = null
+var _cinematic_wave: BossWaveData = null
 
 
 func _ready() -> void:
@@ -143,6 +148,12 @@ func _current_stage() -> StageData:
 	return stages[_current_stage_index]
 
 func _begin_stage() -> void:
+	# A still-running cinematic of the previous stage ends here, never
+	# leaking its lock or zoom into the new stage.
+	if _cinematic != null and is_instance_valid(_cinematic):
+		_cinematic.abort()
+	_cinematic = null
+	_cinematic_wave = null
 	_free_formations()
 	BossSpawner.pending_pieces = 0
 	_formation_entries = 0
@@ -155,6 +166,43 @@ func _begin_stage() -> void:
 	var current: StageData = _current_stage()
 	if current != null and current.music_stream != null:
 		MusicPlayer.play_music(current.music_stream, MusicPlayer.crossfade_duration, true)
+	_start_cinematic(current)
+
+
+## Starts the boss entrance cinematic of [param stage], if it has one: the
+## first [BossWaveData] with a non-null cinematic. The ceasefire and the
+## zoom-out begin now, in parallel with INTRO, so they coincide with the
+## STAGE banner. Stages without one are completely unaffected.
+func _start_cinematic(stage: StageData) -> void:
+	if stage == null:
+		return
+	for wave: WaveData in stage.waves:
+		var boss_wave: BossWaveData = wave as BossWaveData
+		if boss_wave == null or boss_wave.cinematic == null:
+			continue
+		_cinematic_wave = boss_wave
+		_cinematic = StageCinematic.new()
+		add_child(_cinematic)
+		_cinematic.setup(boss_wave.cinematic, self)
+		_cinematic.start()
+		return
+
+
+## Whether every live foe is sitting in formation (ignores dead or queued
+## foes). Used by the ALL_WAVES_FORMED cinematic condition.
+func _all_foes_in_formation() -> bool:
+	for node: Node in get_tree().get_nodes_in_group(&"foe_brains"):
+		if not is_instance_valid(node):
+			continue
+		var brain: FoeBrain = node as FoeBrain
+		if brain == null:
+			continue
+		var parent_foe: Entity = brain.get_parent() as Entity
+		if parent_foe == null or parent_foe.is_dead or parent_foe.is_queued_for_deletion():
+			continue
+		if brain.state != FoeBrain.State.FORMATION:
+			return false
+	return true
 
 
 func _spawn_current_wave() -> void:
@@ -206,6 +254,12 @@ func _spawn_boss(wave: BossWaveData, formation: Formation) -> void:
 			_on_formation_entered, wave.entry_curve, wave.mirror_entry)
 	if boss != null:
 		_total_foes_spawned += 1
+		# The cinematic's wave: its first arrival in formation releases the
+		# ceasefire (one shot, in addition to the existing callback).
+		if _cinematic != null and is_instance_valid(_cinematic) and wave == _cinematic_wave:
+			var brain: FoeBrain = boss.get_node_or_null(^"FoeBrain") as FoeBrain
+			if brain != null:
+				brain.entered_formation.connect(_cinematic.on_boss_entered, CONNECT_ONE_SHOT)
 
 
 ## Returns the [Formation] of [param data] and [param phase_deg] for the

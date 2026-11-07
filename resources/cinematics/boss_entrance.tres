@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CinematicData" format=3 uid="uid://y010htvkpoxy"]
+
+[ext_resource type="Script" uid="uid://g46cny537u8y" path="res://resources/cinematic_data.gd" id="1_cine"]
+
+[resource]
+script = ExtResource("1_cine")
+metadata/_custom_type_script = "uid://g46cny537u8y"
