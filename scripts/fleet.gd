@@ -210,6 +210,21 @@ func cancel_dash() -> void:
 		leader.cancel_dash()
 
 
+## How many pixels the block can still move towards [param direction]
+## (-1 left, 1 right) before [method _clamped_x] stops it. Zero or less when
+## the block is already against that edge.
+func get_room(direction: int) -> float:
+	if ships.is_empty() or direction == 0:
+		return 0.0
+	var leader: Entity = ships[0]
+	if leader == null or not is_instance_valid(leader):
+		return 0.0
+	var before: float = leader.global_position.x
+	if direction > 0:
+		return _clamped_x(before + Helpers.get_game_width()) - before
+	return before - _clamped_x(before - Helpers.get_game_width())
+
+
 ## Moves the block through the normal clamp and returns the x progress it
 ## actually allowed. The DashAbility uses it so dashing and walking cannot
 ## disagree about the screen edges.

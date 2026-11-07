@@ -317,14 +317,29 @@ func get_half_width() -> float:
 	return get_width() / 2.0
 
 
+## How many pixels this Entity can still move towards [param direction]
+## (-1 left, 1 right) before the screen-edge clamp of [method move_horizontal]
+## stops it. Zero or less when already against that edge.
+func get_room_horizontal(direction: int) -> float:
+	if direction == 0:
+		return 0.0
+	if direction > 0:
+		return _clamped_x(position.x + get_viewport_rect().size.x) - position.x
+	return position.x - _clamped_x(position.x - get_viewport_rect().size.x)
+
+
 ## Moves [param delta_x] pixels horizontally, clamped by the same screen edges
 ## as normal movement. Returns the progress the clamp actually allowed.
 func move_horizontal(delta_x: float) -> float:
 	var before: float = position.x
-	position.x = clampf(before + delta_x,
-		get_half_width(),
-		get_viewport_rect().size.x - get_half_width())
+	position.x = _clamped_x(before + delta_x)
 	return position.x - before
+
+
+## The screen-edge clamp shared by [method move_horizontal] and
+## [method get_room_horizontal].
+func _clamped_x(x: float) -> float:
+	return clampf(x, get_half_width(), get_viewport_rect().size.x - get_half_width())
 
 
 ## Plays a sound profile stream by key.

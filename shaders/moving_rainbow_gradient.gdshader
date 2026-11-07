@@ -10,6 +10,9 @@ uniform float speed: hint_range(0., 10.) = 0.5;
 uniform float angle: hint_range(0., 360.) = 0.;
 
 void fragment() {
+	// Incoming COLOR carries the CanvasItem modulate (including the dash
+	// alpha cue). Preserve its alpha so the cue shows through this shader.
+	float incoming_a = COLOR.a;
 	float hue = UV.x * cos(radians(angle)) - UV.y * sin(radians(angle));
 	hue = fract(hue + fract(TIME  * speed));
 	float x = 1. - abs(mod(hue / (1./ 6.), 2.) - 1.);
@@ -29,4 +32,5 @@ void fragment() {
 	}
 	vec4 color = texture(TEXTURE, UV);
 	COLOR = mix(color, vec4(rainbow, color.a), strength);
+	COLOR.a = incoming_a;
 }

@@ -50,6 +50,12 @@ func _on_area_entered(area: Area2D) -> void:
 	var target: Entity = area as Entity
 	if target == null or target.is_dead:
 		return
+	# A dashing (invulnerable) Entity is ignored like in ramming, and the
+	# bullet keeps flying. Area2D only reports an overlap on entry, so a
+	# bullet already overlapping the hero when the dash ends does not hit
+	# it; that small grace is accepted.
+	if target.invulnerable:
+		return
 	_spent = true
 	# Spark streak at impact point
 	EffectsScript.hit_spark(global_position, _direction, 0.2)

@@ -79,7 +79,12 @@ func _physics_process(delta: float) -> void:
 func try_dash(direction: int) -> bool:
 	if direction == 0 or not can_dash():
 		return false
-	_start_dash(1 if direction > 0 else -1)
+	var locked_direction: int = 1 if direction > 0 else -1
+	# A dash against the edge it already touches would start and end in the
+	# same frame and still spend the cooldown, so reject it before starting.
+	if _get_room(locked_direction) <= POSITION_EPSILON:
+		return false
+	_start_dash(locked_direction)
 	return true
 
 
@@ -176,6 +181,15 @@ func _can_continue() -> bool:
 	if fleet != null and fleet.ships.has(_entity) and fleet.is_returning():
 		return false
 	return true
+
+
+## Room left towards [param direction] for the whole fleet when this Entity
+## is its leader, or just for this Entity.
+func _get_room(direction: int) -> float:
+	var fleet: Fleet = _find_fleet()
+	if fleet != null and not fleet.ships.is_empty() and fleet.ships[0] == _entity:
+		return fleet.get_room(direction)
+	return _entity.get_room_horizontal(direction)
 
 
 ## Moves the whole fleet when this Entity is its leader, or just this Entity.
