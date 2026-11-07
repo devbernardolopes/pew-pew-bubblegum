@@ -24,6 +24,10 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not enabled:
 		return
+	# While the foe side is gated the countdown does not advance and no
+	# dive starts, so there is no burst of dives when the gate reopens.
+	if not CombatGate.is_open_for(Helpers.TEAM.FOE):
+		return
 	var brains: Array[FoeBrain] = _get_brains()
 	if brains.is_empty():
 		return

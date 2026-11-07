@@ -97,5 +97,5 @@ metadata/_custom_type_script = "uid://cfqxmshih2ed7"
 script = ExtResource("1_34s6t")
 id = &"journey_alpha"
 name = "Alpha Journey"
-stages = Array[ExtResource("2_xr762")]([ExtResource("3_qj7sh"), ExtResource("3_oyuvk"), ExtResource("3_0wuh1"), SubResource("Resource_oxad1"), ExtResource("3_0dopk"), ExtResource("4_0dopk"), ExtResource("5_x00pw"), ExtResource("4_xr762")])
+stages = Array[ExtResource("2_xr762")]([ExtResource("3_oyuvk"), ExtResource("4_xr762"), ExtResource("3_qj7sh"), ExtResource("3_0wuh1"), SubResource("Resource_oxad1"), ExtResource("3_0dopk"), ExtResource("4_0dopk"), ExtResource("5_x00pw")])
 metadata/_custom_type_script = "uid://wa8mc2v1ds4i"

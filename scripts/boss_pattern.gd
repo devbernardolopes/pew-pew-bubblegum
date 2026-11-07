@@ -115,6 +115,10 @@ func _enter_phase(phase: BossPhaseData) -> void:
 
 
 func _update_fire(delta: float, data: BossData) -> void:
+	# The ceasefire gate freezes the timer instead of spending it, so the
+	# volley (and the muzzle cursor it advances) is not consumed by a lock.
+	if not CombatGate.is_open_for(Helpers.TEAM.FOE):
+		return
 	var phase: BossPhaseData = data.phases[_phase_index]
 	if phase == null:
 		return

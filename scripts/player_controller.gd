@@ -226,8 +226,15 @@ func _get_data() -> EntityData:
 
 ## Whether input may drive firing and combos right now: a live ship in play.
 ## Dashing does not affect this; death, capture, rescue flight, a frozen
-## fleet and game over all do.
+## fleet, game over and a closed [CombatGate] for the friend side all do.
+## A closed gate takes the same path as the others: the charge is cancelled,
+## fire/charge/combo input is ignored and the combo buffer is cleared. A fire
+## button still held when the gate reopens cannot start a charge or a shot,
+## because starting one requires [code]is_action_just_pressed[/code], a fresh
+## press; movement and dash stay available.
 func _can_control_fire() -> bool:
+	if not CombatGate.is_open_for(Helpers.TEAM.FRIEND):
+		return false
 	if GameManager.is_game_over:
 		return false
 	var fleet: Fleet = _target as Fleet

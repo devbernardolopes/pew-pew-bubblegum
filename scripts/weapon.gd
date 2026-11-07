@@ -42,9 +42,13 @@ func fire(direction: Vector2 = Vector2.ZERO) -> bool:
 
 
 ## Whether [method fire] would launch a projectile right now: data set, owner
-## ready, and the in-flight pool not full.
+## ready, the in-flight pool not full, and the [CombatGate] open for its team.
 func can_fire() -> bool:
-	return projectile_data != null and _entity != null and _in_flight < max_in_flight
+	if projectile_data == null or _entity == null or _in_flight >= max_in_flight:
+		return false
+	if _entity.data != null and not CombatGate.is_open_for(_entity.data.team):
+		return false
+	return true
 
 
 ## The nose position in the Entity's local space, shared by [method fire] and
@@ -65,6 +69,11 @@ func fire_from(global_origin: Vector2, direction: Vector2) -> bool:
 ## Shared body of [method fire] and [method fire_from]. [param direction] is
 ## already in world space; a zero one falls back to the shooter's nose.
 func _launch(global_origin: Vector2, direction: Vector2) -> bool:
+	# The ceasefire gate is checked first: a gated shot changes no counters
+	# and has no side effects, so callers retrying on a false return keep
+	# their budgets and pattern steps.
+	if _entity != null and _entity.data != null and not CombatGate.is_open_for(_entity.data.team):
+		return false
 	if projectile_data == null or _in_flight >= max_in_flight:
 		return false
 	if _entity == null or _entity.data == null:

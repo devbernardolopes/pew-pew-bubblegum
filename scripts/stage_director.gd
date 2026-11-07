@@ -63,6 +63,8 @@ var _formation_serial: int = 0
 
 
 func _ready() -> void:
+	# CombatGate statics survive a scene reload, so every run starts open.
+	CombatGate.clear()
 	# Find siblings by name; NodePath references can fail in some contexts.
 	if formations_root == null:
 		formations_root = get_parent().get_node_or_null("Formations") as Node2D
@@ -297,6 +299,7 @@ func _on_formation_entered() -> void:
 
 func _on_game_over() -> void:
 	_state = 4  # STOPPED
+	CombatGate.clear()
 	var director: CameraDirector = get_tree().get_first_node_in_group(&"camera_director") as CameraDirector
 	if director != null:
 		director.reset()
