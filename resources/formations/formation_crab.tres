@@ -6,4 +6,5 @@
 [resource]
 script = ExtResource("1_337gk")
 layout = ExtResource("1_73ibr")
+spacing = Vector2(64, 52)
 metadata/_custom_type_script = "uid://cspnel4tvson"

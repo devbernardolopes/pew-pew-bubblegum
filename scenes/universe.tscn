@@ -169,9 +169,6 @@ journey = ExtResource("7_h8wxb")
 [node name="HeroSpawn" type="Marker2D" parent="." unique_id=258270815]
 position = Vector2(576, 576)
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1410065407]
-anchor_mode = 3
-
 [node name="Effects" type="Node2D" parent="." unique_id=1410065406 groups=["effects"]]
 
 [node name="Projectiles" type="Node2D" parent="." unique_id=1480221933 groups=["projectiles"]]
