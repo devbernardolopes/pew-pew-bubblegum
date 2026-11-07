@@ -36,6 +36,10 @@ const RETURN_DURATION: float = 1.0
 var ships: Array[Entity] = []
 
 var _controller: EntityController = null
+## The block's momentum drift state, shared by every ship. Created lazily
+## when the leader's data enables drift; parameters are read from the
+## leader's data every frame, so a leader change needs no extra handling.
+var _motion: LateralMotion = null
 var _returning: Entity = null
 var _return_start: Vector2 = Vector2.ZERO
 var _return_target: Vector2 = Vector2.ZERO
@@ -49,6 +53,10 @@ func _ready() -> void:
 	add_to_group(&"fleet")
 	_controller = PlayerController.new()
 	add_child(_controller)
+	if not GameManager.stage_changed.is_connected(_on_stage_changed):
+		GameManager.stage_changed.connect(_on_stage_changed)
+	if not GameManager.game_over.is_connected(_on_game_over):
+		GameManager.game_over.connect(_on_game_over)
 
 
 func _process(delta: float) -> void:
@@ -67,15 +75,18 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	if _returning != null:
+		_reset_motion()
 		# A rescue flight cancels any charge with no shot and a clean visual.
 		for ship: Entity in ships:
 			if is_instance_valid(ship):
 				ship.set_charge_visual(0.0, false, 0.0)
 		return
 	if ships.is_empty() or _controller == null:
+		_reset_motion()
 		return
 	var leader: Entity = ships[0]
 	if leader == null or not is_instance_valid(leader) or leader.data == null:
+		_reset_motion()
 		return
 	var dir: float = _controller.get_direction_h()
 	# One cached request per frame, fanned out to every ship: each ship fires
@@ -83,7 +94,18 @@ func _physics_process(delta: float) -> void:
 	var request: StringName = _controller.get_fire_request()
 	var progress: float = _controller.get_charge_progress()
 	var is_ready: bool = _controller.is_charge_ready()
-	if not leader.is_dashing() and dir != 0.0:
+	if leader.is_dashing():
+		# The dash owns the position; it also zeroes any slide.
+		_reset_motion()
+	elif leader.data.drift_enabled:
+		if _motion == null:
+			_motion = LateralMotion.new()
+		var top_speed: float = leader.data.base_speed * leader.speed_multiplier
+		var requested: float = _motion.step(dir, delta, top_speed,
+				leader.data.drift_distance_ships * leader.get_width())
+		var moved: float = move_block(requested)
+		_motion.report(requested, moved)
+	elif dir != 0.0:
 		var speed: float = leader.data.base_speed * leader.speed_multiplier
 		move_block(dir * speed * delta)
 	for ship: Entity in ships:
@@ -95,6 +117,21 @@ func _physics_process(delta: float) -> void:
 func _exit_tree() -> void:
 	_returning = null
 	_pending_returns.clear()
+
+
+## Forgets any slide in progress (dash, rescue flight, a ship leaving the
+## fleet, stage change, game over).
+func _reset_motion() -> void:
+	if _motion != null:
+		_motion.reset()
+
+
+func _on_stage_changed(_stage: int) -> void:
+	_reset_motion()
+
+
+func _on_game_over() -> void:
+	_reset_motion()
 
 
 ## Adds a new ship at [param at] and returns it; null when the fleet is full.
@@ -115,6 +152,7 @@ func spawn_ship(at: Vector2) -> Entity:
 func drop_ship(ship: Entity) -> void:
 	if not ships.has(ship):
 		return
+	_reset_motion()
 	ships.erase(ship)
 	if not ships.is_empty():
 		_place(ships[0].global_position.x)
@@ -315,6 +353,7 @@ func _advance_return_queue() -> void:
 func _on_member_died(ship: Entity) -> void:
 	if not ships.has(ship):
 		return
+	_reset_motion()
 	ships.erase(ship)
 	if not ships.is_empty():
 		# The survivor stays where it is and becomes the leader.

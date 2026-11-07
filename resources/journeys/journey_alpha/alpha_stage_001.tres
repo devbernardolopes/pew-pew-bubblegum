@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://b0016tte8sbsa" path="res://resources/formations/formation_12x8_full.tres" id="7_ppn8v"]
 [ext_resource type="Curve2D" uid="uid://c4rkkg4tjg22b" path="res://resources/curves/dives/dive_left_03.tres" id="8_ehv83"]
 [ext_resource type="Curve2D" uid="uid://dq5ta4b4jxfrh" path="res://resources/curves/entries/entry_left_05.tres" id="9_hvxlf"]
+[ext_resource type="PackedScene" uid="uid://db6w567pp7o3t" path="res://scenes/entities/foe_decagon.tscn" id="10_ha2e1"]
 [ext_resource type="Resource" uid="uid://61ujglghoxy2" path="res://resources/stages/waves/basic_wave_001.tres" id="10_ql88g"]
 [ext_resource type="Curve2D" uid="uid://dgywtmoou6akn" path="res://resources/curves/entries/entry_left_03.tres" id="11_ha2e1"]
 
@@ -22,7 +23,7 @@ metadata/_custom_type_script = "uid://c775yud1oetrm"
 
 [sub_resource type="Resource" id="Resource_xr762"]
 script = ExtResource("3_ehv83")
-foe_scene = ExtResource("6_ha2e1")
+foe_scene = ExtResource("10_ha2e1")
 entry_curve = ExtResource("9_hvxlf")
 row = 1
 formation = ExtResource("7_ppn8v")
@@ -39,6 +40,7 @@ entry_curve = ExtResource("11_ha2e1")
 row = 3
 formation = ExtResource("7_ppn8v")
 dive_curves = Array[Curve2D]([ExtResource("8_ehv83")])
+delay = 0.5
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 
 [sub_resource type="Resource" id="Resource_02k2a"]
@@ -48,6 +50,7 @@ entry_curve = ExtResource("11_ha2e1")
 row = 4
 formation = ExtResource("7_ppn8v")
 dive_curves = Array[Curve2D]([ExtResource("8_ehv83")])
+delay = 0.75
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 
 [sub_resource type="Resource" id="Resource_2jfv7"]
@@ -57,6 +60,7 @@ entry_curve = ExtResource("11_ha2e1")
 row = 5
 formation = ExtResource("7_ppn8v")
 dive_curves = Array[Curve2D]([ExtResource("8_ehv83")])
+delay = 2.0
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 
 [sub_resource type="Resource" id="Resource_p1dm8"]
@@ -66,6 +70,7 @@ entry_curve = ExtResource("11_ha2e1")
 row = 6
 formation = ExtResource("7_ppn8v")
 dive_curves = Array[Curve2D]([ExtResource("8_ehv83")])
+delay = 1.0
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 
 [sub_resource type="Resource" id="Resource_1dpi1"]

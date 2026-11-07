@@ -48,6 +48,9 @@ var weapon: Weapon = null
 var weapons: Dictionary = {}
 var dash_ability: DashAbility = null
 var charge_effect: ChargeEffect = null
+## Momentum drift state, only when [member EntityData.drift_enabled] is on.
+## [Fleet] ships never use their own: the fleet owns one for the whole block.
+var lateral_motion: LateralMotion = null
 var health: int = 0
 var shots_fired: int = 0
 var shots_hit: int = 0
@@ -95,6 +98,7 @@ func _ready() -> void:
 		_collect_weapons()
 		_create_dash_ability()
 		_create_charge_effect()
+		_create_drift()
 		_join_team_group()
 		area_entered.connect(_on_area_entered)
 
@@ -125,11 +129,14 @@ func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	if not data:
+		reset_drift()
 		return
 	if is_dead:
+		reset_drift()
 		return
 	_update_motion_feedback(delta)
 	if capture_active or returning or externally_driven:
+		reset_drift()
 		# Another node owns this entity's position (a capture, the fleet, a brain).
 		# Fleet ships get their charge visual from the Fleet, not from here.
 		return
@@ -139,11 +146,19 @@ func _physics_process(delta: float) -> void:
 	set_charge_visual(progress, is_ready, delta)
 	if is_dashing():
 		# The DashAbility owns the position while dashing; firing is still allowed.
+		reset_drift()
 		drive_weapon(request, get_fire_fallback(request))
 		return
 	if controller != null:
 		var dir: float = controller.get_direction_h()
-		move_horizontal(dir * data.base_speed * speed_multiplier * delta)
+		if lateral_motion != null:
+			var top_speed: float = data.base_speed * speed_multiplier
+			var requested: float = lateral_motion.step(dir, delta, top_speed,
+					data.drift_distance_ships * get_width())
+			var moved: float = move_horizontal(requested)
+			lateral_motion.report(requested, moved)
+		else:
+			move_horizontal(dir * data.base_speed * speed_multiplier * delta)
 	drive_weapon(request, get_fire_fallback(request))
 
 
@@ -296,6 +311,7 @@ func die() -> void:
 		return
 	is_dead = true
 	cancel_dash()
+	reset_drift()
 	set_charge_visual(0.0, false, 0.0)
 	# Sound effect before visuals/freeing
 	_play_profile_stream("explosion")
@@ -320,6 +336,7 @@ func die() -> void:
 func begin_capture() -> void:
 	capture_active = true
 	cancel_dash()
+	reset_drift()
 	set_charge_visual(0.0, false, 0.0)
 	set_deferred(&"monitorable", false)
 	capture_started.emit(self)
@@ -328,6 +345,7 @@ func begin_capture() -> void:
 ## Hides the hero while being pulled/parked.
 func park_captured() -> void:
 	cancel_dash()
+	reset_drift()
 	set_charge_visual(0.0, false, 0.0)
 	visible = false
 
@@ -342,6 +360,7 @@ func commit_capture() -> void:
 ## back to its fleet. The [Fleet] owns its position until it docks.
 func begin_return() -> void:
 	cancel_dash()
+	reset_drift()
 	set_charge_visual(0.0, false, 0.0)
 	rotation = 0.0
 	visible = true
@@ -384,6 +403,14 @@ func get_dash_input_buffer() -> float:
 func cancel_dash() -> void:
 	if dash_ability != null:
 		dash_ability.cancel()
+
+
+## Forgets any momentum slide in progress. Called on every early return of
+## [method _physics_process] and when the entity dies, is captured or starts
+## its return flight.
+func reset_drift() -> void:
+	if lateral_motion != null:
+		lateral_motion.reset()
 
 
 ## Full visual width of this Entity, in pixels. The same value drives the
@@ -555,6 +582,32 @@ func _create_charge_effect() -> void:
 		charge_effect.position = charge_weapon.get_muzzle_local()
 	else:
 		charge_effect.position = Vector2.UP * Helpers.ENTITY_HALF_WIDTH * scale_aux
+
+
+## Creates the momentum drift state when this Entity's data enables it, and
+## reports drift configuration problems in debug builds. A stage change or
+## game over also resets the slide, like the dash does.
+func _create_drift() -> void:
+	if data == null:
+		return
+	if OS.is_debug_build():
+		for issue: String in data.validate_drift("Entity %s" % name, speed_multiplier, scale_aux):
+			push_warning(issue)
+	if not data.drift_enabled:
+		return
+	lateral_motion = LateralMotion.new()
+	if not GameManager.stage_changed.is_connected(_on_drift_stage_changed):
+		GameManager.stage_changed.connect(_on_drift_stage_changed)
+	if not GameManager.game_over.is_connected(_on_drift_game_over):
+		GameManager.game_over.connect(_on_drift_game_over)
+
+
+func _on_drift_stage_changed(_stage: int) -> void:
+	reset_drift()
+
+
+func _on_drift_game_over() -> void:
+	reset_drift()
 
 
 ## Collects every [Weapon] child by its id; the first one is [member weapon],

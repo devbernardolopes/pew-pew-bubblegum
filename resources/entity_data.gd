@@ -86,6 +86,13 @@ extends Resource
 ## disables the input buffer.
 @export var dash_input_buffer: float = 0.08
 
+@export_group("Drift")
+## Whether this Entity keeps sliding a short distance after lateral input
+## ends (see [LateralMotion]). Off for every Entity by default.
+@export var drift_enabled: bool = false
+## Distance the ship slides from full speed to rest, measured in ship widths.
+@export_range(0.0, 16.0, 0.5) var drift_distance_ships: float = 0.5
+
 @export_group("Charge")
 ## Whether holding fire charges a shot instead of firing on press. The
 ## regular bullet of a charge-enabled Entity fires on release.
@@ -135,6 +142,32 @@ func validate_dash(where: String = "", speed_multiplier: float = 1.0, scale_aux:
 	if dash_speed <= normal_speed:
 		issues.append("[warning] %s: the derived dash speed %.1f is not greater than the normal speed %.1f." % [
 				label, dash_speed, normal_speed])
+	return issues
+
+
+## Returns the problems found in this Entity's drift data, each prefixed with
+## [code][warning][/code] and naming [param where]. [param speed_multiplier]
+## and [param scale_aux] come from the Entity that owns this data, because
+## the stopping time is derived from the top speed and the slide distance.
+func validate_drift(where: String = "", speed_multiplier: float = 1.0, scale_aux: float = 1.0) -> PackedStringArray:
+	var issues: PackedStringArray = []
+	if not drift_enabled:
+		return issues
+	var label: String = where if not where.is_empty() else "(unsaved entity data)"
+	if drift_distance_ships <= 0.0:
+		issues.append("[warning] %s: drift is enabled with a drift_distance_ships of %.2f." % [
+				label, drift_distance_ships])
+		return issues
+	var distance: float = drift_distance_ships * Helpers.ENTITY_WIDTH * scale_aux
+	var top_speed: float = base_speed * speed_multiplier
+	if top_speed <= 0.0:
+		issues.append("[warning] %s: drift is enabled with a top speed of %.1f." % [
+				label, top_speed])
+		return issues
+	var stopping_time: float = 2.0 * distance / top_speed
+	if stopping_time > 1.0:
+		issues.append("[warning] %s: drift is very long: %.2f s to stop from full speed." % [
+				label, stopping_time])
 	return issues
 
 
