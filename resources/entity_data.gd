@@ -86,6 +86,31 @@ extends Resource
 ## disables the input buffer.
 @export var dash_input_buffer: float = 0.08
 
+@export_group("Charge")
+## Whether holding fire charges a shot instead of firing on press. The
+## regular bullet of a charge-enabled Entity fires on release.
+@export var charge_enabled: bool = false
+## Seconds of holding fire to reach the charge threshold.
+@export var charge_time: float = 0.8
+## The weapon fired when a charge is released at or past the threshold.
+@export var charge_weapon_id: StringName = &"charged"
+## Maximum horizontal shake of the visual while charging, in pixels.
+@export var charge_shake_px: float = 2.5
+## Shake oscillation while charging, in cycles per second.
+@export var charge_shake_hz: float = 40.0
+## Radius of the ring the charge particles spawn on, in pixels.
+@export var charge_ring_radius: float = 26.0
+## Charge particles at the start of the charge.
+@export var charge_particles_min: int = 3
+## Charge particles at the threshold.
+@export var charge_particles_max: int = 28
+
+@export_group("Combos")
+## Key-combo sequences (see [ComboData]) that fire a weapon when completed.
+@export var combos: Array[ComboData] = []
+## Prints combo steps and charge events to the console, to tune delays.
+@export var input_debug: bool = false
+
 
 ## Returns the problems found in this Entity's dash data, each prefixed with
 ## [code][warning][/code] and naming [param where]. [param speed_multiplier]
@@ -110,4 +135,38 @@ func validate_dash(where: String = "", speed_multiplier: float = 1.0, scale_aux:
 	if dash_speed <= normal_speed:
 		issues.append("[warning] %s: the derived dash speed %.1f is not greater than the normal speed %.1f." % [
 				label, dash_speed, normal_speed])
+	return issues
+
+
+## Returns the problems found in this Entity's charge and combo data, each
+## prefixed with [code][warning][/code] and naming [param where] (the same
+## style as [method validate_dash]). [param weapon_ids] are the ids of the
+## weapons the owning Entity actually has.
+func validate_charge(where: String = "", weapon_ids: Array[StringName] = []) -> PackedStringArray:
+	var issues: PackedStringArray = []
+	var label: String = where if not where.is_empty() else "(unsaved entity data)"
+	if charge_enabled:
+		if charge_time <= 0.0:
+			issues.append("[warning] %s: charge is enabled with a charge_time of %.2f s." % [
+					label, charge_time])
+		if not weapon_ids.has(charge_weapon_id):
+			issues.append("[warning] %s: charge is enabled but there is no weapon %s." % [
+					label, charge_weapon_id])
+	for combo: ComboData in combos:
+		if combo == null:
+			issues.append("[warning] %s: a combo is null." % label)
+			continue
+		var combo_label: String = "%s combo %s" % [label, combo.id]
+		if combo.steps.size() < 2:
+			issues.append("[warning] %s: a combo needs at least 2 steps, it has %d." % [
+					combo_label, combo.steps.size()])
+		for step: StringName in combo.steps:
+			if not InputMap.has_action(step):
+				issues.append("[warning] %s: step action %s is not in the Input Map." % [
+						combo_label, step])
+		if combo.max_step_delay <= 0.0:
+			issues.append("[warning] %s: max_step_delay %.2f s is not positive." % [
+					combo_label, combo.max_step_delay])
+		if not weapon_ids.has(combo.weapon_id):
+			issues.append("[warning] %s: there is no weapon %s." % [combo_label, combo.weapon_id])
 	return issues

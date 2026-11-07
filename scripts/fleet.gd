@@ -66,19 +66,30 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if ships.is_empty() or _returning != null or _controller == null:
+	if _returning != null:
+		# A rescue flight cancels any charge with no shot and a clean visual.
+		for ship: Entity in ships:
+			if is_instance_valid(ship):
+				ship.set_charge_visual(0.0, false, 0.0)
+		return
+	if ships.is_empty() or _controller == null:
 		return
 	var leader: Entity = ships[0]
 	if leader == null or not is_instance_valid(leader) or leader.data == null:
 		return
 	var dir: float = _controller.get_direction_h()
-	var wants_fire: bool = _controller.wants_fire()
+	# One cached request per frame, fanned out to every ship: each ship fires
+	# from its own muzzle with its own pools.
+	var request: StringName = _controller.get_fire_request()
+	var progress: float = _controller.get_charge_progress()
+	var is_ready: bool = _controller.is_charge_ready()
 	if not leader.is_dashing() and dir != 0.0:
 		var speed: float = leader.data.base_speed * leader.speed_multiplier
 		move_block(dir * speed * delta)
 	for ship: Entity in ships:
 		if is_instance_valid(ship):
-			ship.drive(wants_fire)
+			ship.set_charge_visual(progress, is_ready, delta)
+			ship.drive_weapon(request, ship.get_fire_fallback(request))
 
 
 func _exit_tree() -> void:

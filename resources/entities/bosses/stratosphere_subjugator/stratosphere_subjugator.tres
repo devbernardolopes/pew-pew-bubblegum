@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="BossData" format=3 uid="uid://bo28wn7pbs6op"]
 
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_4gvu6"]
 [ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="1_84vk3"]
 [ext_resource type="Resource" uid="uid://vk03ehj6tp6o" path="res://resources/entities/bosses/phases/phase_001.tres" id="2_4gvu6"]
 [ext_resource type="Resource" uid="uid://cjycv5uy3cgif" path="res://resources/entities/bosses/phases/phase_002.tres" id="3_k44np"]

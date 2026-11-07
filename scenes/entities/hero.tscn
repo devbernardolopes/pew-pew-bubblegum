@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://bxu46k5dlad5m" path="res://scripts/player_controller.gd" id="3_ctrl"]
 [ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="4_weapon"]
 [ext_resource type="Resource" uid="uid://chjbpqj05soja" path="res://resources/projectiles/bullet_01.tres" id="5_0skjh"]
+[ext_resource type="Resource" uid="uid://dnmowp4t5bu7l" path="res://resources/projectiles/bullet_02.tres" id="6_charged"]
+[ext_resource type="Resource" uid="uid://chbyw1wmxj66g" path="res://resources/projectiles/hero_missile.tres" id="7_missile"]
 
 [node name="Hero" unique_id=927296478 instance=ExtResource("1_entity")]
 collision_layer = 2
@@ -20,3 +22,18 @@ script = ExtResource("3_ctrl")
 script = ExtResource("4_weapon")
 projectile_data = ExtResource("5_0skjh")
 max_in_flight = 2
+
+[node name="ChargedWeapon" type="Node" parent="." index="2" unique_id=1697356830]
+script = ExtResource("4_weapon")
+projectile_data = ExtResource("6_charged")
+max_in_flight = 1
+weapon_id = &"charged"
+override_color = false
+
+[node name="MissileWeapon" type="Node" parent="." index="3" unique_id=1697356831]
+script = ExtResource("4_weapon")
+projectile_data = ExtResource("7_missile")
+max_in_flight = 1
+muzzle_offset = Vector2(-6, -4)
+weapon_id = &"missile"
+override_color = false

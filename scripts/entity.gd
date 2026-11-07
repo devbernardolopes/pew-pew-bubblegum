@@ -40,8 +40,14 @@ signal dash_ended
 var collision: CollisionPolygon2D = null
 var visual: Polygon2D = null
 var controller: EntityController = null
+## The first [Weapon] child: the primary, which foes, [FoeBrain] and the
+## tractor beam keep using exactly as before.
 var weapon: Weapon = null
+## Every [Weapon] child by its [member Weapon.weapon_id]. [member weapon] is
+## the primary of the same set.
+var weapons: Dictionary = {}
 var dash_ability: DashAbility = null
+var charge_effect: ChargeEffect = null
 var health: int = 0
 var shots_fired: int = 0
 var shots_hit: int = 0
@@ -67,6 +73,13 @@ var _tilt_applied: float = 0.0
 var _last_position: Vector2 = Vector2.ZERO
 var _motion_primed: bool = false
 var _trail_distance: float = 0.0
+## The visual's position as set by [_refresh_shape], restored after a charge.
+var _visual_base_position: Vector2 = Vector2.ZERO
+## Physics seconds of the current charge, driving the visual shake.
+var _charge_elapsed: float = 0.0
+## Current horizontal shake offset of the visual, in local pixels. The ghost
+## trail subtracts it so ghosts never inherit the shake.
+var _charge_shake_x: float = 0.0
 
 
 func _ready() -> void:
@@ -79,9 +92,9 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		if controller == null:
 			controller = _find_controller()
-		if weapon == null:
-			weapon = _find_weapon()
+		_collect_weapons()
 		_create_dash_ability()
+		_create_charge_effect()
 		_join_team_group()
 		area_entered.connect(_on_area_entered)
 
@@ -118,16 +131,20 @@ func _physics_process(delta: float) -> void:
 	_update_motion_feedback(delta)
 	if capture_active or returning or externally_driven:
 		# Another node owns this entity's position (a capture, the fleet, a brain).
+		# Fleet ships get their charge visual from the Fleet, not from here.
 		return
-	var wants_fire: bool = controller != null and controller.wants_fire()
+	var request: StringName = controller.get_fire_request() if controller != null else &""
+	var progress: float = controller.get_charge_progress() if controller != null else 0.0
+	var is_ready: bool = controller.is_charge_ready() if controller != null else false
+	set_charge_visual(progress, is_ready, delta)
 	if is_dashing():
 		# The DashAbility owns the position while dashing; firing is still allowed.
-		drive(wants_fire)
+		drive_weapon(request, get_fire_fallback(request))
 		return
 	if controller != null:
 		var dir: float = controller.get_direction_h()
 		move_horizontal(dir * data.base_speed * speed_multiplier * delta)
-	drive(wants_fire)
+	drive_weapon(request, get_fire_fallback(request))
 
 
 func _update_motion_feedback(delta: float) -> void:
@@ -177,6 +194,63 @@ func drive(wants_fire: bool) -> void:
 	if wants_fire and weapon != null:
 		weapon.fire()
 
+
+## The weapon with [param id], or null when this Entity has none.
+func get_weapon(id: StringName) -> Weapon:
+	return weapons.get(id) as Weapon
+
+
+## Whether the weapon with [param id] would fire right now.
+func can_fire_weapon(id: StringName) -> bool:
+	var found: Weapon = get_weapon(id)
+	return found != null and found.can_fire()
+
+
+## Fires the weapon with [param id] when it can, otherwise the weapon with
+## [param fallback_id] when one is given (a charged shot falls back to the
+## primary, so a shot is never lost). Returns whether a shot was fired.
+func drive_weapon(id: StringName, fallback_id: StringName = &"") -> bool:
+	if id == &"":
+		return false
+	var found: Weapon = get_weapon(id)
+	if found != null and found.can_fire():
+		found.fire()
+		return true
+	if fallback_id != &"":
+		var fallback: Weapon = get_weapon(fallback_id)
+		if fallback != null and fallback.can_fire():
+			fallback.fire()
+			return true
+	return false
+
+
+## The fallback for a fire request: the primary for a charged shot, nothing
+## for any other weapon (a missile whose pool is full fires nothing).
+func get_fire_fallback(request: StringName) -> StringName:
+	if data != null and data.charge_enabled and request == data.charge_weapon_id:
+		return &"primary"
+	return &""
+
+
+## Shows the charge at [param progress] (0..1) on this ship: the particles of
+## [member charge_effect] plus a horizontal shake of the visual only, so
+## clamping, collision and the dash are untouched. Progress 0 restores the
+## visual's base position exactly. [Fleet] calls it for the ships it owns;
+## [method _physics_process] calls it for a ship with its own controller.
+func set_charge_visual(progress: float, is_ready: bool, delta: float) -> void:
+	if charge_effect != null:
+		charge_effect.set_progress(progress, is_ready)
+	if visual == null or data == null:
+		return
+	if progress <= 0.0:
+		_charge_elapsed = 0.0
+		_charge_shake_x = 0.0
+		visual.position = _visual_base_position
+		return
+	_charge_elapsed += delta
+	_charge_shake_x = sin(_charge_elapsed * TAU * data.charge_shake_hz) * data.charge_shake_px * progress
+	visual.position = _visual_base_position + Vector2(_charge_shake_x, 0.0)
+
 ## Sets [member health] back to the maximum of [member data]. Use it when
 ## [member data] is assigned after the Entity entered the tree.
 func reset_health() -> void:
@@ -222,6 +296,7 @@ func die() -> void:
 		return
 	is_dead = true
 	cancel_dash()
+	set_charge_visual(0.0, false, 0.0)
 	# Sound effect before visuals/freeing
 	_play_profile_stream("explosion")
 	# Explosion and score popup before freeing
@@ -245,6 +320,7 @@ func die() -> void:
 func begin_capture() -> void:
 	capture_active = true
 	cancel_dash()
+	set_charge_visual(0.0, false, 0.0)
 	set_deferred(&"monitorable", false)
 	capture_started.emit(self)
 
@@ -252,6 +328,7 @@ func begin_capture() -> void:
 ## Hides the hero while being pulled/parked.
 func park_captured() -> void:
 	cancel_dash()
+	set_charge_visual(0.0, false, 0.0)
 	visible = false
 
 
@@ -265,6 +342,7 @@ func commit_capture() -> void:
 ## back to its fleet. The [Fleet] owns its position until it docks.
 func begin_return() -> void:
 	cancel_dash()
+	set_charge_visual(0.0, false, 0.0)
 	rotation = 0.0
 	visible = true
 	capture_active = false
@@ -374,6 +452,7 @@ func _refresh_shape() -> void:
 		pivot = Helpers.get_points_center(points)
 	collision.position = -pivot * scale_aux
 	visual.position = -pivot * scale_aux
+	_visual_base_position = visual.position
 	visual.color = data.color
 	if data.tilt_enabled:
 		_apply_tilt(true)
@@ -452,6 +531,50 @@ func _create_dash_ability() -> void:
 			push_warning(issue)
 
 
+## Adds the charge particles when this Entity's data enables charging, at the
+## charge weapon's muzzle, and reports charge and combo configuration
+## problems in debug builds.
+func _create_charge_effect() -> void:
+	if data == null:
+		return
+	if OS.is_debug_build():
+		var weapon_ids: Array[StringName] = []
+		for id: StringName in weapons:
+			weapon_ids.append(id)
+		for issue: String in data.validate_charge("Entity %s" % name, weapon_ids):
+			push_warning(issue)
+	if not data.charge_enabled:
+		return
+	charge_effect = ChargeEffect.new()
+	charge_effect.name = "ChargeEffect"
+	add_child(charge_effect)
+	charge_effect.configure(data.color, data.charge_ring_radius,
+			data.charge_particles_min, data.charge_particles_max)
+	var charge_weapon: Weapon = get_weapon(data.charge_weapon_id)
+	if charge_weapon != null:
+		charge_effect.position = charge_weapon.get_muzzle_local()
+	else:
+		charge_effect.position = Vector2.UP * Helpers.ENTITY_HALF_WIDTH * scale_aux
+
+
+## Collects every [Weapon] child by its id; the first one is [member weapon],
+## the primary. A duplicate id warns once and keeps the first weapon.
+func _collect_weapons() -> void:
+	weapons.clear()
+	weapon = null
+	for child: Node in get_children():
+		if not child is Weapon:
+			continue
+		var found: Weapon = child as Weapon
+		if weapon == null:
+			weapon = found
+		if weapons.has(found.weapon_id):
+			push_warning("Entity %s: duplicate weapon id %s; the first weapon wins." % [
+					name, found.weapon_id])
+			continue
+		weapons[found.weapon_id] = found
+
+
 func _find_controller() -> EntityController:
 	for child: Node in get_children():
 		if child is EntityController:
@@ -506,6 +629,8 @@ func _spawn_trail() -> void:
 	parent.move_child(ghost, get_index())
 	# Same transform as the visual, so it lines up exactly (offset, scale, rotation).
 	ghost.global_transform = visual.global_transform
+	# The charge shake is visual-only: ghosts must not inherit it.
+	ghost.global_position -= Vector2(_charge_shake_x, 0.0).rotated(global_rotation)
 	ghost.modulate.a = data.trail_alpha
 	var tween: Tween = ghost.create_tween()
 	tween.tween_property(ghost, ^"modulate:a", 0.0, data.trail_lifetime).set_ease(Tween.EASE_OUT)
