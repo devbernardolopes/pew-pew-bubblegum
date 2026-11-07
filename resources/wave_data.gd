@@ -67,6 +67,8 @@ func validate(stage_path: String = "", wave_index: int = -1, foe_cache: Dictiona
 			if peak >= foe_speed:
 				issues.append("[warning] %s: peak slot speed %.1f is not below the foe speed %.1f (formation %s)." % [
 						where, peak, foe_speed, describe(formation)])
+			issues.append_array(foe_info.data.validate_dash(
+					where, foe_info.speed_multiplier, foe_info.scale_aux))
 	if entry_curve == null:
 		issues.append("[error] %s: entry_curve is null." % where)
 	for i: int in dive_curves.size():

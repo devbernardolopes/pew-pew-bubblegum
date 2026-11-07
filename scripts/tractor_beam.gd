@@ -92,6 +92,9 @@ func get_touching_hero() -> Entity:
 			var ent: Entity = area as Entity
 			if ent == null or not is_instance_valid(ent):
 				continue
+			# A dashing hero is invulnerable, so the cone passes through it.
+			if ent.invulnerable:
+				continue
 			if ent.is_capturable():
 				return ent
 	return null

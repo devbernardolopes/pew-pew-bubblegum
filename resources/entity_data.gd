@@ -68,3 +68,46 @@ extends Resource
 @export_range(0.05, 1.0) var trail_lifetime: float = 0.25
 ## Opacity of a ghost when it appears.
 @export_range(0.0, 1.0) var trail_alpha: float = 0.15
+
+@export_group("Dash")
+## Whether this Entity can perform a dash. Off for every Entity by default.
+@export var dash_enabled: bool = false
+## Dash distance measured in ship widths. Zero means the fleet's maximum
+## number of ships ([constant Fleet.MAX_SHIPS]).
+@export_range(0.0, 16.0, 0.5) var dash_distance_ships: float = 0.0
+## Seconds the dash takes to cover its distance.
+@export var dash_duration: float = 0.12
+## Opacity of the visual while dashing.
+@export_range(0.0, 1.0) var dash_alpha: float = 0.35
+## Seconds that must pass after a dash before the next one. Zero allows an
+## immediate re-dash.
+@export var dash_cooldown: float = 0.0
+## How long a dash press is remembered while no direction is held. Zero
+## disables the input buffer.
+@export var dash_input_buffer: float = 0.08
+
+
+## Returns the problems found in this Entity's dash data, each prefixed with
+## [code][warning][/code] and naming [param where]. [param speed_multiplier]
+## and [param scale_aux] come from the Entity that owns this data, because the
+## dash speed is derived from the ship width and the normal movement speed.
+## It has its own name so that subclasses keep their own [code]validate[/code]
+## signatures (see [method BossData.validate]).
+func validate_dash(where: String = "", speed_multiplier: float = 1.0, scale_aux: float = 1.0) -> PackedStringArray:
+	var issues: PackedStringArray = []
+	if not dash_enabled:
+		return issues
+	var label: String = where if not where.is_empty() else "(unsaved entity data)"
+	if dash_duration <= 0.0:
+		issues.append("[warning] %s: dash is enabled with a dash_duration of %.2f s." % [
+				label, dash_duration])
+		return issues
+	var ships: float = dash_distance_ships
+	if ships <= 0.0:
+		ships = float(Fleet.MAX_SHIPS)
+	var dash_speed: float = ships * Helpers.ENTITY_WIDTH * scale_aux / dash_duration
+	var normal_speed: float = base_speed * speed_multiplier
+	if dash_speed <= normal_speed:
+		issues.append("[warning] %s: the derived dash speed %.1f is not greater than the normal speed %.1f." % [
+				label, dash_speed, normal_speed])
+	return issues

@@ -14,6 +14,10 @@ signal capture_started(entity: Entity)
 signal capture_committed(entity: Entity)
 ## Emitted when the captured hero is released (no life cost).
 signal capture_released(entity: Entity)
+## Emitted when a dash starts, with its locked direction (-1 left, 1 right).
+signal dash_started(direction: int)
+## Emitted when a dash ends, however it ends.
+signal dash_ended
 
 @export var data: EntityData = null:
 	set(v):
@@ -35,10 +39,13 @@ var collision: CollisionPolygon2D = null
 var visual: Polygon2D = null
 var controller: EntityController = null
 var weapon: Weapon = null
+var dash_ability: DashAbility = null
 var health: int = 0
 var shots_fired: int = 0
 var shots_hit: int = 0
 var is_dead: bool = false
+## Whether damage and tractor beams ignore this Entity. The dash drives it.
+var invulnerable: bool = false
 ## Whether this entity is currently captured by a tractor beam.
 var capture_active: bool = false
 ## Whether this ship is flying back to its fleet after being freed.
@@ -72,6 +79,7 @@ func _ready() -> void:
 			controller = _find_controller()
 		if weapon == null:
 			weapon = _find_weapon()
+		_create_dash_ability()
 		_join_team_group()
 		area_entered.connect(_on_area_entered)
 
@@ -109,14 +117,14 @@ func _physics_process(delta: float) -> void:
 	if capture_active or returning or externally_driven:
 		# Another node owns this entity's position (a capture, the fleet, a brain).
 		return
-	var wants_fire: bool = false
+	var wants_fire: bool = controller != null and controller.wants_fire()
+	if is_dashing():
+		# The DashAbility owns the position while dashing; firing is still allowed.
+		drive(wants_fire)
+		return
 	if controller != null:
 		var dir: float = controller.get_direction_h()
-		position.x += dir * data.base_speed * speed_multiplier * delta
-		position.x = clampf(position.x,
-			Helpers.ENTITY_HALF_WIDTH * scale_aux,
-			get_viewport_rect().size.x - (Helpers.ENTITY_HALF_WIDTH * scale_aux))
-		wants_fire = controller.wants_fire()
+		move_horizontal(dir * data.base_speed * speed_multiplier * delta)
 	drive(wants_fire)
 
 
@@ -187,7 +195,7 @@ func get_score_value() -> int:
 func take_damage(amount: int) -> void:
 	if data.god_mode:
 		return
-	if is_dead:
+	if is_dead or invulnerable:
 		return
 	if capture_active or returning:
 		return
@@ -211,6 +219,7 @@ func die() -> void:
 	if is_dead:
 		return
 	is_dead = true
+	cancel_dash()
 	# Sound effect before visuals/freeing
 	_play_profile_stream("explosion")
 	# Explosion and score popup before freeing
@@ -233,12 +242,14 @@ func die() -> void:
 ## Starts capture: freeze the hero, disable monitoring, emit signal.
 func begin_capture() -> void:
 	capture_active = true
+	cancel_dash()
 	set_deferred(&"monitorable", false)
 	capture_started.emit(self)
 
 
 ## Hides the hero while being pulled/parked.
 func park_captured() -> void:
+	cancel_dash()
 	visible = false
 
 
@@ -251,6 +262,7 @@ func commit_capture() -> void:
 ## Releases the hero with no life cost: shows it again and flags it as flying
 ## back to its fleet. The [Fleet] owns its position until it docks.
 func begin_return() -> void:
+	cancel_dash()
 	rotation = 0.0
 	visible = true
 	capture_active = false
@@ -263,9 +275,56 @@ func begin_return() -> void:
 func is_capturable() -> bool:
 	if data == null or data.team != Helpers.TEAM.FRIEND:
 		return false
-	if is_dead or is_queued_for_deletion():
+	if is_dead or is_queued_for_deletion() or invulnerable:
 		return false
 	return not capture_active and not returning
+
+
+## Starts a dash towards [param direction] (-1 left, 1 right).
+func try_dash(direction: int) -> bool:
+	return dash_ability != null and dash_ability.try_dash(direction)
+
+
+## Whether a dash is currently running, which also means [member invulnerable].
+func is_dashing() -> bool:
+	return dash_ability != null and dash_ability.is_dashing()
+
+
+## Whether [method try_dash] would start a dash now.
+func can_dash() -> bool:
+	return dash_ability != null and dash_ability.can_dash()
+
+
+## Seconds a dash press is remembered while no direction is held.
+func get_dash_input_buffer() -> float:
+	return data.dash_input_buffer if data != null else 0.0
+
+
+## Ends a running dash, restoring the alpha cue and invulnerability.
+func cancel_dash() -> void:
+	if dash_ability != null:
+		dash_ability.cancel()
+
+
+## Full visual width of this Entity, in pixels. The same value drives the
+## fleet's docking offset, clamping and the dash distance.
+func get_width() -> float:
+	return Helpers.ENTITY_WIDTH * scale_aux
+
+
+## Half of [method get_width], the distance from the centre to a side.
+func get_half_width() -> float:
+	return get_width() / 2.0
+
+
+## Moves [param delta_x] pixels horizontally, clamped by the same screen edges
+## as normal movement. Returns the progress the clamp actually allowed.
+func move_horizontal(delta_x: float) -> float:
+	var before: float = position.x
+	position.x = clampf(before + delta_x,
+		get_half_width(),
+		get_viewport_rect().size.x - get_half_width())
+	return position.x - before
 
 
 ## Plays a sound profile stream by key.
@@ -354,9 +413,26 @@ func _on_area_entered(area: Area2D) -> void:
 	var other: Entity = area as Entity
 	if other == null or is_dead or other.is_dead:
 		return
+	# A dashing Entity passes through ramming untouched, and the contact does
+	# not destroy either side.
+	if invulnerable or other.invulnerable:
+		return
 	other.take_damage(data.contact_damage)
 	if data.dies_on_contact:
 		die()
+
+
+## Adds the reusable dash component when this Entity's data enables it, and
+## reports dash configuration problems in debug builds.
+func _create_dash_ability() -> void:
+	if data == null or not data.dash_enabled:
+		return
+	dash_ability = DashAbility.new()
+	dash_ability.name = "DashAbility"
+	add_child(dash_ability)
+	if OS.is_debug_build():
+		for issue: String in data.validate_dash("Entity %s" % name, speed_multiplier, scale_aux):
+			push_warning(issue)
 
 
 func _find_controller() -> EntityController:
@@ -422,9 +498,15 @@ func _spawn_trail() -> void:
 func _pulse_fire() -> void:
 	if visual == null:
 		return
+	# Tween the channels only, never the alpha: the dash owns the alpha cue and
+	# the ghost trail has its own modulate. This keeps the two effects apart.
 	var pulse_tween: Tween = create_tween()
-	pulse_tween.tween_property(visual, ^"modulate", Color(2.0, 2.0, 2.0), 0.05)
-	pulse_tween.tween_property(visual, ^"modulate", Color.WHITE, 0.15)
+	pulse_tween.tween_property(visual, ^"modulate:r", 2.0, 0.05)
+	pulse_tween.parallel().tween_property(visual, ^"modulate:g", 2.0, 0.05)
+	pulse_tween.parallel().tween_property(visual, ^"modulate:b", 2.0, 0.05)
+	pulse_tween.tween_property(visual, ^"modulate:r", 1.0, 0.15)
+	pulse_tween.parallel().tween_property(visual, ^"modulate:g", 1.0, 0.15)
+	pulse_tween.parallel().tween_property(visual, ^"modulate:b", 1.0, 0.15)
 
 
 ## Plays the feedback of a shot: the sprite pulse, plus the camera shake when

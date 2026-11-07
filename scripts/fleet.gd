@@ -73,9 +73,9 @@ func _physics_process(delta: float) -> void:
 		return
 	var dir: float = _controller.get_direction_h()
 	var wants_fire: bool = _controller.wants_fire()
-	if dir != 0.0:
+	if not leader.is_dashing() and dir != 0.0:
 		var speed: float = leader.data.base_speed * leader.speed_multiplier
-		_place(_clamped_x(leader.global_position.x + dir * speed * delta))
+		move_block(dir * speed * delta)
 	for ship: Entity in ships:
 		if is_instance_valid(ship):
 			ship.drive(wants_fire)
@@ -141,7 +141,7 @@ func free_slot_for(from_x: float) -> Vector2:
 		return home_position
 	var leader: Entity = ships[0]
 	var offset: float = _dock_offset()
-	var half: float = Helpers.ENTITY_HALF_WIDTH * leader.scale_aux
+	var half: float = leader.get_half_width()
 	var left: Vector2 = leader.global_position - Vector2(offset, 0.0)
 	var right: Vector2 = leader.global_position + Vector2(offset, 0.0)
 	var left_fits: bool = left.x - half >= 0.0
@@ -162,6 +162,66 @@ func allows_capture() -> bool:
 ## Whether a freed ship is still on its way home.
 func is_returning() -> bool:
 	return _returning != null
+
+
+## Starts a dash for the whole fleet through the leader's ability. The leader
+## then moves every member as one block.
+func try_dash(direction: int) -> bool:
+	if _returning != null or ships.is_empty():
+		return false
+	var leader: Entity = ships[0]
+	if leader == null or not is_instance_valid(leader):
+		return false
+	return leader.try_dash(direction)
+
+
+## Whether the fleet is dashing as one unit.
+func is_dashing() -> bool:
+	if ships.is_empty():
+		return false
+	var leader: Entity = ships[0]
+	return leader != null and is_instance_valid(leader) and leader.is_dashing()
+
+
+## Whether [method try_dash] would start a fleet dash now.
+func can_dash() -> bool:
+	if _returning != null or ships.is_empty():
+		return false
+	var leader: Entity = ships[0]
+	return leader != null and is_instance_valid(leader) and leader.can_dash()
+
+
+## Seconds a dash press is remembered while no direction is held.
+func get_dash_input_buffer() -> float:
+	if ships.is_empty():
+		return 0.0
+	var leader: Entity = ships[0]
+	if leader == null or not is_instance_valid(leader):
+		return 0.0
+	return leader.get_dash_input_buffer()
+
+
+## Ends a fleet dash, restoring both ships.
+func cancel_dash() -> void:
+	if ships.is_empty():
+		return
+	var leader: Entity = ships[0]
+	if leader != null and is_instance_valid(leader):
+		leader.cancel_dash()
+
+
+## Moves the block through the normal clamp and returns the x progress it
+## actually allowed. The DashAbility uses it so dashing and walking cannot
+## disagree about the screen edges.
+func move_block(delta_x: float) -> float:
+	if ships.is_empty():
+		return 0.0
+	var leader: Entity = ships[0]
+	if leader == null or not is_instance_valid(leader):
+		return 0.0
+	var before: float = leader.global_position.x
+	_place(_clamped_x(before + delta_x))
+	return leader.global_position.x - before
 
 
 func _create_ship(at: Vector2) -> Entity:
@@ -263,7 +323,7 @@ func _place(origin_x: float) -> void:
 func _clamped_x(x: float) -> float:
 	if ships.is_empty():
 		return x
-	var half: float = Helpers.ENTITY_HALF_WIDTH * ships[0].scale_aux
+	var half: float = ships[0].get_half_width()
 	var block_left: float = half
 	var block_right: float = Helpers.get_game_width() - _dock_offset() * float(ships.size() - 1) - half
 	return clampf(x, block_left, block_right)
@@ -273,4 +333,4 @@ func _clamped_x(x: float) -> float:
 func _dock_offset() -> float:
 	if ships.is_empty():
 		return Helpers.ENTITY_WIDTH * 0.25
-	return Helpers.ENTITY_WIDTH * ships[0].scale_aux
+	return ships[0].get_width()
