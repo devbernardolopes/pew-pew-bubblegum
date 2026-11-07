@@ -4,11 +4,18 @@ extends Node2D
 ## Foes read the slots every frame instead of being parented to them, so a
 ## slot never scales or rotates along with a foe.
 ##
-## A [Formation] is built once from its [member data] and never rebuilt while
-## its stage runs, so every slot reference stays valid for a foe's whole life.
+## A [Formation] is built once from its [member data] and [member sway_phase]
+## and never rebuilt while its stage runs, so every slot reference stays
+## valid for a foe's whole life.
 
 ## The layout to build. It must be assigned before the node enters the tree.
 @export var data: FormationData = null
+
+## Starting phase of the sway, in radians. Assigned before the node enters
+## the tree like [member data]; the owning wave's
+## [member WaveData.sway_start_phase_deg] converted to radians. Zero sways
+## exactly as before (centre moving right at the start).
+var sway_phase: float = 0.0
 
 ## Number of slots per row, read from [member data].
 var columns: int:
@@ -30,6 +37,9 @@ func _ready() -> void:
 	if data == null:
 		push_error("Formation: data is null; no slots were created.")
 		return
+	# Start already at the swayed offset, so the first rendered frame matches
+	# the wave's starting phase instead of popping to it a frame later.
+	position.x = _center_x + sin(sway_phase) * data.sway_amplitude
 	_create_slots()
 
 
@@ -37,7 +47,7 @@ func _physics_process(delta: float) -> void:
 	if data == null:
 		return
 	_time += delta
-	position.x = _center_x + sin(_time * data.sway_speed) * data.sway_amplitude
+	position.x = _center_x + sin(_time * data.sway_speed + sway_phase) * data.sway_amplitude
 
 
 ## Returns the slot at [param row] and [param col], or [code]null[/code] when

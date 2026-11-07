@@ -12,6 +12,12 @@ extends Resource
 @export var spacing: float = 0.25
 ## The formation layout for this wave.
 @export var formation: FormationData = null
+## Starting phase of the formation sway, in degrees: 0 is the centre moving
+## right (the default for every wave), 90 the right edge, 180 the centre
+## moving left, 270 the left edge. Waves sharing a [member formation] and
+## the same phase sway in unison; a different phase gets its own formation
+## instance (see [StageDirector]).
+@export_range(0.0, 360.0, 1.0, "suffix:°") var sway_start_phase_deg: float = 0.0
 ## Curves a foe of this wave may dive along; one is picked at random per dive.
 ## The wave is the only source of truth: an empty list means the wave never dives.
 @export var dive_curves: Array[Curve2D] = []
@@ -78,6 +84,9 @@ func validate(stage_path: String = "", wave_index: int = -1, foe_cache: Dictiona
 		issues.append("[warning] %s: spacing is negative (%.2f s)." % [where, spacing])
 	if delay < 0.0:
 		issues.append("[warning] %s: delay is negative (%.2f s)." % [where, delay])
+	if sway_start_phase_deg < 0.0 or sway_start_phase_deg > 360.0:
+		issues.append("[warning] %s: sway_start_phase_deg %.1f is outside 0.0 to 360.0 degrees." % [
+				where, sway_start_phase_deg])
 	return issues
 
 

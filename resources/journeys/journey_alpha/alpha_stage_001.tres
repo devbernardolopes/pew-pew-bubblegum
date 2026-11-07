@@ -24,6 +24,7 @@ foe_scene = ExtResource("6_ha2e1")
 entry_curve = ExtResource("9_hvxlf")
 row = 1
 formation = ExtResource("7_ppn8v")
+sway_start_phase_deg = 108.0
 dive_curves = Array[Curve2D]([ExtResource("8_ehv83")])
 delay = 0.75
 fire_on_entry = true

@@ -192,7 +192,7 @@ func _run() -> void:
 	bw.col = 4
 	bw.row_span = 3
 	bw.col_span = 4
-	var form: Formation = director._get_formation(arena)
+	var form: Formation = director._get_formation(arena, 0.0)
 	print("director formation=", form != null)
 	director._spawn_boss(bw, form)
 	var spawned: Entity = null

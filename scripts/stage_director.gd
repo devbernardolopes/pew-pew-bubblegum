@@ -4,8 +4,10 @@ extends Node
 ## lifecycle: intro, spawning, playing, cleared, and game-over stop.
 ##
 ## It owns the [Formation] instances of the current stage: one per distinct
-## [FormationData], built when the first wave needs it and freed only when the
-## next stage begins, so no foe ever loses the slot it was given.
+## ([FormationData], sway start phase) pair, built when the first wave needs
+## it and freed only when the next stage begins, so no foe ever loses the
+## slot it was given. Waves sharing both sway in unison; a wave with a
+## different [member WaveData.sway_start_phase_deg] gets its own instance.
 
 ## An array of [StageData]. 
 @export var journey: JourneyData = null
@@ -54,7 +56,8 @@ var _timer: float = 0.0
 var _current_stage_index: int = 0
 var _formation_entries: int = 0
 var _total_foes_spawned: int = 0
-## [FormationData] to the [Formation] built for it during the current stage.
+## Key (formation data instance plus sway phase) to the [Formation] built for
+## it during the current stage.
 var _formations: Dictionary = {}
 var _formation_serial: int = 0
 
@@ -160,7 +163,7 @@ func _spawn_current_wave() -> void:
 	if formations_root == null or entities == null:
 		push_error("StageDirector: formations_root or entities not set.")
 		return
-	var formation: Formation = _get_formation(wave.formation)
+	var formation: Formation = _get_formation(wave.formation, wave.sway_start_phase_deg)
 	if formation == null:
 		push_warning("StageDirector: wave %d has no formation; skipping." % _wave_index)
 		return
@@ -203,21 +206,26 @@ func _spawn_boss(wave: BossWaveData, formation: Formation) -> void:
 		_total_foes_spawned += 1
 
 
-## Returns the [Formation] of [param data] for the current stage, building it on
-## first use. The instance is never rebuilt, so its slots outlive every foe.
-func _get_formation(data: FormationData) -> Formation:
+## Returns the [Formation] of [param data] and [param phase_deg] for the
+## current stage, building it on first use. The instance is never rebuilt,
+## so its slots outlive every foe; waves sharing the pair share the instance
+## and sway in unison.
+func _get_formation(data: FormationData, phase_deg: float) -> Formation:
 	if data == null or formations_root == null:
 		return null
-	if _formations.has(data):
-		return _formations[data] as Formation
+	var phase: float = fposmod(phase_deg, 360.0)
+	var key: String = "%d_%.3f" % [data.get_instance_id(), phase]
+	if _formations.has(key):
+		return _formations[key] as Formation
 	var formation: Formation = Formation.new()
 	formation.name = "Formation_%d" % _formation_serial
 	_formation_serial += 1
-	# The layout must be in place before the node enters the tree: _ready()
-	# builds the slots from it and never rebuilds them afterwards.
+	# The layout and phase must be in place before the node enters the tree:
+	# _ready() builds the slots from it and never rebuilds them afterwards.
 	formation.data = data
+	formation.sway_phase = deg_to_rad(phase)
 	formations_root.add_child(formation)
-	_formations[data] = formation
+	_formations[key] = formation
 	return formation
 
 
