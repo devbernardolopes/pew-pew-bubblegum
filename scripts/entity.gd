@@ -321,6 +321,8 @@ func die() -> void:
 		explosion_scale = data.explosion_scale
 	EffectsScript.explode(data.visual, scale_aux, global_position, data.color, explosion_scale,
 			data.center_on_bounds)
+	if data is BossData:
+		EffectsScript.camera_punch(0.04, 0.20)
 	# The popup and the score are awarded here so that every way of dying pays
 	# out once: bullets, ramming, or anything added later.
 	if data != null and data.score_value > 0:

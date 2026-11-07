@@ -359,6 +359,7 @@ func _on_member_died(ship: Entity) -> void:
 		# The survivor stays where it is and becomes the leader.
 		_place(ships[0].global_position.x)
 	member_died.emit(ship)
+	EffectsScript.camera_punch(0.04, 0.20)
 	if ships.is_empty():
 		emptied.emit()
 		EffectsScript.screen_shake(1.0, 0.3)

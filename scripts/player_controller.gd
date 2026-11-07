@@ -10,6 +10,8 @@ extends EntityController
 ## a charge, but death, capture, rescue flight, stage change, game over and a
 ## release while paused do.
 
+const EffectsScript = preload("res://scripts/effects/effects.gd")
+
 ## Emitted when a charge starts.
 signal charge_started
 ## Emitted once when a charge reaches its threshold.
@@ -140,6 +142,8 @@ func _update_charge(delta: float, data: EntityData, completed: ComboData, debug:
 ## ship). The request is cached for this frame only.
 func _release_charge(data: EntityData, debug: bool, completed: ComboData) -> void:
 	var was_ready: bool = _charge_progress >= 1.0
+	if was_ready:
+		EffectsScript.camera_punch(0.02, 0.12)
 	charge_released.emit(was_ready)
 	if debug:
 		print("charge: released, ready=%s" % was_ready)

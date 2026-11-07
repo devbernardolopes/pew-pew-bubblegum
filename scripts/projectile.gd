@@ -129,6 +129,7 @@ func _explode(center: Vector2, direct: Entity, data: ProjectileData, shooter: En
 		target.take_damage(damage)
 	EffectsScript.blast_ring(center, data.explosion_radius, data.color)
 	EffectsScript.screen_shake(0.4, 0.2)
+	EffectsScript.camera_punch(0.03, 0.15)
 	queue_free()
 
 

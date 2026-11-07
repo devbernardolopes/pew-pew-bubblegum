@@ -297,3 +297,6 @@ func _on_formation_entered() -> void:
 
 func _on_game_over() -> void:
 	_state = 4  # STOPPED
+	var director: CameraDirector = get_tree().get_first_node_in_group(&"camera_director") as CameraDirector
+	if director != null:
+		director.reset()

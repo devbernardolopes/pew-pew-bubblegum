@@ -45,6 +45,12 @@ static func blast_ring(position: Vector2, radius: float, color: Color) -> void:
 	container.add_child(ring)
 	ring.setup(position, radius, color)
 
+static func camera_punch(amount: float = 0.03, duration: float = 0.15) -> void:
+	var director: CameraDirector = Engine.get_main_loop().get_first_node_in_group(&"camera_director") as CameraDirector
+	if director == null:
+		return
+	director.punch(amount, duration)
+
 static func screen_shake(intensity: float = 1.0, duration: float = 0.3) -> void:
 	var container: Node = _find_container()
 	if container == null:

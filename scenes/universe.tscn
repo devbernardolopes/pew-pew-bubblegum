@@ -14,6 +14,7 @@
 [ext_resource type="Shader" uid="uid://baqk30xhnw5lo" path="res://shaders/manga_style_speedlines.gdshader" id="14_tqeu6"]
 [ext_resource type="Shader" uid="uid://bocf4h02wlgl2" path="res://shaders/synthwave_grid.gdshader" id="16_fbuf2"]
 [ext_resource type="Shader" uid="uid://14oyx6i6vv66" path="res://shaders/anime_style_speedlines.gdshader" id="18_3kwp1"]
+[ext_resource type="Script" uid="uid://c3ytlwql658hb" path="res://scripts/camera_director.gd" id="19_camera"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qvluj"]
 shader = ExtResource("16_fbuf2")
@@ -109,6 +110,9 @@ shader_parameter/dist_power = 4.0
 
 [node name="Universe" type="Node2D" unique_id=2088113174]
 script = ExtResource("5_univ")
+
+[node name="CameraDirector" type="Camera2D" parent="." unique_id=1938472650]
+script = ExtResource("19_camera")
 
 [node name="Backgrounds" type="Node2D" parent="." unique_id=1548604871]
 
