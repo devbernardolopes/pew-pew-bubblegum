@@ -4,6 +4,4 @@
 
 [resource]
 gradient = SubResource("Gradient_rahn0")
-fill_from = Vector2(0.5, 0.90000004)
-fill_to = Vector2(0.5, 0.2)
 metadata/_snap_enabled = true

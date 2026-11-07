@@ -7,6 +7,6 @@ script = ExtResource("1_uhr07")
 id = &"bullet_02"
 visual_scale = 0.3
 color = Color(1, 0.84313726, 0.11372549, 1)
-base_speed = 512.0
+base_speed = 640.0
 base_damage = 2
 metadata/_custom_type_script = "uid://txnc58qwywfs"

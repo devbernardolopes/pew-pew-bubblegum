@@ -1,8 +1,39 @@
 [gd_scene format=3 uid="uid://7u2pvrsupvw4"]
 
+[ext_resource type="Shader" uid="uid://bdjhr6hbwwbkx" path="res://shaders/torch_fire.gdshader" id="1_15114"]
 [ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_sqhpk"]
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_u3iaf"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rahn0"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_u3iaf")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0r0n0"]
+shader = ExtResource("1_15114")
+shader_parameter/inner_color = Color(0.57254905, 0.12941177, 0, 0.27058825)
+shader_parameter/outer_color = Color(0.92941177, 0.94509804, 0, 1)
+shader_parameter/inner_threshold = 0.36
+shader_parameter/outer_threshold = 0.1
+shader_parameter/soft_edge = 0.0
+shader_parameter/fire_radius = 0.4
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_rahn0")
+shader_parameter/multiplier = 1.0
+shader_parameter/stretch = Vector2(1, 1)
+shader_parameter/center = Vector2(0.5, 0.8)
+
+[sub_resource type="Gradient" id="Gradient_15114"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pw545"]
+gradient = SubResource("Gradient_15114")
+width = 128
+height = 128
+
 [node name="BossPolyhedronPrime" type="Polygon2D" unique_id=1721253756]
+material = SubResource("ShaderMaterial_0r0n0")
 color = Color(0.82978946, 0.4738321, 1.353256, 1)
+texture = SubResource("GradientTexture2D_pw545")
 polygon = PackedVector2Array(0, 192, 0, 160, 16, 128, 40, 0, 40, 32, 64, 0, 88, 32, 88, 0, 112, 128, 128, 160, 128, 192, 104, 192, 88, 160, 80, 192, 48, 192, 40, 160, 24, 192)
 script = ExtResource("1_sqhpk")

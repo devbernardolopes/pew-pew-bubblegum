@@ -1,4 +1,26 @@
 [gd_scene format=3 uid="uid://dd7fvhanylfca"]
 
+[ext_resource type="Shader" uid="uid://b6ayprlustv4a" path="res://shaders/qi_aura.gdshader" id="1_v5n00"]
+[ext_resource type="Texture2D" uid="uid://dvn24blqivop3" path="res://icon.svg" id="2_457tp"]
+
+[sub_resource type="Gradient" id="Gradient_v5n00"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xh6vf"]
+gradient = SubResource("Gradient_v5n00")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k2nuj"]
+shader = ExtResource("1_v5n00")
+shader_parameter/ScaleMult = Vector2(1, 1)
+shader_parameter/AuraProgres = 0.0
+shader_parameter/TextureLaodMult = 8.0
+shader_parameter/Tilling = 26.0
+shader_parameter/MovementDirSpeed = Vector2(-0.6, 1)
+shader_parameter/MovementDirSpeed2 = Vector2(0.6, 1)
+shader_parameter/color_gradiant = SubResource("GradientTexture2D_xh6vf")
+shader_parameter/Noise_Seed = Vector2(1, 1)
+
 [node name="Bullet01" type="Polygon2D" unique_id=1906785581]
+texture_filter = 3
+material = SubResource("ShaderMaterial_k2nuj")
+texture = ExtResource("2_457tp")
 polygon = PackedVector2Array(52, 0, 76, 0, 76, 128, 52, 128)

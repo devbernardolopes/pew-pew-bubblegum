@@ -7,6 +7,8 @@
 [ext_resource type="Curve2D" uid="uid://cvaqogbwrn732" path="res://resources/curves/entries/entry_left_01.tres" id="5_ql88g"]
 [ext_resource type="PackedScene" uid="uid://4veql8t8duff" path="res://scenes/entities/foe_triangle.tscn" id="6_ha2e1"]
 [ext_resource type="Resource" uid="uid://b0016tte8sbsa" path="res://resources/formations/formation_12x8_full.tres" id="7_ppn8v"]
+[ext_resource type="Curve2D" uid="uid://c4rkkg4tjg22b" path="res://resources/curves/dives/dive_left_03.tres" id="8_ehv83"]
+[ext_resource type="Curve2D" uid="uid://dq5ta4b4jxfrh" path="res://resources/curves/entries/entry_left_05.tres" id="9_hvxlf"]
 
 [sub_resource type="Resource" id="Resource_dmftm"]
 script = ExtResource("3_ehv83")
@@ -16,8 +18,19 @@ formation = ExtResource("7_ppn8v")
 dive_curves = Array[Curve2D]([ExtResource("4_hvxlf")])
 metadata/_custom_type_script = "uid://c775yud1oetrm"
 
+[sub_resource type="Resource" id="Resource_xr762"]
+script = ExtResource("3_ehv83")
+foe_scene = ExtResource("6_ha2e1")
+entry_curve = ExtResource("9_hvxlf")
+row = 1
+formation = ExtResource("7_ppn8v")
+dive_curves = Array[Curve2D]([ExtResource("8_ehv83")])
+delay = 0.75
+fire_on_entry = true
+metadata/_custom_type_script = "uid://c775yud1oetrm"
+
 [resource]
 script = ExtResource("2_rfknt")
-waves = Array[ExtResource("3_ehv83")]([SubResource("Resource_dmftm")])
+waves = Array[ExtResource("3_ehv83")]([SubResource("Resource_dmftm"), SubResource("Resource_xr762")])
 music_stream = ExtResource("1_45tl2")
 metadata/_custom_type_script = "uid://cfqxmshih2ed7"
