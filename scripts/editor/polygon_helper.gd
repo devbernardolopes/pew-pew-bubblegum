@@ -1,8 +1,13 @@
 @tool
 extends Node
 
+## Rotation of the polygon in degress.
+## 0 is NORTH, 90 is RIGHT, 180 is DOWN, 270 is LEFT.
+@export_range(0.0, 360.0, 0.5) var polygon_rotation: float = 0.00:
+	set(v):
+		polygon_rotation = v
+		_rotate_polygons(v)
 @export_tool_button("Print Points") var print_polygons_button: Callable = _print_polygons
-@export_tool_button("Rotate Polygons") var rotate_polygons_button: Callable = _rotate_polygons
 
 
 func _print_polygons() -> void:
@@ -72,17 +77,18 @@ func _get_polygon_center(polygon: PackedVector2Array) -> Vector2:
 	return center / polygon.size()
 
 
-func _rotate_polygons() -> void:
+func _rotate_polygons(angle_deg: float = 0.00) -> void:
 	var _node = get_node_or_null(".")
 	if not _node:
 		return
 	if not _node is Polygon2D and not _node is Node2D:
 		return
+	var _angle: float = deg_to_rad(angle_deg)
 	if _node is Polygon2D:
-		_node.polygon = _rotate_polygon(_node.polygon, PI, _get_polygon_center(_node.polygon))
+		_node.polygon = _rotate_polygon(_node.polygon, _angle, _get_polygon_center(_node.polygon))
 	else:
 		var _children = _node.get_children()
 		for i in _children.size():
 			var _child = _children[i]
 			if _child is Polygon2D:
-				_child.polygon = _rotate_polygon(_child.polygon, PI, _get_polygon_center(_child.polygon))
+				_child.polygon = _rotate_polygon(_child.polygon, _angle, _get_polygon_center(_child.polygon))

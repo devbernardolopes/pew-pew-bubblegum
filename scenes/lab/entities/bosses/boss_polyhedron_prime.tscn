@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://7u2pvrsupvw4"]
+
+[ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_sqhpk"]
+
+[node name="BossPolyhedronPrime" type="Polygon2D" unique_id=1721253756]
+color = Color(0.82978946, 0.4738321, 1.353256, 1)
+polygon = PackedVector2Array(0, 192, 0, 160, 16, 128, 40, 0, 40, 32, 64, 0, 88, 32, 88, 0, 112, 128, 128, 160, 128, 192, 104, 192, 88, 160, 80, 192, 48, 192, 40, 160, 24, 192)
+script = ExtResource("1_sqhpk")

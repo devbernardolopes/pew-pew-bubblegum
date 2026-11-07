@@ -20,6 +20,7 @@ enum VISUAL {
 	BOSS_STRATOSPHERE_SUBJUGATOR_LEFT = 205,
 	BOSS_STRATOSPHERE_SUBJUGATOR_CENTER = 206,
 	BOSS_STRATOSPHERE_SUBJUGATOR_RIGHT = 207,
+	BOSS_POLYHEDRON_PRIME = 210,
 }
 
 enum TEAM {
@@ -332,6 +333,26 @@ const BOSS_STRATOSPHERE_SUBJUGATOR_CENTER_POLYGON: PackedVector2Array = [
 	Vector2(448.0, 704.0),
 ]
 
+const BOSS_POLYHEDRON_PRIME_POLYGON: PackedVector2Array = [
+	Vector2(0.0, 192.0),
+	Vector2(0.0, 160.0),
+	Vector2(16.0, 128.0),
+	Vector2(40.0, 0.0),
+	Vector2(40.0, 32.0),
+	Vector2(64.0, 0.0),
+	Vector2(88.0, 32.0),
+	Vector2(88.0, 0.0),
+	Vector2(112.0, 128.0),
+	Vector2(128.0, 160.0),
+	Vector2(128.0, 192.0),
+	Vector2(104.0, 192.0),
+	Vector2(88.0, 160.0),
+	Vector2(80.0, 192.0),
+	Vector2(48.0, 192.0),
+	Vector2(40.0, 160.0),
+	Vector2(24.0, 192.0),
+]
+
 const ENTITY_WIDTH: float = 128.0
 const ENTITY_HALF_WIDTH: float = ENTITY_WIDTH / 2.0
 
@@ -397,6 +418,8 @@ static func get_polygon(_visual: VISUAL = VISUAL.TRIANGLE) -> PackedVector2Array
 			return BOSS_STRATOSPHERE_SUBJUGATOR_CENTER_POLYGON.duplicate()
 		VISUAL.BOSS_STRATOSPHERE_SUBJUGATOR_RIGHT:
 			return BOSS_STRATOSPHERE_SUBJUGATOR_RIGHT_POLYGON.duplicate()
+		VISUAL.BOSS_POLYHEDRON_PRIME:
+			return BOSS_POLYHEDRON_PRIME_POLYGON.duplicate()
 	return result
 
 
