@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("2_script")
+columns = 4
 layout = ExtResource("1_layout")
 spacing = Vector2(64, 44)
 sway_speed = 1.0

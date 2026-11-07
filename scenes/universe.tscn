@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://102dmsidqlv6" path="res://scripts/hud.gd" id="1_h4s8v"]
 [ext_resource type="Script" uid="uid://c5nax51s2alh" path="res://scripts/editor/entities_editor_helper.gd" id="1_uc3kj"]
 [ext_resource type="Script" uid="uid://s1v84be4gvx6" path="res://scripts/universe.gd" id="5_univ"]
-[ext_resource type="Resource" uid="uid://bu8kytjl2ul0e" path="res://resources/stages/journeys/journey_test.tres" id="7_h8wxb"]
+[ext_resource type="Resource" uid="uid://dcohr1sqlcdlw" path="res://resources/journeys/journey_alpha/journey_alpha.tres" id="7_h8wxb"]
 [ext_resource type="Shader" uid="uid://cv74uy1y4byec" path="res://shaders/simple_crt_vhs.gdshader" id="11_7viwd"]
 [ext_resource type="Script" uid="uid://b81te8tub8bg" path="res://scripts/dive_director.gd" id="11_director"]
 [ext_resource type="Script" uid="uid://bgdp4dwcy30pf" path="res://scripts/fire_director.gd" id="11_fire_dir"]

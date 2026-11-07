@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dqgmgitmbe102"]
+
+[ext_resource type="Script" uid="uid://u6pm8ay51hqa" path="res://scripts/entity.gd" id="1_1ps7m"]
+[ext_resource type="Script" uid="uid://cxx0a7y036em" path="res://scripts/foe_brain.gd" id="2_8vtlt"]
+[ext_resource type="Resource" uid="uid://d0feyua2dxkad" path="res://resources/entities/bosses/polyhedron_prime/polyhedron_prime.tres" id="2_hcfsg"]
+[ext_resource type="Script" uid="uid://6442sewjldwo" path="res://scripts/boss_pattern.gd" id="3_hcfsg"]
+[ext_resource type="Script" uid="uid://b7xhxfxpffv60" path="res://scripts/weapon.gd" id="4_lvjg8"]
+[ext_resource type="Resource" uid="uid://55xw6trbqqk8" path="res://resources/projectiles/foe_bullet_1_480.tres" id="6_lvjg8"]
+
+[node name="BossPolyhedronPrime" type="Area2D" unique_id=1856382269]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_1ps7m")
+data = ExtResource("2_hcfsg")
+scale_aux = 0.4
+metadata/_custom_type_script = "uid://u6pm8ay51hqa"
+
+[node name="FoeBrain" type="Node" parent="." unique_id=1945716262]
+script = ExtResource("2_8vtlt")
+metadata/_custom_type_script = "uid://cxx0a7y036em"
+
+[node name="BossPattern" type="Node" parent="." unique_id=1700511122]
+script = ExtResource("3_hcfsg")
+metadata/_custom_type_script = "uid://6442sewjldwo"
+
+[node name="Weapon" type="Node" parent="." unique_id=1848561008]
+script = ExtResource("4_lvjg8")
+projectile_data = ExtResource("6_lvjg8")
+metadata/_custom_type_script = "uid://b7xhxfxpffv60"
+
+[node name="Muzzles" type="Node2D" parent="." unique_id=1059135715]
+
+[node name="Muzzle1" type="Marker2D" parent="Muzzles" unique_id=481003538]
+position = Vector2(0, -24)
+
+[node name="Muzzle2" type="Marker2D" parent="Muzzles" unique_id=2027200788]
+position = Vector2(-8, -24)
+
+[node name="Muzzle3" type="Marker2D" parent="Muzzles" unique_id=341421035]
+position = Vector2(8, -24)

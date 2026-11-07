@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="BossData" format=3 uid="uid://d0feyua2dxkad"]
+
+[ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="1_prfar"]
+[ext_resource type="Script" uid="uid://bx6juvdroac4" path="res://resources/boss_piece_data.gd" id="2_3k1io"]
+[ext_resource type="Script" uid="uid://db3gvgn86afji" path="res://resources/boss_data.gd" id="3_prgh1"]
+[ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="4_3k1io"]
+
+[sub_resource type="Resource" id="Resource_prfar"]
+script = ExtResource("1_prfar")
+muzzle_indices = [null]
+metadata/_custom_type_script = "uid://tth0jpkdi8oe"
+
+[resource]
+script = ExtResource("3_prgh1")
+phases = Array[ExtResource("1_prfar")]([SubResource("Resource_prfar")])
+id = &"polyhedron_prime"
+visual = 210
+color = Color(0.8745098, 0, 1, 1)
+max_health = 20
+score_value = 12000
+sound_profile = ExtResource("4_3k1io")
+dies_on_contact = false
+center_on_bounds = true
+metadata/_custom_type_script = "uid://db3gvgn86afji"
