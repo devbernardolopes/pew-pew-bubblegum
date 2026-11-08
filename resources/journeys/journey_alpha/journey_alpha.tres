@@ -4,9 +4,9 @@
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="2_xr762"]
 [ext_resource type="Resource" uid="uid://b1ypo7sog5ntl" path="res://resources/journeys/journey_alpha/alpha_stage_001.tres" id="3_0dopk"]
 [ext_resource type="Resource" uid="uid://cdwla5lrbsdtp" path="res://resources/journeys/journey_alpha/stage_alien_head.tres" id="3_0wuh1"]
-[ext_resource type="Resource" uid="uid://nojgi36fe6c0" path="res://resources/journeys/journey_alpha/stage_infinity.tres" id="3_oyuvk"]
 [ext_resource type="Resource" uid="uid://cw33bflt5k8vs" path="res://resources/journeys/journey_alpha/stage_crab.tres" id="3_qj7sh"]
 [ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="3_xiejf"]
+[ext_resource type="Resource" uid="uid://xo1qw6ot385j" path="res://resources/stages/generated/stage_infinity_gen.tres" id="3_xpdc8"]
 [ext_resource type="Resource" uid="uid://cqea4ppoiif1i" path="res://resources/journeys/journey_alpha/alpha_skull_stage.tres" id="4_0dopk"]
 [ext_resource type="Resource" uid="uid://ctat05cteigm6" path="res://resources/stages/waves/wave_skull_template.tres" id="4_0wuh1"]
 [ext_resource type="Resource" uid="uid://bvuou0l53lrs1" path="res://resources/journeys/journey_alpha/alpha_boss_stage_001.tres" id="4_xr762"]
@@ -97,5 +97,5 @@ metadata/_custom_type_script = "uid://cfqxmshih2ed7"
 script = ExtResource("1_34s6t")
 id = &"journey_alpha"
 name = "Alpha Journey"
-stages = Array[ExtResource("2_xr762")]([ExtResource("3_oyuvk"), ExtResource("4_xr762"), ExtResource("3_qj7sh"), ExtResource("3_0wuh1"), SubResource("Resource_oxad1"), ExtResource("3_0dopk"), ExtResource("4_0dopk"), ExtResource("5_x00pw")])
+stages = Array[ExtResource("2_xr762")]([ExtResource("3_xpdc8"), ExtResource("4_xr762"), ExtResource("3_qj7sh"), ExtResource("3_0wuh1"), SubResource("Resource_oxad1"), ExtResource("3_0dopk"), ExtResource("4_0dopk"), ExtResource("5_x00pw")])
 metadata/_custom_type_script = "uid://wa8mc2v1ds4i"

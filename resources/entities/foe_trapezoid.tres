@@ -1,12 +1,14 @@
 [gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://ce6bj0vutf3ii"]
 
 [ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_7ya3l"]
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_rj25a"]
 [ext_resource type="Resource" uid="uid://c3ypljvwdkrlv" path="res://resources/sound_profiles/sound_profile_002.tres" id="2_urp5c"]
 
 [resource]
 script = ExtResource("1_7ya3l")
 id = &"foe_trapezoid"
 visual = 104
+polygon = PackedVector2Array(0, 64, 32, 0, 96, 0, 128, 64, 128, 128, 0, 128)
 color = Color(0.12156863, 0.31764707, 1, 1)
 max_health = 2
 base_speed = 300.0

@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="StageData" format=3 uid="uid://nojgi36fe6c0"]
 
 [ext_resource type="Script" uid="uid://cfqxmshih2ed7" path="res://resources/stage_data.gd" id="1_77h1y"]
+[ext_resource type="AudioStream" uid="uid://hlmeuo7si7qs" path="res://assets/musics/One_Credit_Run.mp3" id="1_sqq1q"]
 [ext_resource type="Script" uid="uid://c775yud1oetrm" path="res://resources/wave_data.gd" id="2_loaue"]
 [ext_resource type="Curve2D" uid="uid://clnl3v08pswx3" path="res://resources/curves/dives/dive_left_06.tres" id="3_mrljl"]
 [ext_resource type="Resource" uid="uid://6xfu8c13u6dh" path="res://resources/stages/waves/wave_infinity_template.tres" id="3_yrqnv"]
@@ -74,4 +75,5 @@ metadata/_custom_type_script = "uid://c775yud1oetrm"
 [resource]
 script = ExtResource("1_77h1y")
 waves = Array[ExtResource("2_loaue")]([ExtResource("3_yrqnv"), SubResource("Resource_eebnn"), SubResource("Resource_yx6af"), SubResource("Resource_hf5td"), SubResource("Resource_cit0u"), SubResource("Resource_jyao4"), SubResource("Resource_r1x2b"), SubResource("Resource_epwjl")])
+music_stream = ExtResource("1_sqq1q")
 metadata/_custom_type_script = "uid://cfqxmshih2ed7"

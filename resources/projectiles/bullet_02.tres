@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_uhr07")
 id = &"bullet_02"
+polygon = PackedVector2Array(52, 0, 76, 0, 76, 128, 52, 128)
 visual_scale = 0.3
 color = Color(1, 0.84313726, 0.11372549, 1)
 base_speed = 768.0

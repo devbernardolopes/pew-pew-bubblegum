@@ -5,4 +5,5 @@
 [resource]
 script = ExtResource("1_4umih")
 id = &"foe_bullet_1_256"
+polygon = PackedVector2Array(52, 0, 76, 0, 76, 128, 52, 128)
 metadata/_custom_type_script = "uid://txnc58qwywfs"

@@ -12,7 +12,7 @@ metadata/_custom_type_script = "uid://djv0d8kikln0u"
 [resource]
 script = ExtResource("1_gfcdi")
 id = &"hero"
-polygon = null
+polygon = PackedVector2Array(64, 0, 0, 128, 128, 128)
 color = Color(0.05882353, 0.9411765, 0.9882353, 1)
 team = 1
 sound_profile = ExtResource("2_o44k2")

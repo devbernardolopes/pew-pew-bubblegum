@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://ba4d3n41cdll7"]
 
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_m87y8"]
 [ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_xey27"]
 [ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="2_7qewd"]
 
@@ -7,6 +8,7 @@
 script = ExtResource("1_xey27")
 id = &"foe_h"
 visual = 108
+polygon = PackedVector2Array(24, 8, 0, 128, 40, 128, 40, 88, 88, 88, 88, 128, 128, 128, 104, 8, 88, 0, 88, 48, 40, 48, 40, 0)
 color = Color(1, 0, 1, 1)
 score_value = 900
 sound_profile = ExtResource("2_7qewd")

@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://dkkfffv5lo4ak"]
 
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_vo7vu"]
 [ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_w4osw"]
 [ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="2_sagfd"]
 
@@ -7,6 +8,7 @@
 script = ExtResource("1_w4osw")
 id = &"foe_turret"
 visual = 107
+polygon = PackedVector2Array(0, 128, 16, 88, 8, 64, 24, 56, 32, 0, 40, 56, 56, 64, 40, 88, 64, 80, 88, 88, 72, 64, 88, 56, 96, 0, 104, 56, 120, 64, 112, 88, 128, 128, 112, 128, 112, 120, 96, 120, 96, 128, 32, 128, 32, 120, 16, 120, 16, 128)
 color = Color(0.8, 1, 0, 1)
 score_value = 2000
 sound_profile = ExtResource("2_sagfd")

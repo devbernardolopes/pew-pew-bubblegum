@@ -1,12 +1,14 @@
 [gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://fr1rekdbshqx"]
 
 [ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_sq257"]
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_u82f7"]
 [ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="2_dbyh7"]
 
 [resource]
 script = ExtResource("1_sq257")
 id = &"foe_star"
 visual = 105
+polygon = PackedVector2Array(0, 64, 40, 40, 64, 0, 88, 40, 128, 64, 88, 88, 64, 128, 40, 88)
 color = Color(1, 0.9411765, 0.12156863, 1)
 base_speed = 378.0
 score_value = 600

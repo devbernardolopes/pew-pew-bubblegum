@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="BossData" format=3 uid="uid://c1etpu1q8roa"]
 
 [ext_resource type="Script" uid="uid://db3gvgn86afji" path="res://resources/boss_data.gd" id="1_boss"]
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_n5ftk"]
 [ext_resource type="Script" uid="uid://bx6juvdroac4" path="res://resources/boss_piece_data.gd" id="2_fvwai"]
 [ext_resource type="Resource" uid="uid://vk03ehj6tp6o" path="res://resources/entities/bosses/phases/phase_001.tres" id="2_mm41p"]
 [ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="2_phase"]
@@ -13,6 +14,7 @@ script = ExtResource("1_boss")
 phases = Array[ExtResource("2_phase")]([ExtResource("2_mm41p"), ExtResource("3_n5ftk"), ExtResource("4_wvynt")])
 id = &"boss_01"
 visual = 200
+polygon = PackedVector2Array(24, 64, 72, 0, 88, 32, 144, 0, 144.1105, 15.77902, 128, 48, 144, 48, 160, 32, 224, 32, 240, 48, 256, 48, 232, 16, 232, 0, 296, 32, 312, 0, 360, 64, 384, 128, 352, 184, 384, 224, 320, 320, 320, 256, 304, 224, 248, 240, 224, 296, 200, 200, 192, 192, 184, 200, 160, 296, 136, 240, 80, 224, 64, 256, 64, 320, 0, 224, 32, 184, 0, 128)
 color = Color(0.8611975, 0.112640165, 0.25397617, 1)
 max_health = 60
 base_speed = 220.0

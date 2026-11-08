@@ -1,17 +1,17 @@
 [gd_resource type="Resource" script_class="BossData" format=3 uid="uid://icutdr75utim"]
 
-[ext_resource type="Script" path="res://resources/boss_phase_data.gd" id="1_wl1q8"]
-[ext_resource type="Script" path="res://resources/boss_piece_data.gd" id="2_1vhmn"]
-[ext_resource type="PackedScene" path="res://scenes/entities/boss_01_left.tscn" id="3_lmtog"]
-[ext_resource type="PackedScene" path="res://scenes/entities/boss_01_center.tscn" id="4_rfr75"]
-[ext_resource type="PackedScene" path="res://scenes/entities/boss_01_right.tscn" id="5_gkp6r"]
-[ext_resource type="Script" path="res://resources/boss_data.gd" id="6_vbys0"]
-[ext_resource type="Resource" path="res://resources/sound_profiles/sound_profile_001.tres" id="7_r3x1f"]
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_1vhmn"]
+[ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="1_wl1q8"]
+[ext_resource type="Script" uid="uid://bx6juvdroac4" path="res://resources/boss_piece_data.gd" id="2_1vhmn"]
+[ext_resource type="PackedScene" uid="uid://iwhxd715s0vr" path="res://scenes/entities/boss_01_left.tscn" id="3_lmtog"]
+[ext_resource type="PackedScene" uid="uid://dwgfhjpvawqk2" path="res://scenes/entities/boss_01_center.tscn" id="4_rfr75"]
+[ext_resource type="PackedScene" uid="uid://cyjatd1ijr06e" path="res://scenes/entities/boss_01_right.tscn" id="5_gkp6r"]
+[ext_resource type="Script" uid="uid://db3gvgn86afji" path="res://resources/boss_data.gd" id="6_vbys0"]
+[ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="7_r3x1f"]
 
 [sub_resource type="Resource" id="Resource_togd8"]
 script = ExtResource("1_wl1q8")
 fire_interval = 1.8
-muzzle_indices = PackedInt32Array()
 
 [sub_resource type="Resource" id="Resource_hqkgx"]
 script = ExtResource("1_wl1q8")
@@ -19,7 +19,6 @@ health_below = 0.5
 offset = Vector2(0, 44)
 fire_pattern = 3
 fire_interval = 1.4
-muzzle_indices = PackedInt32Array()
 
 [sub_resource type="Resource" id="Resource_fcjv0"]
 script = ExtResource("2_1vhmn")
@@ -48,6 +47,7 @@ phases = Array[ExtResource("1_wl1q8")]([SubResource("Resource_togd8"), SubResour
 pieces = Array[ExtResource("2_1vhmn")]([SubResource("Resource_fcjv0"), SubResource("Resource_vkhma"), SubResource("Resource_6uc11")])
 id = &"boss_01_lego"
 visual = 200
+polygon = PackedVector2Array(24, 64, 72, 0, 88, 32, 144, 0, 144.1105, 15.77902, 128, 48, 144, 48, 160, 32, 224, 32, 240, 48, 256, 48, 232, 16, 232, 0, 296, 32, 312, 0, 360, 64, 384, 128, 352, 184, 384, 224, 320, 320, 320, 256, 304, 224, 248, 240, 224, 296, 200, 200, 192, 192, 184, 200, 160, 296, 136, 240, 80, 224, 64, 256, 64, 320, 0, 224, 32, 184, 0, 128)
 color = Color(0.8611975, 0.112640165, 0.25397617, 1)
 max_health = 30
 base_speed = 220.0

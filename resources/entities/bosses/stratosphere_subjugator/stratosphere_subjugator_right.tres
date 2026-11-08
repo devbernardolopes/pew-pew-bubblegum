@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="BossData" format=3 uid="uid://cuu0vmyfvwf61"]
 
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_bdklp"]
 [ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="1_gdwvh"]
 [ext_resource type="Script" uid="uid://bx6juvdroac4" path="res://resources/boss_piece_data.gd" id="2_a22lm"]
 [ext_resource type="Resource" uid="uid://dywix4u2xdqe7" path="res://resources/entities/bosses/stratosphere_subjugator/right_phase_001.tres" id="2_bdklp"]
@@ -11,6 +12,7 @@ script = ExtResource("3_bdklp")
 phases = Array[ExtResource("1_gdwvh")]([ExtResource("2_bdklp")])
 id = &"stratosphere_subjugator_right"
 visual = 207
+polygon = PackedVector2Array(603.4286, 54.85715, 603.4286, -9.142853, 539.4286, -9.142853, 539.4286, 54.85715, 475.4286, 54.85715, 411.4286, 118.8571, 347.4286, 310.8571, 411.4286, 310.8571, 411.4286, 374.8571, 475.4286, 438.8571, 603.4286, 438.8571, 667.4286, 374.8571, 667.4286, 310.8571, 603.4286, 246.8571)
 color = Color(0, 0, 0.3137255, 1)
 max_health = 20
 score_value = 3000

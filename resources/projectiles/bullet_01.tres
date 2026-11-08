@@ -5,5 +5,6 @@
 [resource]
 script = ExtResource("1_dnnnt")
 id = &"bullet_01"
+polygon = PackedVector2Array(52, 0, 76, 0, 76, 128, 52, 128)
 base_speed = 512.0
 metadata/_custom_type_script = "uid://txnc58qwywfs"

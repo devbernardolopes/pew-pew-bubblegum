@@ -11,7 +11,7 @@ extends EditorScript
 const SKIP_IDS: Array[StringName] = [&"boss_neon_behemoth"]
 
 ## When true, only print what would change and write nothing.
-const DRY_RUN: bool = true
+const DRY_RUN: bool = false
 
 
 func _run() -> void:

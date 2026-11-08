@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://cadr8n4vn4fnc"]
 
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_g81ec"]
 [ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_v8rtf"]
 [ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="2_sbioj"]
 
@@ -7,6 +8,7 @@
 script = ExtResource("1_v8rtf")
 id = &"foe_shuriken"
 visual = 109
+polygon = PackedVector2Array(0, 0, 32, 40, 24, 0, 48, 40, 48, 0, 56, 40, 72, 0, 80, 40, 128, 0, 96, 40, 128, 32, 104, 56, 128, 64, 104, 80, 128, 128, 88, 104, 96, 128, 72, 104, 64, 128, 48, 104, 32, 128, 32, 104, 0, 128, 24, 96, 0, 88, 24, 80, 0, 64, 24, 56)
 color = Color(0.8, 1, 0.6745098, 0.80784315)
 max_health = 2
 score_value = 3500

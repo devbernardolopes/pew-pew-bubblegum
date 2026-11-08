@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="EntityData" format=3 uid="uid://br07e1ffbfgi0"]
 
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_jrayi"]
 [ext_resource type="Script" uid="uid://cnpcyvxb0l32y" path="res://resources/entity_data.gd" id="1_m5att"]
 [ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="2_ov2ad"]
 
@@ -7,6 +8,7 @@
 script = ExtResource("1_m5att")
 id = &"foe_bow_tie"
 visual = 106
+polygon = PackedVector2Array(0, 0, 64, 48, 128, 0, 128, 128, 64, 80, 0, 128)
 color = Color(1, 0.37254903, 0.12156863, 1)
 max_health = 2
 score_value = 1250
