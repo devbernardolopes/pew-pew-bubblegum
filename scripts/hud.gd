@@ -16,6 +16,14 @@ const FLAWLESS_DURATION: float = 2.0
 signal stage_banner_started
 signal stage_banner_finished
 
+## The points of the old `TRIANGLE_POLYGON` shape: the reserve-ship icons are
+## little triangles.
+const ICON_POLYGON: PackedVector2Array = [
+	Vector2(64, 0),
+	Vector2(0, 128),
+	Vector2(128, 128),
+]
+
 var _icons: Array[Polygon2D] = []
 var _overlay: Label = null
 var _score_label: Label = null
@@ -131,7 +139,7 @@ func _rebuild_icons(reserve: int) -> void:
 		icon.queue_free()
 	_icons.clear()
 	for i: int in reserve:
-		var polygon: PackedVector2Array = Helpers.get_polygon(Helpers.VISUAL.TRIANGLE)
+		var polygon: PackedVector2Array = ICON_POLYGON.duplicate()
 		var icon: Polygon2D = Polygon2D.new()
 		icon.polygon = polygon
 		icon.scale = Vector2.ONE * ICON_SCALE

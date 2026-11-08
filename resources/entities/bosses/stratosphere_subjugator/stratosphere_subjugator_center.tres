@@ -11,7 +11,6 @@
 script = ExtResource("6_o7ygp")
 phases = Array[ExtResource("1_ilyjv")]([ExtResource("2_uktcf")])
 id = &"stratosphere_subjugator_center"
-visual = 206
 polygon = PackedVector2Array(448, 512, 256, 512, 256, 704, 320, 768, 320, 832, 384, 832, 384, 768, 448, 704)
 color = Color(0, 0, 0.3137255, 1)
 max_health = 40

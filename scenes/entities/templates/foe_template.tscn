@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entity.gd" id="1_h5tg3"]
+[ext_resource type="Resource" path="res://resources/entities/templates/foe_template.tres" id="2_josti"]
+[ext_resource type="Script" path="res://scripts/foe_brain.gd" id="3_wfqle"]
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="4_oti5v"]
+[ext_resource type="Resource" path="res://resources/projectiles/foe_bullet_1_480.tres" id="5_o4ajb"]
+[ext_resource type="Script" path="res://scripts/foe_shooter.gd" id="6_74d8f"]
+
+[node name="Foe" type="Area2D" unique_id=257360264]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_h5tg3")
+data = ExtResource("2_josti")
+
+[node name="FoeBrain" type="Node" parent="." unique_id=291317788]
+script = ExtResource("3_wfqle")
+
+[node name="Weapon" type="Node" parent="." unique_id=85024083]
+script = ExtResource("4_oti5v")
+projectile_data = ExtResource("5_o4ajb")
+
+[node name="FoeShooter" type="Node" parent="." unique_id=422927785]
+script = ExtResource("6_74d8f")

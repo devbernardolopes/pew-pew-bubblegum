@@ -1,9 +1,18 @@
 class_name HitSpark
 extends Node2D
 
+## The points of the old `BULLET_POLYGON` shape: the spark streaks draw a
+## flattened bullet.
+const SPARK_POLYGON: PackedVector2Array = [
+	Vector2(52, 0),
+	Vector2(76, 0),
+	Vector2(76, 128),
+	Vector2(52, 128),
+]
+
 func setup(_position: Vector2, direction: Vector2 = Vector2.UP, _scale: float = 0.2) -> void:
 	global_position = _position
-	var points: PackedVector2Array = Helpers.get_polygon(Helpers.VISUAL.BULLET)
+	var points: PackedVector2Array = SPARK_POLYGON.duplicate()
 	var scaled_points: PackedVector2Array = []
 	for p in points:
 		scaled_points.append((p - Vector2(Helpers.ENTITY_WIDTH / 2.0, Helpers.ENTITY_WIDTH / 2.0)) * _scale)

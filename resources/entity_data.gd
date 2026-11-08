@@ -3,11 +3,9 @@ class_name EntityData
 extends Resource
 
 @export var id: StringName = &""
-## Legacy shape selector. [member polygon] wins when set; this is only the
-## legacy fallback used by [method get_polygon] when [member polygon] is empty.
-@export var visual: Helpers.VISUAL = Helpers.VISUAL.TRIANGLE
-## Shape points in the 128 x 128 box (larger shapes use more). When set, it
-## wins over [member visual]; when empty, [member visual] is the legacy fallback.
+## The shape of this entity: polygon points in the 128 x 128 box (larger
+## shapes use more). This is the only shape; it must have at least 3 points
+## and triangulate (see [method validate_polygon]).
 @export var polygon: PackedVector2Array = PackedVector2Array()
 @export var color: Color = Color.WHITE
 @export var team: Helpers.TEAM = Helpers.TEAM.FOE
@@ -125,12 +123,24 @@ extends Resource
 @export var input_debug: bool = false
 
 
-## Returns this resource's shape: [member polygon] when it is set, otherwise the
-## legacy shape of [member visual] from [Helpers]. Always a copy.
+## Returns this resource's shape: [member polygon]. Always a copy.
 func get_polygon() -> PackedVector2Array:
-	if not polygon.is_empty():
-		return polygon.duplicate()
-	return Helpers.get_polygon(visual)
+	return polygon.duplicate()
+
+
+## Returns the problems found in this Entity's polygon, each prefixed with
+## [code][error][/code] and naming [param where]: fewer than 3 points, or a
+## polygon [method Geometry2D.triangulate_polygon] cannot triangulate (the
+## explosion shards need it).
+func validate_polygon(where: String = "") -> PackedStringArray:
+	var issues: PackedStringArray = []
+	var label: String = where if not where.is_empty() else "(unsaved entity data)"
+	if polygon.size() < 3:
+		issues.append("[error] %s: the polygon has %d points, fewer than 3." % [label, polygon.size()])
+		return issues
+	if Geometry2D.triangulate_polygon(polygon).is_empty():
+		issues.append("[error] %s: the polygon cannot be triangulated." % label)
+	return issues
 
 
 ## Returns the problems found in this Entity's dash data, each prefixed with

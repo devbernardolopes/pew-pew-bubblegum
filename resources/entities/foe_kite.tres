@@ -7,7 +7,6 @@
 [resource]
 script = ExtResource("1_ukkyd")
 id = &"foe_kite"
-visual = 103
 polygon = PackedVector2Array(0, 88, 32, 64, 64, 0, 96, 64, 128, 88, 64, 128)
 color = Color(1, 0.19215687, 0.19215687, 1)
 base_speed = 352.0

@@ -76,6 +76,7 @@ func validate(stage_path: String = "", wave_index: int = -1, foe_cache: Dictiona
 						where, peak, foe_speed, describe(formation)])
 			issues.append_array(foe_info.data.validate_dash(
 					where, foe_info.speed_multiplier, foe_info.scale_aux))
+			issues.append_array(foe_info.data.validate_polygon(where))
 	if entry_curve == null:
 		issues.append("[error] %s: entry_curve is null." % where)
 	for i: int in dive_curves.size():

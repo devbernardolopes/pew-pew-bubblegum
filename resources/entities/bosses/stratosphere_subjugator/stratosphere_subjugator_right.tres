@@ -11,7 +11,6 @@
 script = ExtResource("3_bdklp")
 phases = Array[ExtResource("1_gdwvh")]([ExtResource("2_bdklp")])
 id = &"stratosphere_subjugator_right"
-visual = 207
 polygon = PackedVector2Array(603.4286, 54.85715, 603.4286, -9.142853, 539.4286, -9.142853, 539.4286, 54.85715, 475.4286, 54.85715, 411.4286, 118.8571, 347.4286, 310.8571, 411.4286, 310.8571, 411.4286, 374.8571, 475.4286, 438.8571, 603.4286, 438.8571, 667.4286, 374.8571, 667.4286, 310.8571, 603.4286, 246.8571)
 color = Color(0, 0, 0.3137255, 1)
 max_health = 20

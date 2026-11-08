@@ -1,0 +1,31 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entity.gd" id="1_st7ci"]
+[ext_resource type="Resource" path="res://resources/entities/templates/boss_template.tres" id="2_0mrde"]
+[ext_resource type="Script" path="res://scripts/foe_brain.gd" id="3_lgba8"]
+[ext_resource type="Script" path="res://scripts/boss_pattern.gd" id="4_sux00"]
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="5_1uomf"]
+[ext_resource type="Resource" path="res://resources/projectiles/foe_bullet_1_480.tres" id="6_4f7go"]
+
+[node name="Boss" type="Area2D" unique_id=1856382269]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_st7ci")
+data = ExtResource("2_0mrde")
+scale_aux = 0.4
+metadata/_custom_type_script = "uid://u6pm8ay51hqa"
+
+[node name="FoeBrain" type="Node" parent="." unique_id=1945716262]
+script = ExtResource("3_lgba8")
+metadata/_custom_type_script = "uid://cxx0a7y036em"
+
+[node name="BossPattern" type="Node" parent="." unique_id=1700511122]
+script = ExtResource("4_sux00")
+metadata/_custom_type_script = "uid://6442sewjldwo"
+
+[node name="Weapon" type="Node" parent="." unique_id=1848561008]
+script = ExtResource("5_1uomf")
+projectile_data = ExtResource("6_4f7go")
+metadata/_custom_type_script = "uid://b7xhxfxpffv60"
+
+[node name="Muzzles" type="Node2D" parent="." unique_id=1059135715]

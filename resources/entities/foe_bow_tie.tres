@@ -7,7 +7,6 @@
 [resource]
 script = ExtResource("1_m5att")
 id = &"foe_bow_tie"
-visual = 106
 polygon = PackedVector2Array(0, 0, 64, 48, 128, 0, 128, 128, 64, 80, 0, 128)
 color = Color(1, 0.37254903, 0.12156863, 1)
 max_health = 2

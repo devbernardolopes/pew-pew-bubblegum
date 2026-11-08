@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/entity.gd" id="1_hv12s"]
+[ext_resource type="Resource" path="res://resources/entities/bosses/neon_behemoth/neon_behemoth.tres" id="2_thqn2"]
+[ext_resource type="Script" path="res://scripts/foe_brain.gd" id="3_fi8o8"]
+[ext_resource type="Script" path="res://scripts/boss_pattern.gd" id="4_ed5iv"]
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="5_kpqp6"]
+[ext_resource type="Resource" path="res://resources/projectiles/foe_bullet_1_480.tres" id="6_7urei"]
+
+[node name="BossNeonBehemoth" type="Area2D" unique_id=1856382269]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_hv12s")
+data = ExtResource("2_thqn2")
+scale_aux = 0.4
+speed_multiplier = 1.25
+metadata/_custom_type_script = "uid://u6pm8ay51hqa"
+
+[node name="FoeBrain" type="Node" parent="." unique_id=1945716262]
+script = ExtResource("3_fi8o8")
+metadata/_custom_type_script = "uid://cxx0a7y036em"
+
+[node name="BossPattern" type="Node" parent="." unique_id=1700511122]
+script = ExtResource("4_ed5iv")
+metadata/_custom_type_script = "uid://6442sewjldwo"
+
+[node name="Weapon" type="Node" parent="." unique_id=1848561008]
+script = ExtResource("5_kpqp6")
+projectile_data = ExtResource("6_7urei")
+metadata/_custom_type_script = "uid://b7xhxfxpffv60"
+
+[node name="Muzzles" type="Node2D" parent="." unique_id=1059135715]
+
+[node name="Muzzle1" type="Marker2D" parent="Muzzles"]
+position = Vector2(-25.600000, -28.800001)
+
+[node name="Muzzle2" type="Marker2D" parent="Muzzles"]
+position = Vector2(25.600000, -28.800001)

@@ -7,7 +7,6 @@
 [resource]
 script = ExtResource("1_xey27")
 id = &"foe_h"
-visual = 108
 polygon = PackedVector2Array(24, 8, 0, 128, 40, 128, 40, 88, 88, 88, 88, 128, 128, 128, 104, 8, 88, 0, 88, 48, 40, 48, 40, 0)
 color = Color(1, 0, 1, 1)
 score_value = 900

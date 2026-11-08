@@ -54,6 +54,8 @@ var lateral_motion: LateralMotion = null
 var health: int = 0
 var shots_fired: int = 0
 var shots_hit: int = 0
+## Set once an Entity whose polygon has fewer than 3 points warns about it.
+var _warned_no_polygon: bool = false
 var is_dead: bool = false
 ## Whether damage and tractor beams ignore this Entity. The dash drives it.
 var invulnerable: bool = false
@@ -468,6 +470,12 @@ func _refresh_shape() -> void:
 	if not data or not collision:
 		return
 	var points: PackedVector2Array = data.get_polygon()
+	if points.size() < 3:
+		if not _warned_no_polygon:
+			_warned_no_polygon = true
+			push_warning("Entity %s: the polygon has %d points, fewer than 3; not building shapes." % [
+					data.id, points.size()])
+		return
 	_base_points = points
 	collision.set_deferred("polygon", points)
 	visual.polygon = points

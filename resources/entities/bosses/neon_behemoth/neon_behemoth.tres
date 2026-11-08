@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="BossData" format=3]
+
+[ext_resource type="Script" path="res://resources/combo_data.gd" id="1_dkmt6"]
+[ext_resource type="Script" path="res://resources/boss_phase_data.gd" id="2_gchfr"]
+[ext_resource type="Script" path="res://resources/boss_piece_data.gd" id="3_ncm6i"]
+[ext_resource type="Script" path="res://resources/boss_data.gd" id="4_y6xm8"]
+[ext_resource type="Resource" path="res://resources/sound_profiles/sound_profile_001.tres" id="5_uspdw"]
+
+[sub_resource type="Resource" id="Resource_j70td"]
+script = ExtResource("2_gchfr")
+fire_pattern = 0
+muzzle_indices = PackedInt32Array()
+
+[resource]
+script = ExtResource("4_y6xm8")
+phases = Array[ExtResource("2_gchfr")]([SubResource("Resource_j70td")])
+id = &"neon_behemoth"
+polygon = PackedVector2Array(0, 192, 0, 64, 40, 128, 40, 64, 40, 24, 48, 32, 48, 56, 104, 0, 160, 56, 160, 32, 168, 24, 168, 64, 168, 128, 208, 64, 208, 192, 152, 192, 144, 176, 128, 176, 120, 192, 88, 192, 80, 176, 64, 176, 56, 192)
+color = Color(0.92156863, 0.16862746, 0.14509805, 1)
+max_health = 100
+score_value = 6000
+sound_profile = ExtResource("5_uspdw")
+dies_on_contact = false
+center_on_bounds = true

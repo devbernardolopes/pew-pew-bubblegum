@@ -52,6 +52,10 @@ var _base_max_foe_bullets: int = 6
 
 var _state: int = 0  # 0=INTRO, 1=SPAWNING, 2=PLAYING, 3=CLEARED, 4=STOPPED
 var _wave_index: int = 0
+## Debug start: index of the first wave of the first stage (set by
+## [StagePreview] before the scene enters the tree). 0 in a normal run, so
+## every stage starts at its first wave. [_begin_stage] consumes and resets it.
+var debug_start_wave: int = 0
 var _timer: float = 0.0
 var _current_stage_index: int = 0
 var _formation_entries: int = 0
@@ -159,24 +163,34 @@ func _begin_stage() -> void:
 	_formation_entries = 0
 	_total_foes_spawned = 0
 	_apply_difficulty()
-	_wave_index = 0
+	var current: StageData = _current_stage()
+	# First wave index of the first stage (see [member debug_start_wave]): the
+	# reset makes every later stage start at wave 0 again.
+	var start_wave: int = clampi(debug_start_wave, 0, current.waves.size() - 1) \
+			if current != null and not current.waves.is_empty() else 0
+	_wave_index = start_wave
+	debug_start_wave = 0
 	_timer = INTRO_DURATION
 	_state = 0
 	# Play stage music
-	var current: StageData = _current_stage()
 	if current != null and current.music_stream != null:
 		MusicPlayer.play_music(current.music_stream, MusicPlayer.crossfade_duration, true)
-	_start_cinematic(current)
+	_start_cinematic(current, start_wave)
 
 
 ## Starts the boss entrance cinematic of [param stage], if it has one: the
-## first [BossWaveData] with a non-null cinematic. The ceasefire and the
-## zoom-out begin now, in parallel with INTRO, so they coincide with the
-## STAGE banner. Stages without one are completely unaffected.
-func _start_cinematic(stage: StageData) -> void:
+## first [BossWaveData] at wave [param start_wave] or later with a non-null
+## cinematic. A cinematic whose boss wave is skipped by a debug start wave
+## never starts. The ceasefire and the zoom-out begin now, in parallel with
+## INTRO, so they coincide with the STAGE banner. Stages without one are
+## completely unaffected.
+func _start_cinematic(stage: StageData, start_wave: int = 0) -> void:
 	if stage == null:
 		return
-	for wave: WaveData in stage.waves:
+	for i: int in stage.waves.size():
+		if i < start_wave:
+			continue
+		var wave: WaveData = stage.waves[i]
 		var boss_wave: BossWaveData = wave as BossWaveData
 		if boss_wave == null or boss_wave.cinematic == null:
 			continue

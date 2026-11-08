@@ -46,7 +46,6 @@ script = ExtResource("6_vbys0")
 phases = Array[ExtResource("1_wl1q8")]([SubResource("Resource_togd8"), SubResource("Resource_hqkgx")])
 pieces = Array[ExtResource("2_1vhmn")]([SubResource("Resource_fcjv0"), SubResource("Resource_vkhma"), SubResource("Resource_6uc11")])
 id = &"boss_01_lego"
-visual = 200
 polygon = PackedVector2Array(24, 64, 72, 0, 88, 32, 144, 0, 144.1105, 15.77902, 128, 48, 144, 48, 160, 32, 224, 32, 240, 48, 256, 48, 232, 16, 232, 0, 296, 32, 312, 0, 360, 64, 384, 128, 352, 184, 384, 224, 320, 320, 320, 256, 304, 224, 248, 240, 224, 296, 200, 200, 192, 192, 184, 200, 160, 296, 136, 240, 80, 224, 64, 256, 64, 320, 0, 224, 32, 184, 0, 128)
 color = Color(0.8611975, 0.112640165, 0.25397617, 1)
 max_health = 30

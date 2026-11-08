@@ -7,7 +7,6 @@
 [resource]
 script = ExtResource("1_sq257")
 id = &"foe_star"
-visual = 105
 polygon = PackedVector2Array(0, 64, 40, 40, 64, 0, 88, 40, 128, 64, 88, 88, 64, 128, 40, 88)
 color = Color(1, 0.9411765, 0.12156863, 1)
 base_speed = 378.0

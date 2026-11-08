@@ -7,7 +7,6 @@
 [resource]
 script = ExtResource("1_p7nn1")
 id = &"foe_decagon"
-visual = 102
 polygon = PackedVector2Array(8, 24, 40, 0, 88, 0, 120, 24, 128, 64, 120, 104, 88, 128, 40, 128, 8, 104, 0, 64)
 color = Color(0.7372549, 0.07450981, 0.99607843, 1)
 score_value = 750

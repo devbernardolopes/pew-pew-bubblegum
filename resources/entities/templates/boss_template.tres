@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="BossData" format=3]
+
+[ext_resource type="Script" path="res://resources/combo_data.gd" id="1_hnqie"]
+[ext_resource type="Script" path="res://resources/boss_phase_data.gd" id="2_o4m80"]
+[ext_resource type="Script" path="res://resources/boss_piece_data.gd" id="3_7j1pm"]
+[ext_resource type="Script" path="res://resources/boss_data.gd" id="4_vuubt"]
+[ext_resource type="Resource" path="res://resources/sound_profiles/sound_profile_001.tres" id="5_qa2ik"]
+
+[sub_resource type="Resource" id="Resource_qqddt"]
+script = ExtResource("2_o4m80")
+fire_pattern = 0
+muzzle_indices = PackedInt32Array()
+
+[resource]
+script = ExtResource("4_vuubt")
+phases = Array[ExtResource("2_o4m80")]([SubResource("Resource_qqddt")])
+polygon = PackedVector2Array()
+max_health = 20
+score_value = 1000
+sound_profile = ExtResource("5_qa2ik")
+dies_on_contact = false
+center_on_bounds = true

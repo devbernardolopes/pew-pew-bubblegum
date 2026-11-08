@@ -21,7 +21,6 @@ fire_interval = 2.0
 script = ExtResource("3_pu5st")
 phases = Array[ExtResource("1_6fjp6")]([SubResource("Resource_505db"), SubResource("Resource_8tfv2")])
 id = &"boss_01_right"
-visual = 203
 polygon = PackedVector2Array(360, 64, 384, 128, 352, 184, 384, 224, 320, 320, 320, 256, 304, 224, 256, 237.71428, 256, 12, 296, 32, 312, 0)
 color = Color(0.8611975, 0.112640165, 0.25397617, 1)
 max_health = 20

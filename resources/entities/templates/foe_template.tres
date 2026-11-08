@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EntityData" format=3]
+
+[ext_resource type="Script" path="res://resources/combo_data.gd" id="1_hrwj4"]
+[ext_resource type="Script" path="res://resources/entity_data.gd" id="2_2p8cf"]
+[ext_resource type="Resource" path="res://resources/sound_profiles/sound_profile_001.tres" id="3_6gb2e"]
+
+[resource]
+script = ExtResource("2_2p8cf")
+polygon = PackedVector2Array()
+color = Color(1, 0.0627451, 0.9411765, 1)
+score_value = 100
+sound_profile = ExtResource("3_6gb2e")
+tilt_enabled = true
+trail_enabled = true
+fire_pulse_enabled = true
