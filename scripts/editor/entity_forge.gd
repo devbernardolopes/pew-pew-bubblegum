@@ -349,7 +349,10 @@ func _patched_scene_text(plan: ForgePlan, text: String) -> String:
 				lines.append("")
 			lines.append("[node name=\"Muzzle%d\" type=\"Marker2D\" parent=\"Muzzles\"]" % (j + 1))
 			lines.append("position = Vector2(%f, %f)" % [local.x, local.y])
-	return "\n".join(lines)
+	var out: String = "\n".join(lines)
+	if not out.ends_with("\n"):
+		out += "\n"
+	return out
 
 
 ## The `scale_aux` property of the scene root stored in [param lines], or
@@ -377,14 +380,18 @@ func _is_muzzle_child_line(line: String) -> bool:
 
 
 ## The ext-resource id of [param path], or "" when it is not referenced yet.
+## Matches ` id="` with a leading space so the `uid="..."` attribute of the
+## same line never collides.
 func _ext_id_for(lines: PackedStringArray, path: String) -> String:
 	for line: String in lines:
 		if line.begins_with("[ext_resource") and line.contains("path=\"%s\"" % path):
-			var start: int = line.find("id=\"")
+			var start: int = line.find(" id=\"")
 			if start < 0:
 				continue
-			var end: int = line.find("\"", start + 4)
-			return line.substr(start + 4, end - (start + 4))
+			var end: int = line.find("\"", start + 5)
+			if end < 0:
+				continue
+			return line.substr(start + 5, end - (start + 5))
 	return ""
 
 
@@ -401,7 +408,7 @@ func _new_ext_id(lines: PackedStringArray, plan: ForgePlan) -> String:
 ## Whether any ext-resource already uses [param id].
 func _id_taken(lines: PackedStringArray, id: String) -> bool:
 	for line: String in lines:
-		if line.begins_with("[ext_resource") and line.contains("id=\"%s\"" % id):
+		if line.begins_with("[ext_resource") and line.contains(" id=\"%s\"" % id):
 			return true
 	return false
 
@@ -506,7 +513,7 @@ func _transform_targets() -> Array[Polygon2D]:
 
 ## Applies [param transform] to the points and marker positions of every
 ## target polygon, through the editor's undo/redo stack.
-func _transform_all(label: String, transform: Callable) -> void:
+func _transform_all(label: String, _transform: Callable) -> void:
 	if not Engine.is_editor_hint():
 		return
 	var targets: Array[Polygon2D] = _transform_targets()
@@ -516,7 +523,7 @@ func _transform_all(label: String, transform: Callable) -> void:
 	undo_redo.create_action(label)
 	for node: Polygon2D in targets:
 		var old_points: PackedVector2Array = node.polygon.duplicate()
-		var new_points: PackedVector2Array = transform.call(old_points, Helpers.get_points_center(old_points))
+		var new_points: PackedVector2Array = _transform.call(old_points, Helpers.get_points_center(old_points))
 		undo_redo.add_do_property(node, &"polygon", new_points)
 		undo_redo.add_undo_property(node, &"polygon", old_points)
 		for child: Node in node.get_children():
@@ -524,7 +531,7 @@ func _transform_all(label: String, transform: Callable) -> void:
 			if marker == null:
 				continue
 			var old_position: Vector2 = marker.position
-			var new_position: Vector2 = transform.call(PackedVector2Array([old_position]),
+			var new_position: Vector2 = _transform.call(PackedVector2Array([old_position]),
 					Helpers.get_points_center(old_points))[0]
 			undo_redo.add_do_property(marker, &"position", new_position)
 			undo_redo.add_undo_property(marker, &"position", old_position)

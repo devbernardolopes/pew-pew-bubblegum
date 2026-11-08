@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="BossData" format=3]
+[gd_resource type="Resource" script_class="BossData" format=3 uid="uid://bmc153dr0b2nm"]
 
-[ext_resource type="Script" path="res://resources/combo_data.gd" id="1_hnqie"]
-[ext_resource type="Script" path="res://resources/boss_phase_data.gd" id="2_o4m80"]
-[ext_resource type="Script" path="res://resources/boss_piece_data.gd" id="3_7j1pm"]
-[ext_resource type="Script" path="res://resources/boss_data.gd" id="4_vuubt"]
-[ext_resource type="Resource" path="res://resources/sound_profiles/sound_profile_001.tres" id="5_qa2ik"]
+[ext_resource type="Script" uid="uid://djv0d8kikln0u" path="res://resources/combo_data.gd" id="1_hnqie"]
+[ext_resource type="Script" uid="uid://tth0jpkdi8oe" path="res://resources/boss_phase_data.gd" id="2_o4m80"]
+[ext_resource type="Script" uid="uid://bx6juvdroac4" path="res://resources/boss_piece_data.gd" id="3_7j1pm"]
+[ext_resource type="Script" uid="uid://db3gvgn86afji" path="res://resources/boss_data.gd" id="4_vuubt"]
+[ext_resource type="Resource" uid="uid://bfmewgm1ofmey" path="res://resources/sound_profiles/sound_profile_001.tres" id="5_qa2ik"]
 
 [sub_resource type="Resource" id="Resource_qqddt"]
 script = ExtResource("2_o4m80")

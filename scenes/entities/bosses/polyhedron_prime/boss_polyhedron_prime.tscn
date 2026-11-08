@@ -30,11 +30,5 @@ metadata/_custom_type_script = "uid://b7xhxfxpffv60"
 
 [node name="Muzzles" type="Node2D" parent="." unique_id=1059135715]
 
-[node name="Muzzle1" type="Marker2D" parent="Muzzles" unique_id=481003538]
-position = Vector2(0, -24)
-
-[node name="Muzzle2" type="Marker2D" parent="Muzzles" unique_id=2027200788]
-position = Vector2(-8, -24)
-
-[node name="Muzzle3" type="Marker2D" parent="Muzzles" unique_id=341421035]
-position = Vector2(8, -24)
+[node name="Muzzle1" type="Marker2D" parent="Muzzles"]
+position = Vector2(0.000000, -38.400002)
