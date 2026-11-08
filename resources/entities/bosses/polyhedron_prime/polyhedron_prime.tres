@@ -16,6 +16,7 @@ script = ExtResource("3_prgh1")
 phases = Array[ExtResource("1_prfar")]([SubResource("Resource_prfar")])
 id = &"polyhedron_prime"
 visual = 210
+polygon = null
 color = Color(0.8745098, 0, 1, 1)
 max_health = 20
 score_value = 12000

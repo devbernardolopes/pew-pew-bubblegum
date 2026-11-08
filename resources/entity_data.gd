@@ -3,6 +3,7 @@ extends Resource
 
 @export var id: StringName = &""
 @export var visual: Helpers.VISUAL = Helpers.VISUAL.TRIANGLE
+@export var polygon: PackedVector2Array = PackedVector2Array()
 @export var color: Color = Color.WHITE
 @export var team: Helpers.TEAM = Helpers.TEAM.FOE
 @export var max_health: int = 1

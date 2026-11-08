@@ -37,6 +37,7 @@ phases = Array[ExtResource("1_84vk3")]([ExtResource("2_4gvu6"), ExtResource("3_k
 pieces = Array[ExtResource("5_3nvuu")]([SubResource("Resource_6a3e0"), SubResource("Resource_q8ymk"), SubResource("Resource_vfut7")])
 id = &"stratosphere_subjugator"
 visual = 204
+polygon = null
 color = Color(0, 0, 0.3137255, 1)
 max_health = 12
 base_speed = 220.0

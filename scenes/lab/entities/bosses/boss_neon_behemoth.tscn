@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://df6uyqm4f8scl"]
+
+[ext_resource type="Script" uid="uid://dbvvjtcheyqip" path="res://scripts/editor/polygon_helper.gd" id="1_n2ert"]
+
+[node name="Node2D" type="Node2D" unique_id=286157538]
+
+[node name="BossNeonBehemoth" type="Polygon2D" parent="." unique_id=1038774972]
+color = Color(0.92156863, 0.16862746, 0.14509805, 1)
+polygon = PackedVector2Array(0, 192, 0, 64, 40, 128, 40, 64, 40, 24, 48, 32, 48, 56, 104, 0, 160, 56, 160, 32, 168, 24, 168, 64, 168, 128, 208, 64, 208, 192, 152, 192, 144, 176, 128, 176, 120, 192, 88, 192, 80, 176, 64, 176, 56, 192)
+script = ExtResource("1_n2ert")
+max_health = 100
+speed_multiplier = 1.25
+score_value = 6000
+dies_on_contact = false
+center_on_bounds = true
+
+[node name="Small" type="Polygon2D" parent="BossNeonBehemoth" unique_id=1837005374]
+color = Color(0.5372549, 0.16862746, 0.14509805, 1)
+polygon = PackedVector2Array(0, 280, 40, 320, 40, 272, 64, 256, 88, 272, 88, 320, 128, 280, 128, 360, 64, 352, 0, 360)
+
+[node name="Marker2D" type="Marker2D" parent="BossNeonBehemoth/Small" unique_id=1613058661]
+position = Vector2(64, 256)
+
+[node name="Marker2D" type="Marker2D" parent="BossNeonBehemoth" unique_id=554069262]
+position = Vector2(40, 24)
+
+[node name="Marker2D2" type="Marker2D" parent="BossNeonBehemoth" unique_id=2107566255]
+position = Vector2(168, 24)
