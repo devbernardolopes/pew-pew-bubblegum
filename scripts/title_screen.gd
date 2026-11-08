@@ -1,5 +1,6 @@
 extends Control
 
+
 func _ready() -> void:
 	var label: Label = get_node_or_null("Label") as Label
 	if label != null:

@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://0iaoy1yyx2im"]
 
 [ext_resource type="FontFile" uid="uid://na01n8l6rclm" path="res://assets/fonts/Kenney Pixel.ttf" id="1_4ignj"]
-[ext_resource type="Script" path="res://scripts/title_screen.gd" id="1_new"]
+[ext_resource type="Script" uid="uid://bg8rg5c7sx48y" path="res://scripts/title_screen.gd" id="1_new"]
 
 [node name="Title" type="Control" unique_id=1793984490]
-script = ExtResource("1_new")
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_new")
 
 [node name="Label" type="Label" parent="." unique_id=830141466]
 layout_mode = 0

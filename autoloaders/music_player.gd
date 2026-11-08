@@ -3,8 +3,8 @@ extends Node
 const BUS_MUSIC: StringName = &"Music"
 
 @export var crossfade_duration: float = 1.5
-@export var game_over_music: AudioStream = null
-@export var title_music: AudioStream = null
+@export var game_over_music: AudioStream = preload("res://assets/musics/Beyond_the_Asteroid_Belt.mp3")
+@export var title_music: AudioStream = preload("res://assets/musics/The_Long_Descent.mp3")
 
 var _current_music: AudioStream = null
 var _player_a: AudioStreamPlayer = null

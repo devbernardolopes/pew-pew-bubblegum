@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Pew Pew Bubblegum"
-run/main_scene="uid://c4lo3tmmigpnv"
+run/main_scene="uid://0iaoy1yyx2im"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
