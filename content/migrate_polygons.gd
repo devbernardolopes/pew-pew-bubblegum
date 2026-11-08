@@ -26,18 +26,18 @@ func _run() -> void:
 		if not (resource is EntityData or resource is ProjectileData):
 			continue
 		total += 1
-		var id: StringName = resource.get("id") as StringName
+		var id: StringName = resource.get("id")
 		if SKIP_IDS.has(id):
 			print("SKIP %s (%s): id %s is skipped" % [path, _visual_name(resource), id])
 			skipped += 1
 			continue
-		var existing: PackedVector2Array = resource.get("polygon") as PackedVector2Array
+		var existing: PackedVector2Array = _polygon_of(resource)
 		if not existing.is_empty():
 			print("SKIP %s (%s): polygon already set (%d points)" % [
 					path, _visual_name(resource), existing.size()])
 			skipped += 1
 			continue
-		var shape: PackedVector2Array = Helpers.get_polygon(resource.get("visual") as Helpers.VISUAL)
+		var shape: PackedVector2Array = Helpers.get_polygon(resource.get("visual"))
 		print("MIGRATE %s (%s): %d points" % [path, _visual_name(resource), shape.size()])
 		if DRY_RUN:
 			changed += 1
@@ -54,6 +54,20 @@ func _run() -> void:
 			total, changed, skipped, DRY_RUN])
 	if DRY_RUN:
 		print("migrate_polygons: dry run, nothing was written.")
+
+
+## The [member EntityData.polygon] of [param resource], or an empty array when
+## it is unset. Some resources store `polygon = null` in their file, so the
+## value must never be cast with `as` without a null check.
+func _polygon_of(resource: Resource) -> PackedVector2Array:
+	var raw: Variant = resource.get("polygon")
+	if raw == null:
+		return PackedVector2Array()
+	if raw is PackedVector2Array:
+		return (raw as PackedVector2Array).duplicate()
+	push_warning("migrate_polygons: %s has an unexpected polygon value of type %s; treating it as unset." % [
+			resource.resource_path, typeof(raw)])
+	return PackedVector2Array()
 
 
 ## Human-readable name of a [member visual] enum value.
