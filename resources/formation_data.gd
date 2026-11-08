@@ -1,3 +1,4 @@
+@tool
 class_name FormationData
 extends Resource
 ## Layout of an immutable formation grid. Every stage wave that points at the

@@ -1,3 +1,4 @@
+@tool
 class_name StageData
 extends Resource
 ## A stage is an ordered list of waves.

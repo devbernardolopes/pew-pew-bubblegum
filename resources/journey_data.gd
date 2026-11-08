@@ -1,3 +1,4 @@
+@tool
 class_name JourneyData
 extends Resource
 ## A Journey [JourneyData] is a collection of Stages [StageData].

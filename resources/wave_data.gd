@@ -1,3 +1,4 @@
+@tool
 class_name WaveData
 extends Resource
 ## A single wave of foes for a stage.

@@ -1,3 +1,4 @@
+@tool
 class_name BossData
 extends EntityData
 ## Behavior of a boss: a big foe that survives ramming and changes position and

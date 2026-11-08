@@ -1,3 +1,4 @@
+@tool
 class_name BossPhaseData
 extends Resource
 ## One health phase of a [BossData]: where the boss moves, how it fires and how

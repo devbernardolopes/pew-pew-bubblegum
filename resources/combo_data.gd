@@ -1,3 +1,4 @@
+@tool
 class_name ComboData
 extends Resource
 ## A sequence of Input Map actions that fires a weapon when completed.

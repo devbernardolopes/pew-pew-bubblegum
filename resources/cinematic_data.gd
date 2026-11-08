@@ -1,3 +1,4 @@
+@tool
 class_name CinematicData
 extends Resource
 ## How a boss entrance plays: the camera eases out to [member zoom] while a

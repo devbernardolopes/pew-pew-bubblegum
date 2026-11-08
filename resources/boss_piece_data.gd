@@ -1,3 +1,4 @@
+@tool
 class_name BossPieceData
 extends Resource
 ## One piece a boss splits into when it dies: the scene of the piece and where

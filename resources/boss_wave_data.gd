@@ -1,3 +1,4 @@
+@tool
 class_name BossWaveData
 extends WaveData
 ## One boss for a stage. The inherited [member foe_scene] is the boss scene and
