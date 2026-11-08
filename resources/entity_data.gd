@@ -2,7 +2,11 @@ class_name EntityData
 extends Resource
 
 @export var id: StringName = &""
+## Legacy shape selector. [member polygon] wins when set; this is only the
+## legacy fallback used by [method get_polygon] when [member polygon] is empty.
 @export var visual: Helpers.VISUAL = Helpers.VISUAL.TRIANGLE
+## Shape points in the 128 x 128 box (larger shapes use more). When set, it
+## wins over [member visual]; when empty, [member visual] is the legacy fallback.
 @export var polygon: PackedVector2Array = PackedVector2Array()
 @export var color: Color = Color.WHITE
 @export var team: Helpers.TEAM = Helpers.TEAM.FOE
@@ -118,6 +122,14 @@ extends Resource
 @export var combos: Array[ComboData] = []
 ## Prints combo steps and charge events to the console, to tune delays.
 @export var input_debug: bool = false
+
+
+## Returns this resource's shape: [member polygon] when it is set, otherwise the
+## legacy shape of [member visual] from [Helpers]. Always a copy.
+func get_polygon() -> PackedVector2Array:
+	if not polygon.is_empty():
+		return polygon.duplicate()
+	return Helpers.get_polygon(visual)
 
 
 ## Returns the problems found in this Entity's dash data, each prefixed with

@@ -559,7 +559,7 @@ func _create_rider() -> void:
 	_rider = Polygon2D.new()
 	_rider.top_level = true
 	_rider.color = TractorBeam.CAPTURED_SHIP_COLOR
-	var points: PackedVector2Array = Helpers.get_polygon(_captured_hero.data.visual).duplicate()
+	var points: PackedVector2Array = _captured_hero.data.get_polygon().duplicate()
 	# Center polygon around origin so it pivots at its centre like the entity.
 	var offset: Vector2 = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * -1.0
 	for i in range(points.size()):

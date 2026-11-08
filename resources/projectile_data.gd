@@ -2,7 +2,12 @@ class_name ProjectileData
 extends Resource
 
 @export var id: StringName = &""
+## Legacy shape selector. [member polygon] wins when set; this is only the
+## legacy fallback used by [method get_polygon] when [member polygon] is empty.
 @export var visual: Helpers.VISUAL = Helpers.VISUAL.BULLET
+## Shape points in the 128 x 128 box (larger shapes use more). When set, it
+## wins over [member visual]; when empty, [member visual] is the legacy fallback.
+@export var polygon: PackedVector2Array = PackedVector2Array()
 @export var visual_scale: float = 0.25
 @export var color: Color = Color.WHITE
 @export var base_speed: float = 384.0
@@ -31,6 +36,14 @@ extends Resource
 ## damage on top of base_damage (additive). Makes big targets such as bosses
 ## worth aiming at.
 @export var explosion_hits_direct_target: bool = true
+
+
+## Returns this resource's shape: [member polygon] when it is set, otherwise the
+## legacy shape of [member visual] from [Helpers]. Always a copy.
+func get_polygon() -> PackedVector2Array:
+	if not polygon.is_empty():
+		return polygon.duplicate()
+	return Helpers.get_polygon(visual)
 
 
 ## Returns the problems found in this Projectile's pierce and explosion data,

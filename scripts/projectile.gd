@@ -170,7 +170,7 @@ func _apply_layers(_team: Helpers.TEAM) -> void:
 
 
 func _build_shapes() -> void:
-	var points: PackedVector2Array = Helpers.get_polygon(_data.visual)
+	var points: PackedVector2Array = _data.get_polygon()
 	var offset: Vector2 = Vector2.ONE * Helpers.ENTITY_HALF_WIDTH * _data.visual_scale * -1.0
 	var collision: CollisionPolygon2D = CollisionPolygon2D.new()
 	collision.polygon = points

@@ -1,9 +1,8 @@
 class_name Explosion
 extends Node2D
 
-func setup(visual: Helpers.VISUAL, entity_scale: float, _position: Vector2, color: Color, _scale: float = 1.0, center_on_bounds: bool = false) -> void:
+func setup(polygon_points: PackedVector2Array, entity_scale: float, _position: Vector2, color: Color, _scale: float = 1.0, center_on_bounds: bool = false) -> void:
 	global_position = _position
-	var polygon_points: PackedVector2Array = Helpers.get_polygon(visual)
 	# Scale points to match the entity's shape size and center at origin. Shapes
 	# larger than the 128 x 128 box (bosses) are centered on their own bounds,
 	# mirroring [method Entity._refresh_shape].

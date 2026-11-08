@@ -319,7 +319,7 @@ func die() -> void:
 	var explosion_scale: float = 1.0
 	if data != null:
 		explosion_scale = data.explosion_scale
-	EffectsScript.explode(data.visual, scale_aux, global_position, data.color, explosion_scale,
+	EffectsScript.explode(data.get_polygon(), scale_aux, global_position, data.color, explosion_scale,
 			data.center_on_bounds)
 	if data is BossData:
 		EffectsScript.camera_punch(0.04, 0.20)
@@ -467,7 +467,7 @@ func _center_entity() -> void:
 func _refresh_shape() -> void:
 	if not data or not collision:
 		return
-	var points: PackedVector2Array = Helpers.get_polygon(data.visual)
+	var points: PackedVector2Array = data.get_polygon()
 	_base_points = points
 	collision.set_deferred("polygon", points)
 	visual.polygon = points
